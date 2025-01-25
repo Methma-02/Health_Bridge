@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
+
 const registrationFields = [
     { id: 'regNo', label: 'Registration No.:', type: 'text' },
     { id: 'regDate', label: 'Registration Date:', type: 'text' },
@@ -50,8 +51,8 @@ const currentStatusFields = [
     { id: 'minOrMax', label: 'Under 20 and over 35 years old', type: 'textarea', rows: 5, cols: 5 },
     { id: 'morePreg', label: 'Five or more Pregnancies', type: 'textarea', rows: 5, cols: 5 },
 ];
+
 function Pregnancy() {
-    // State to hold form data
     const [formData, setFormData] = useState({
         regNo: '',
         regDate: '',
@@ -88,10 +89,11 @@ function Pregnancy() {
         minOrMax: '',
         morePreg: '',
     });
+
     useEffect(() => {
-        console.log(formData)
-    },[formData])
-    // Handle input changes
+        console.log(formData);
+    }, [formData]);
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({
@@ -100,7 +102,21 @@ function Pregnancy() {
         });
     };
 
-    // Handle form submission
+    const handleGetInfo = async () => {
+        try {
+            const response = await fetch(`http://localhost:5000/api/pregnancy/${formData.regNo}`);
+            if (response.ok) {
+                const data = await response.json();
+                setFormData(data); // Populate form with fetched data
+            } else {
+                alert('Record not found. Please fill out the form.');
+            }
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            alert('An error occurred while fetching data.');
+        }
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -115,7 +131,6 @@ function Pregnancy() {
 
             if (response.ok) {
                 alert('Data saved successfully!');
-                // Optionally reset the form
                 setFormData({
                     regNo: '',
                     regDate: '',
@@ -161,7 +176,6 @@ function Pregnancy() {
         }
     };
 
-    // Function to render input fields
     const renderInputFields = (fields) => {
         return fields.map((field) => (
             <div key={field.id}>
@@ -188,7 +202,6 @@ function Pregnancy() {
         ));
     };
 
-    // Function to render radio buttons
     const renderRadioButtons = (questions) => {
         return questions.map((question) => (
             <div key={question.id}>
@@ -224,6 +237,11 @@ function Pregnancy() {
             <form onSubmit={handleSubmit}>
                 {/* Render Registration Fields */}
                 {renderInputFields(registrationFields)}
+
+                {/* Add a "Get Info" Button */}
+                <button type="button" onClick={handleGetInfo}>
+                    Get Info
+                </button>
 
                 <hr /> <br />
 

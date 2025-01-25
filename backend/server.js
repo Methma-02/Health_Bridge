@@ -5,13 +5,13 @@ const cors = require('cors');
 
 const app = express();
 const PORT = 5000;
-
+require('dotenv').config();
 // Middleware
 app.use(cors());
 app.use(bodyParser.json());
 
 // MongoDB Atlas Connection
-const MONGO_URI = "mongodb+srv://asd:Randina123@health.gfyq3.mongodb.net/Health_Bridge";
+const MONGO_URI = process.env.MONGO_URI;
 mongoose.connect(MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -21,7 +21,7 @@ mongoose.connect(MONGO_URI, {
 
 // Mongoose Schema and Model
 const pregnancySchema = new mongoose.Schema({
-    regNo: String,
+    regNo: { type: String, unique: true }, // Ensure regNo is unique
     regDate: String,
     regPlace: String,
     regFam: String,
@@ -55,24 +55,54 @@ const pregnancySchema = new mongoose.Schema({
     famPlan: String,
     minOrMax: String,
     morePreg: String,
+}, { collection: 'Pregnancy_Record' });
+
+const PregnancyModel = mongoose.model('Pregnancy', pregnancySchema);
+
+
+app.get('/api/pregnancy/:regNo', async (req, res) => {
+    try {
+        const { regNo } = req.params;
+        const record = await PregnancyModel.findOne({ regNo });
+
+        if (record) {
+            res.status(200).json(record);
+        } else {
+            res.status(404).json({ message: 'Record not found' });
+        }
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        res.status(500).json({ message: 'Failed to fetch data.' });
+    }
 });
 
-// Explicitly specify the collection name as 'Pregnancy_Record'
-const PregnancyModel = mongoose.model('Pregnancy', pregnancySchema, 'Pregnancy_Record');
-
-// API Endpoint to Save Data
 app.post('/api/pregnancy', async (req, res) => {
     try {
-        const newRecord = new PregnancyModel(req.body);
-        await newRecord.save();
-        res.status(201).json({ message: 'Data saved successfully!' });
+        const { regNo } = req.body;
+
+        // Check if a record with the same regNo exists
+        const existingRecord = await PregnancyModel.findOne({ regNo });
+
+        if (existingRecord) {
+            // Update the existing record
+            const updatedRecord = await PregnancyModel.findOneAndUpdate(
+                { regNo },
+                req.body,
+                { new: true }
+            );
+            res.status(200).json({ message: 'Record updated successfully!', record: updatedRecord });
+        } else {
+            // Create a new record
+            const newRecord = new PregnancyModel(req.body);
+            await newRecord.save();
+            res.status(201).json({ message: 'Record created successfully!', record: newRecord });
+        }
     } catch (error) {
         console.error('Error saving data:', error);
         res.status(500).json({ message: 'Failed to save data.' });
     }
 });
 
-// Start Server
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });
