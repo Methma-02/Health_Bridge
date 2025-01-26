@@ -6,6 +6,7 @@ const cors = require('cors');
 const app = express();
 const PORT = 5000;
 require('dotenv').config();
+
 // Middleware
 app.use(cors());
 app.use(bodyParser.json());
@@ -55,11 +56,17 @@ const pregnancySchema = new mongoose.Schema({
     famPlan: String,
     minOrMax: String,
     morePreg: String,
+    bloodPressure: String, // New field
+    vaginalBleeding: String, // New field
+    fetusStatus: String, // New field
+    casualPosition: String, // New field
+    unknownDeliveryDate: String, // New field
+    other: String, // New field
 }, { collection: 'Pregnancy_Record' });
 
 const PregnancyModel = mongoose.model('Pregnancy', pregnancySchema);
 
-
+// Routes
 app.get('/api/pregnancy/:regNo', async (req, res) => {
     try {
         const { regNo } = req.params;
@@ -103,6 +110,7 @@ app.post('/api/pregnancy', async (req, res) => {
     }
 });
 
+// Start the server
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });

@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
+import Tables from './Tables';
+import Table2 from "./Table2";
 
 const registrationFields = [
     { id: 'regNo', label: 'Registration No.:', type: 'text' },
@@ -52,6 +54,16 @@ const currentStatusFields = [
     { id: 'morePreg', label: 'Five or more Pregnancies', type: 'textarea', rows: 5, cols: 5 },
 ];
 
+// New fields for additional text areas
+const additionalFields = [
+    { id: 'bloodPressure', label: 'Blood Pressure:', type: 'textarea', rows: 5, cols: 10 },
+    { id: 'vaginalBleeding', label: 'Vaginal Bleeding:', type: 'textarea', rows: 5, cols: 10 },
+    { id: 'fetusStatus', label: 'Fetus Status:', type: 'textarea', rows: 5, cols: 10 },
+    { id: 'casualPosition', label: 'Casual Position:', type: 'textarea', rows: 5, cols: 10 },
+    { id: 'unknownDeliveryDate', label: 'Not knowing the exact date of delivery:', type: 'textarea', rows: 5, cols: 10 },
+    { id: 'other', label: 'Other:', type: 'textarea', rows: 5, cols: 10 },
+];
+
 function Pregnancy() {
     const [formData, setFormData] = useState({
         regNo: '',
@@ -88,6 +100,12 @@ function Pregnancy() {
         famPlan: '',
         minOrMax: '',
         morePreg: '',
+        bloodPressure: '',
+        vaginalBleeding: '',
+        fetusStatus: '',
+        casualPosition: '',
+        unknownDeliveryDate: '',
+        other: '',
     });
 
     useEffect(() => {
@@ -166,6 +184,12 @@ function Pregnancy() {
                     famPlan: '',
                     minOrMax: '',
                     morePreg: '',
+                    bloodPressure: '',
+                    vaginalBleeding: '',
+                    fetusStatus: '',
+                    casualPosition: '',
+                    unknownDeliveryDate: '',
+                    other: '',
                 });
             } else {
                 alert('Failed to save data.');
@@ -198,6 +222,7 @@ function Pregnancy() {
                         onChange={handleChange}
                     />
                 )}
+                
             </div>
         ));
     };
@@ -285,9 +310,15 @@ function Pregnancy() {
                     {renderInputFields(currentStatusFields)}
                 </div>
 
+                {/* Render Additional Fields */}
+                <div className='additionalFields'>
+                    {renderInputFields(additionalFields)}
+                </div>
+
                 {/* Submit Button */}
                 <button type="submit">Submit</button>
             </form>
+            <Tables/>
         </div>
     );
 }
