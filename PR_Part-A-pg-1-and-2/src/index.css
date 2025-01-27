@@ -1,0 +1,142 @@
+/* Import Inter font */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+/* Global Styles */
+body {
+  font-family: 'Inter', Arial, sans-serif;
+  background-color: #ffffff;
+  color: #4a4a4a;
+  margin: 0;
+  padding: 0;
+  line-height: 1.6;
+}
+
+/* Typography Styles */
+h1 {
+  font-size: 2.5rem; /* Slightly reduced for better proportions */
+  font-weight: 700;
+  margin-bottom: 30px;
+  text-align: center;
+  color: #333333;
+}
+
+h2 {
+  font-size: 2rem; /* Reduced size */
+  font-weight: 700;
+  margin-top: 40px;
+  margin-bottom: 20px;
+  color: #333333;
+  border-bottom: 2px solid #FF4B8D;
+  padding-bottom: 10px;
+}
+
+/* Container Styles */
+.container {
+  width: 100%;
+  max-width: 1000px; /* Increased max-width */
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Form Styles */
+form {
+  background-color: #fff0f6;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  padding: 40px;
+  width: 100%; /* Ensures form spans full width */
+  box-sizing: border-box; /* Includes padding in width calculation */
+  margin: 0; /* Removes margin */
+}
+
+/* Improved Form Group Spacing */
+.form-group {
+  margin-bottom: 40px; /* Increased spacing between form groups */
+}
+
+/* Input Styles */
+input[type="text"],
+input[type="number"],
+input[type="date"],
+input[type="time"],
+input[type="tel"],
+select,
+textarea {
+  width: 100%;
+  padding: 15px;
+  margin-top: 10px; /* Added space between label and input */
+  margin-bottom: 20px; /* Space after input */
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+/* Label Styles */
+label {
+  color: #333333;
+  margin-bottom: 20px;
+  font-size: 0.875rem; /* 14px */
+}
+
+.checkbox-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 175px;
+}
+
+.checkbox-group label {
+  margin-left: 10px;
+}
+
+input[type="checkbox"] {
+  margin: 75;
+}
+
+button[type="submit"],
+button[type="button"] {
+  background-color: #4B7BF5;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-size: 1rem; /* 16px */
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button[type="submit"]:hover {
+  background-color: #45a049;
+  transform: scale(1.02);
+}
+
+button[type="button"]:hover {
+  background-color: #45a049;
+  transform: scale(1.02);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  form {
+    padding: 20px;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+}
+
+/* Ensure full viewport height utilization */
+html, body {
+  height: 100%;
+}
+
+#root {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
