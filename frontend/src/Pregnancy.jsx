@@ -64,6 +64,22 @@ const additionalFields = [
     { id: 'other', label: 'Other:', type: 'textarea', rows: 5, cols: 10 },
 ];
 
+const otherRiskFactorsFields = [
+    { id: 'bmi', label: 'Body mass index less than 18.5 or more than 25:', type: 'textarea', rows: 5, cols: 10 },
+    { id: 'diabetes', label: 'Diabetes:', type: 'textarea', rows: 5, cols: 10 },
+    { id: 'malaria', label: 'Malaria:', type: 'textarea', rows: 5, cols: 10 },
+    { id: 'heartProblems', label: 'Heart problems:', type: 'textarea', rows: 5, cols: 10 },
+    { id: 'kidneyProblems', label: 'Kidney problems:', type: 'textarea', rows: 5, cols: 10 },
+    { id: 'otherProblems', label: 'Other problems:', type: 'textarea', rows: 5, cols: 10 },
+];
+
+const familyMedicalHistoryFields = [
+    { id: 'familyDiabetes', label: 'Family Diabetes:', type: 'textarea', rows: 5, cols: 10 },
+    { id: 'familyBloodPressure', label: 'Family Blood Pressure:', type: 'textarea', rows: 5, cols: 10 },
+    { id: 'hematologicalConditions', label: 'Hematological Conditions:', type: 'textarea', rows: 5, cols: 10 },
+    { id: 'otherConditions', label: 'Other Conditions:', type: 'textarea', rows: 5, cols: 10 },
+];
+
 function Pregnancy() {
     const [formData, setFormData] = useState({
         regNo: '',
@@ -106,6 +122,16 @@ function Pregnancy() {
         casualPosition: '',
         unknownDeliveryDate: '',
         other: '',
+        bmi: '', 
+        diabetes: '', 
+        malaria: '', 
+        heartProblems: '', 
+        kidneyProblems: '', 
+        otherProblems: '',
+        familyDiabetes: '', 
+        familyBloodPressure: '', 
+        hematologicalConditions: '', 
+        otherConditions: '',
     });
 
     useEffect(() => {
@@ -190,6 +216,16 @@ function Pregnancy() {
                     casualPosition: '',
                     unknownDeliveryDate: '',
                     other: '',
+                    bmi: '', 
+                    diabetes: '', 
+                    malaria: '', 
+                    heartProblems: '', 
+                    kidneyProblems: '', 
+                    otherProblems: '',
+                    familyDiabetes: '', 
+                    familyBloodPressure: '', 
+                    hematologicalConditions: '', 
+                    otherConditions: '',
                 });
             } else {
                 alert('Failed to save data.');
@@ -315,10 +351,25 @@ function Pregnancy() {
                     {renderInputFields(additionalFields)}
                 </div>
 
+                {/* Render Other Risk Factors Fields */}
+                <br /> <hr /> <br />
+                <div className='otherRiskFactors'>
+                    <h2>Other Risk Factors</h2> <br />
+                    {renderInputFields(otherRiskFactorsFields)}
+                </div>
+
+                {/* Render Family Medical History Fields */}
+                <br /> <hr /> <br />
+                <div className='familyMedicalHistory'>
+                    <h2>Family Medical History</h2> <br />
+                    {renderInputFields(familyMedicalHistoryFields)}
+                </div>
+
                 {/* Submit Button */}
                 <button type="submit">Submit</button>
             </form>
             <Tables/>
+            <Table2/>
         </div>
     );
 }

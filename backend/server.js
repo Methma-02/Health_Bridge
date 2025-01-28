@@ -56,12 +56,22 @@ const pregnancySchema = new mongoose.Schema({
     famPlan: String,
     minOrMax: String,
     morePreg: String,
-    bloodPressure: String, // New field
-    vaginalBleeding: String, // New field
-    fetusStatus: String, // New field
-    casualPosition: String, // New field
-    unknownDeliveryDate: String, // New field
-    other: String, // New field
+    bloodPressure: String,
+    vaginalBleeding: String,
+    fetusStatus: String,
+    casualPosition: String,
+    unknownDeliveryDate: String,
+    other: String,
+    bmi: String, 
+    diabetes: String, 
+    malaria: String, 
+    heartProblems: String, 
+    kidneyProblems: String, 
+    otherProblems: String, 
+    familyDiabetes: String, 
+    familyBloodPressure: String, 
+    hematologicalConditions: String,
+    otherConditions: String, 
 }, { collection: 'Pregnancy_Record' });
 
 const PregnancyModel = mongoose.model('Pregnancy', pregnancySchema);

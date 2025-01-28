@@ -60,7 +60,7 @@ const Table2 = () => {
     return (
         <div>
             <br /><hr /><br />
-            <h2>Vertical Header Table with 10 Input Columns</h2>
+            <h2>Prenatal Field Note</h2>
             <table border="1" cellPadding="10" cellSpacing="0">
                 <thead>
                     <tr>
