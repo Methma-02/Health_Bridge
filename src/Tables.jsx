@@ -89,7 +89,21 @@ const Tables = () => {
         }))
       );
     
+    const [fundalHeightPoints, setFundalHeightPoints] = useState([]);
 
+    const handlePlotPoint = (x, y) => {
+        setFundalHeightPoints(prev => [...prev, { x, y }]);
+        console.log("Point added:", { x, y });
+    };
+
+    const [bmiPoints, setBmiPoints] = useState([]);
+
+    const handleBmiPlotPoint = (x, y) => {
+        setBmiPoints(prev => [...prev, { x, y }]);
+        console.log("BMI Point added:", { x, y });
+};
+
+    
     const handleVisitChange = (index, field, value) => {
         setFormData(prev => ({
             ...prev,
@@ -152,6 +166,32 @@ const Tables = () => {
     setAttendanceData(updatedData);
   };
       
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const allData = {
+        visits: formData.visits,
+        auscultation: formData.Auscultation,
+        twoCell: formData.twoCell,
+        attendance: attendanceData,
+        fundalHeightPoints: fundalHeightPoints,
+        bmiPoints: bmiPoints,
+    };
+
+    console.log("Submitting Data:", allData);
+
+    // You can send this data to a backend API
+    fetch('/submit-endpoint', { // Change the endpoint accordingly
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(allData),
+    })
+    .then(response => response.json())
+    .then(data => console.log("Submission Successful:", data))
+    .catch(error => console.error("Error submitting data:", error));
+};
+
 
     const fields = [
         'Date', 'poa', 'urine', 'suger/Albumin', 'pallor', 'oedema - Ankle','odema - Facial'
@@ -171,10 +211,12 @@ const Tables = () => {
         {title:"clinic examination date", rows:2, cols:6},
     ];
 
-
+    
 
     return (
-        <><div>
+        <>
+        <form onSubmit={handleSubmit}>
+        <div>
             <h2>Clinic care</h2>
             <table className='clinicCare'>
                 <tbody className='clinic_Care_table'>
@@ -372,7 +414,7 @@ const Tables = () => {
  </div>
     <br></br>
 <div>
-    <FundalHeightChart/>
+    <FundalHeightChart points = {fundalHeightPoints} onPlotPoints = {handlePlotPoint}/>
     <tr>
         <td>Companion of choice at labour discussed&nbsp;</td> {createTwoCellRow('companion')}
     </tr>
@@ -498,6 +540,9 @@ const Tables = () => {
     <td>Consent form signed date</td> {createTwoCellRow('consentdate')}
 </tr>
 </div>
+<button type='submit'>Submit</button>
+</form>
+
      </>
     );
 

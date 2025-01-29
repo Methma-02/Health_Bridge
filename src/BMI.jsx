@@ -65,6 +65,7 @@ const BMIChart = ({ points, onPlotPoint, onDeletePoint }) => {
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
     
+    
     const dataX = Math.round(toDataX(x));
     const dataY = Number(toDataY(y).toFixed(1));
     
@@ -325,13 +326,6 @@ const GrowthChart = () => {
     }));
   };
 
-  const handleDeleteBMIPoint = (index) => {
-    setFormData(prev => ({
-      ...prev,
-      bmiChartPoints: prev.bmiChartPoints.filter((_, i) => i !== index)
-    }));
-  };
-
   return (
     <div>
 
@@ -340,14 +334,14 @@ const GrowthChart = () => {
         <div className="border-b p-4">
           <h3 className="text-lg font-semibold">BMI / Weight Gain Chart</h3>
         </div>
-        <div className="p-4">
+        <div>
           <BMIChart 
             points={formData.bmiChartPoints} 
             onPlotPoint={handlePlotBMIPoint}
-            onDeletePoint={handleDeleteBMIPoint}
           />
           
         </div>
+        
       </div>
       <table  className='BMI' border={1} >
             <thead>
