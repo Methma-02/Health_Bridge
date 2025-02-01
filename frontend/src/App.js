@@ -1,6 +1,6 @@
 import Form2 from "./Pregnancy";
-import Tables from "./Tables";
-import Table2 from "./Table2";
+import Tables from "./TablesR1";
+import Table2 from "./TableR2";
 import Form1 from "./Form1";
 import { BrowserRouter as Router, Route, Routes, useNavigate} from "react-router-dom";
 

@@ -1,0 +1,177 @@
+/* Import font */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+/* Base Styles */
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #F0F6FF;
+  color: #2D3748;
+}
+
+h2 {
+  font-size: 2rem; /* Heading 2 */
+  font-weight: 600;
+  color: #4B7BF5;
+}
+
+h1 {
+  font-size: 2.5rem; /* Heading 1 */
+  font-weight: 700;
+  color: #FF4B8D;
+}
+
+table th {
+  text-align: left;
+  font-size: 0.875rem; /* Caption */
+  font-weight: 600;
+  color: #666666;
+  padding-bottom: 0.5rem;
+}
+
+table td, table th {
+  padding: 0.75rem;
+}
+
+input, textarea {
+  font-size: 1rem; /* Body */
+  padding: 0.5rem;
+  border: 1px solid #E2E8F0;
+  border-radius: 8px;
+  outline: none;
+  transition: border 0.3s ease;
+}
+
+input:focus, textarea:focus {
+  border-color: #4B7BF5;
+  box-shadow: 0 0 0 2px rgba(75, 123, 245, 0.3);
+}
+
+button {
+  background-color: #FF4B8D;
+  color: white;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+  background-color: #e63b7d;
+  transform: scale(1.05);
+}
+
+button:active {
+  transform: scale(0.95);
+}
+
+/* Layout */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.grid {
+  display: grid;
+  gap: 2rem;
+}
+
+.grid-cols-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.border {
+  background: white;
+  border: 1px solid #E2E8F0;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.p-4 {
+  padding: 1rem;
+}
+
+.mb-2 {
+  margin-bottom: 0.5rem;
+}
+
+/* Typography */
+.text-lg {
+  font-size: 1.125rem; /* Body Large */
+  font-weight: 600;
+}
+
+.text-sm {
+  font-size: 0.875rem; /* Small Body */
+}
+
+.text-caption {
+  font-size: 0.75rem; /* Caption */
+  color: #666666;
+}
+
+.w-full {
+  width: 100%;
+}
+
+.space-y-4 > * + * {
+  margin-top: 1rem;
+}
+
+.space-x-2 > * + * {
+  margin-left: 0.5rem;
+}
+
+/* Table */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table td, table th {
+  border-bottom: 1px solid #E2E8F0;
+}
+
+table tr:last-child td {
+  border-bottom: none;
+}
+
+.signature-container {
+  position: relative;
+  text-align: center;
+}
+
+.signature-clear-btn {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  background-color: #FF4B8D;
+  color: white;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.signature-clear-btn:hover {
+  background-color: #e63b7d;
+}
+
+.signature-clear-btn:active {
+  transform: scale(0.95);
+}
+
+/* Colors */
+.accent {
+  color: #9747FF;
+}
+
+.primary {
+  color: #FF4B8D;
+}
+
+.secondary {
+  color: #4B7BF5;
+}

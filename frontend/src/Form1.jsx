@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Lol from './Tables';
 
 const PregnancyRecordForm = () => {
   const [formData, setFormData] = useState({
@@ -150,6 +151,7 @@ const PregnancyRecordForm = () => {
   };
 
   return (
+    <>
     <form onSubmit={handleSubmit}>
 
       {/* Basic Medical Information */}
@@ -634,6 +636,8 @@ const PregnancyRecordForm = () => {
 
       <button type="submit">Submit</button>
     </form>
+    <Lol/>
+    </>
   );
 };
 

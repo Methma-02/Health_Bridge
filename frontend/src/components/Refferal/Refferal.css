@@ -1,0 +1,227 @@
+/* Import font */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+/* Base Styles */
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #F0F6FF;
+  color: #2D3748;
+}
+
+h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #FF4B8D;
+  margin-bottom: 1.5rem;
+}
+
+h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #4B7BF5;
+  margin-top: 2rem;
+}
+
+/* Button */
+button {
+  background-color: #FF4B8D;
+  color: white;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+  background-color: #e63b7d;
+  transform: scale(1.05);
+}
+
+button:active {
+  transform: scale(0.95);
+}
+
+/* Layout */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.grid {
+  display: grid;
+  gap: 2rem;
+}
+
+.grid-cols-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.border {
+  background: white;
+  border: 1px solid #E2E8F0;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.p-4 {
+  padding: 1rem;
+}
+
+.mb-4 {
+  margin-bottom: 1rem;
+}
+
+.space-y-4 > * + * {
+  margin-top: 1rem;
+}
+
+.space-x-2 > * + * {
+  margin-left: 0.5rem;
+}
+
+/* Input, Textarea */
+input,
+textarea {
+  font-size: 1rem;
+  padding: 0.75rem;
+  border: 1px solid #E2E8F0;
+  border-radius: 8px;
+  outline: none;
+  width: 100%;
+  transition: border 0.3s ease;
+}
+
+input:focus,
+textarea:focus {
+  border-color: #4B7BF5;
+  box-shadow: 0 0 0 2px rgba(75, 123, 245, 0.3);
+}
+
+textarea {
+  min-height: 120px;
+}
+
+/* Referral Form */
+.referral-form {
+  border: 1px solid #E2E8F0;
+  padding: 1.25rem;
+  border-radius: 8px;
+  background-color: #FFFFFF;
+}
+
+.referral-form input {
+  font-size: 1rem;
+  padding: 0.75rem;
+  width: calc(100% - 1.5rem);
+  border-radius: 8px;
+}
+
+.referral-form .form-actions {
+  display: flex;
+  justify-content: flex-start;
+  gap: 1rem;
+}
+
+.referral-form button {
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: transform 0.2s ease;
+}
+
+.referral-form button:active {
+  transform: scale(0.95);
+}
+
+.referral-form .cancel-btn {
+  background-color: #e63b7d;
+}
+
+.referral-form .save-btn {
+  background-color: #4B7BF5;
+}
+
+/* Referral Items */
+.referral-item {
+  background-color: #F7F9FC;
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.referral-item.upcoming {
+  background-color: #E4F9F3;
+  border-left: 5px solid #2D3748;
+}
+
+.referral-item.past {
+  background-color: #F7F7F7;
+  border-left: 5px solid #FF4B8D;
+}
+
+.referral-item p {
+  margin-bottom: 0.5rem;
+}
+
+.referral-item small {
+  color: #666666;
+}
+
+/* Flexbox Utility */
+.flex {
+  display: flex;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.space-x-2 {
+  gap: 0.5rem;
+}
+
+/* Clear button for signature inside the box */
+.signature-container {
+  position: relative;
+  text-align: center;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  padding: 1rem;
+  border: 1px solid #E2E8F0;
+}
+
+.signature-clear-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: #FF4B8D;
+  color: white;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.signature-clear-btn:hover {
+  background-color: #e63b7d;
+}
+
+.signature-clear-btn:active {
+  transform: scale(0.95);
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+  .grid-cols-2 {
+    grid-template-columns: 1fr;
+  }
+
+  .referral-form input {
+    width: 100%;
+  }
+}
