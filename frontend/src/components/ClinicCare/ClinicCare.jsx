@@ -1,3 +1,5 @@
+
+/* eslint-disable */
 import React, { useState, useRef } from 'react';
 import SignatureCanvas from 'react-signature-canvas';
 import './ClinicCare.css'; 

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Lol from './Tables';
+import ClinicCare from './components/ClinicCare/ClinicCare';
 
 const PregnancyRecordForm = () => {
   const [formData, setFormData] = useState({
@@ -637,6 +638,7 @@ const PregnancyRecordForm = () => {
       <button type="submit">Submit</button>
     </form>
     <Lol/>
+    <ClinicCare/>
     </>
   );
 };
