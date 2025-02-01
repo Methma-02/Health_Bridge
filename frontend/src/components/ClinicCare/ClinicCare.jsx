@@ -6,6 +6,7 @@ import './ClinicCare.css';
 const ClinicCare = () => {
   const [formData, setFormData] = useState({
     clinicNumber: '',
+    referrals: '',
     clinicalObservationTable: Array(13).fill().map(() => ({
       date: '',
       poa: '',
@@ -70,6 +71,18 @@ const ClinicCare = () => {
 
   return (
     <div className="p-4 space-y-4">
+      {/* Referrals */}
+      <div className="border p-4 mb-2">
+        <h2 className="text-lg font-semibold mb-2">Referrals</h2>
+        <textarea
+          className="border p-2 w-full"
+          rows={8}
+          placeholder="Enter Referrals"
+          value={formData.referrals}
+          onChange={(e) => setFormData(prev => ({ ...prev, referrals: e.target.value }))}
+        />
+      </div>
+
       {/* Clinic No / Barcode */}
       <div className="border p-4 mb-2">
         <h2 className="text-lg font-semibold mb-2">Clinic No / Barcode</h2>

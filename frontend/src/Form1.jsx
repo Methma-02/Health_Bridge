@@ -153,6 +153,7 @@ const PregnancyRecordForm = () => {
 
   return (
     <>
+    <h1>PREGNANCY RECORD FORM</h1>
     <form onSubmit={handleSubmit}>
 
       {/* Basic Medical Information */}
