@@ -148,10 +148,30 @@ const PregnancyRecordForm = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Submitted Pregnancy Record:', formData);
-  };
+
+    try {
+        const response = await fetch('http://localhost:5000/api/pregnancy1', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData),
+        });
+
+        if (response.ok) {
+            alert('Data saved successfully!');
+            
+            console.log(response);
+        } else {
+            alert('Failed to save data.');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('An error occurred while saving data.');
+    }
+};
 
   return (
     <>

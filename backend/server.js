@@ -120,6 +120,11 @@ app.post('/api/pregnancy', async (req, res) => {
     }
 });
 
+app.post('/api/pregnancy1', async (req, res) => {
+   console.log(req);
+   res.status(201).json({ message: 'awa' });
+});
+
 // Start the server
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);

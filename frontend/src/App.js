@@ -22,6 +22,7 @@ function App() {
         <Route path="/" element={<Home/>} />
         <Route path="/form1" element={<Form1 />} />
         <Route path="/form2" element={<Form2 />} />
+       
       </Routes>
     </Router>
   );
