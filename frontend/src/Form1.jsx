@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Lol from './Tables';
 import ClinicCare from './components/ClinicCare/ClinicCare';
 import PostnatalCare from './components/PostnatalCare/PostnatalCare';
+import PostnatalPage8 from './components/PostnatalCare/PostnatalPage8';
 
 const PregnancyRecordForm = () => {
   const [formData, setFormData] = useState({
@@ -642,6 +643,7 @@ const PregnancyRecordForm = () => {
     <Lol/>
     <ClinicCare/>
     <PostnatalCare/>
+    <PostnatalPage8/>
     </>
   );
 };
