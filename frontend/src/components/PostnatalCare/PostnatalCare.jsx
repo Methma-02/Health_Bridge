@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import SignatureCanvas from "react-signature-canvas";
-'./PostnatalCare.css'; 
+
 
 const PostnatalCare = () => {
   const [formData, setFormData] = useState({
