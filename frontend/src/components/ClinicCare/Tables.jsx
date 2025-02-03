@@ -1,8 +1,9 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useState } from 'react';
-import './style.css';
 import GrowthChart from './BMI';
 import FundalHeightChart from './FundalHeightChart';
+import ClinicCare from './ClinicCare';
+import BMI from "./BMI";
 
 const Tables = () => {
     const [formData, setFormData] = useState({
@@ -543,7 +544,11 @@ const Tables = () => {
 <button type='submit'>Submit</button>
 </form>
 
+
+<ClinicCare/>
+
      </>
+
     );
 
 };

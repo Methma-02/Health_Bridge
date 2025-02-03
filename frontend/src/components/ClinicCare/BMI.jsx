@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 // eslint-disable-next-line no-unused-vars
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
 import { X } from 'lucide-react';
-import './style.css'
 
 // eslint-disable-next-line react/prop-types
 const BMIChart = ({ points, onPlotPoint, onDeletePoint }) => {
