@@ -26,6 +26,11 @@ const Dashboard = () => {
           refferal
         </Link>
 
+        {/* Button 5: Refferal */}
+        <Link to="/PartB" className="dashboard-button">
+          Pregnancy Form-Part B
+        </Link>
+
 
       </div>
     </div>
