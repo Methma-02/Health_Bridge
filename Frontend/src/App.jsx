@@ -1,17 +1,12 @@
+import SensoryScreening from "./scensoryScreening";
+import BabyDetails from "./babyDetails";
 
-import ImmunizationForm from './vaccination' 
-import './App.css'
-
-function App() {
-
-
-  return (
+function App(){
+  return(
     <>
-    <ImmunizationForm/>
-    
+    <BabyDetails/>
+    <SensoryScreening/>
     </>
-   
   )
 }
-
-export default App
+export default App;
