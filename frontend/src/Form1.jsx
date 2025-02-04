@@ -663,7 +663,7 @@ const PregnancyRecordForm = () => {
     <Lol/>
     <ClinicCare/>
     <PostnatalCare/>
-    <PostnatalPage8/>
+  
     </>
   );
 };

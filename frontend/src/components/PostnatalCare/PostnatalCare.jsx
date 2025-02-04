@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
 import SignatureCanvas from "react-signature-canvas";
+import PostnatalPage8 from "./PostnatalPage8";
 
 
 const PostnatalCare = () => {
@@ -281,6 +282,7 @@ const PostnatalCare = () => {
           />
         </div>
       </div>
+      <PostnatalPage8 />
     </div>
   );
 };

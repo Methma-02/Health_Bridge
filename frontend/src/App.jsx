@@ -5,7 +5,9 @@ import Form1 from "./Form1";
 import { BrowserRouter as Router, Route, Routes, useNavigate } from "react-router-dom";
 import Dashboard from "./components/Dashboard/Dashboard";
 import Registration from "./components/RegistrationInformation/RegistrationInformation";
-import ClinicCareTables from "./components/ClinicCare/Tables";  // Renamed to ClinicCareTables
+import ClinicCareTables from "./components/ClinicCare/Tables"; 
+import PostnatalCare from "./components/PostnatalCare/PostnatalCare";
+import Refferal from "./components/Refferal/Refferal";
 
 function App() {
   return (
@@ -14,6 +16,8 @@ function App() {
         <Route path="/" element={<Dashboard />} />
         <Route path="/registration" element={<Registration />} />
         <Route path="/clinic-care" element={<ClinicCareTables />} />
+        <Route path="/postnatal-care" element={<PostnatalCare />} />
+        <Route path="/refferal" element={<Refferal />} />
       </Routes>
     </Router>
   );
