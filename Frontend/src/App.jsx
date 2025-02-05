@@ -1,11 +1,9 @@
-import SensoryScreening from "./scensoryScreening";
-import BabyDetails from "./babyDetails";
+import Chart from "./developmentMilestones";
 
 function App(){
   return(
     <>
-    <BabyDetails/>
-    <SensoryScreening/>
+    <Chart/>
     </>
   )
 }
