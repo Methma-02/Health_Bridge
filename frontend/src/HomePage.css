@@ -1,188 +1,155 @@
-/* Header Styles */
-.header {
-  background-color: white;
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+/* Homepage Specific Styles */
+html, body {
+  overflow-x: hidden;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-.header-container {
-  padding: 1rem;
+
+.hero-section,
+.services-section,
+.sri-lanka-section {
+  flex-grow: 1;
 }
 
-.logo-container {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.logo-image {
-  height: 3.75rem;
-  width: 3.75rem;
-}
-
-.logo-text {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: black;
-}
-
-.nav-link {
-  color: black;
-  transition: color 0.3s;
-}
-
-.nav-link:hover {
-  color: #fce7f3;
-}
-
-/* Hero Section */
-.hero {
-  background-image: linear-gradient(to bottom, #f472b6, #60a5fa);
+.hero-section {
+  background: linear-gradient(to bottom, #f472b6, #60a5fa);
   color: white;
-  padding: 5rem 0;
+  height: 100vh;
+  display: flex;
+  align-items: flex-start; /* Moves content higher */
+  justify-content: center;
+  text-align: center;
+  padding: 2rem;
+  padding-top: 10vh; /* Adjust as needed */
 }
 
 .hero-content {
-  text-align: center;
+  max-width: 80vw; /* Keeps text width balanced */
 }
 
-.hero-title {
-  font-size: 2.25rem;
-  line-height: 2.5rem;
+.hero-section h2 {
+  font-size: 4vw; /* Makes text scale with screen size */
   font-weight: 700;
-  margin-bottom: 1.5rem;
+  line-height: 1.2;
+  color: black;
 }
 
-@media (min-width: 768px) {
-  .hero-title {
-    font-size: 3.75rem;
-    line-height: 1;
-  }
+.hero-section p {
+  font-size: 2.5vw; /* Adjust paragraph size dynamically */
+  font-weight: 400;
+  margin-top: 1rem;
+  max-width: 80vw; /* Prevents text from being too stretched */
 }
 
-.hero-description {
-  font-size: 1.25rem;
-  line-height: 1.75rem;
-  margin: 0 auto;
-  max-width: 48rem;
+.cta-button {
+  background-color: white;
+  color: #2C3E50;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 7px;
+  font-size:x-large;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-/* Services Section */
-.services {
-  padding: 4rem 0;
-  background-color: #fdf2f8;
+.cta-button:hover {
+  background-color: #F0F0F0;
 }
 
+.services-section {
+  height: 100vh; /* Full-screen height */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* Move everything higher */
+  align-items: center;
+  text-align: center;
+  padding: 0; /* Remove extra padding */
+}
+
+.services-section h2 {
+  font-size: 4vw;
+  margin: 1rem 20; /* Reduce the top and bottom gap */
+  padding: 0;
+}
+
+.services-grid {
+  display: flex;
+  flex-wrap: nowrap; /* Prevent wrapping, keeping cards in one row */
+  gap: 2rem;
+  overflow-x: auto; /* Enable horizontal scrolling */
+  scroll-snap-type: x mandatory; /* Smooth scrolling behavior */
+  padding-bottom: 1rem; /* Prevent cards from being cut off */
+  width: 100%;
+  max-width: 100vw; /* Make sure it doesn't exceed the viewport */
+  -ms-overflow-style: none; /* Hide scrollbar in IE and Edge */
+  scrollbar-width: none; /* Hide scrollbar in Firefox */
+}
+
+/* Hide horizontal scrollbar on WebKit browsers (optional) */
+.services-grid::-webkit-scrollbar {
+  display: none;
+}
+
+/* Make sure each service card is correctly sized */
 .service-card {
   background-color: white;
-  border-radius: 0.5rem;
-  padding: 1.5rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: box-shadow 0.3s;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
+  text-align: center;
+  flex: 0 0 auto; /* Prevent shrinking, keeps them in a row */
+  width: 250px; /* Set a fixed width */
+  scroll-snap-align: start; /* Align smoothly during scroll */
 }
 
 .service-card:hover {
-  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+  transform: translateY(-10px);
 }
 
-.service-icon {
-  height: 3rem;
-  width: 3rem;
-  color: #ec4899;
-  margin-bottom: 1rem;
+.service-card button {
+  background-color: #60a5fa;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 1rem;
 }
 
-.service-title {
-  font-size: 1.25rem;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-}
-
-.service-description {
-  color: #4b5563;
-  margin-bottom: 1rem;
-}
-
-.service-link {
-  display: inline-flex;
-  align-items: center;
-  color: #3b82f6;
-  transition: color 0.3s;
-}
-
-.service-link:hover {
-  color: #ec4899;
-}
-
-/* Heritage Section */
-.heritage {
-  padding: 4rem 0;
-  background-color: white;
-}
-
-.heritage-container {
-  background-image: linear-gradient(to right, #fdf2f8, #eff6ff);
-  border-radius: 0.5rem;
-  padding: 2rem;
+.sri-lanka-section {
+  background: linear-gradient(to bottom, #FFBE29,  #EB7400);
+  padding: 4rem 2rem;
   text-align: center;
 }
 
-/* Footer */
-.footer {
-  background-color: #1f2937;
-  color: white;
-  margin-top: auto;
+.sri-lanka-section h2 {
+  color: #000000;
+  margin-bottom: 1rem;
+  font-size: 200%;
 }
 
-.footer-container {
-  padding: 3rem 1rem;
+.sri-lanka-section p {
+  max-width: 800px;
+  margin: 0 auto;
+  color: #000000;
+  line-height: 1.6;
+  font-weight: 500;
+  font-size: large;
 }
 
-.footer-link {
-  display: flex;
-  align-items: center;
-  transition: color 0.3s;
-}
-
-.footer-link:hover {
-  color: #f9a8d4;
-}
-
-.footer-icon {
-  height: 1.25rem;
-  width: 1.25rem;
-  margin-right: 0.5rem;
-}
-
-.footer-social {
-  display: flex;
-  gap: 1rem;
-}
-
-.footer-divider {
-  border-top: 1px solid #374151;
-  margin-top: 2rem;
-  padding-top: 2rem;
-}
-
-/* Scroll Buttons */
-.scroll-button {
-  position: fixed;
-  right: 2rem;
-  background-color: #ec4899;
-  color: black;
-  padding: 0.75rem;
-  border-radius: 9999px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: background-color 0.3s;
-}
-
-.scroll-button:hover {
-  background-color: #db2777;
-}
-
-.scroll-top {
-  bottom: 5rem;
-}
-
-.scroll-bottom {
-  bottom: 1rem;
+/* Global Styles */
+.health-bridge-homepage {
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #F0F4F8;
+  color: #2C3E50;
+  min-height: 100vh;
+  width: 100vw;
 }
