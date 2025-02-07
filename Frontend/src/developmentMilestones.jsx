@@ -25,7 +25,30 @@ const DevelopmentMilestones = () => {
                 "Repeat some sounds like da-da-ba-ba-ta-ta",
             ],
             "9 months to 12 months":[
-
+                "Can sit without help",
+                "Can stand by themselves, holding on to something ",
+                "Can grab things with the help of the thumb and index finger",
+                "Will imitate sounds",
+                "Can pronounce single meaningful words",
+                "Can understand simple instructions : clap, wave",
+            ],
+            "12 months to 18 months":[
+                "Can walk with help",
+                "Able to speak at least 2-3 words (give, that)",
+                "Will show familar objects when asked about them",
+                "Can roll a small ball",
+                "Can identify at least one body part"
+            ],
+            "18 months to 2 years":[
+                "Can walk without help",
+                "Can go up stairs without help",
+                "Can make a tower with 2-4 blocks",
+                "Can eat by themselves",
+                "Can speak like 10 words and can atleast make sentences with two words (come dad)",
+                "will shape lips to kiss"
+            ],
+            "2 to 3 years":[
+                "Can run without falling"
             ]
         }))
     });
