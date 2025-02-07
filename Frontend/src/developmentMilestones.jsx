@@ -48,7 +48,17 @@ const DevelopmentMilestones = () => {
                 "will shape lips to kiss"
             ],
             "2 to 3 years":[
-                "Can run without falling"
+                "Can run without falling",
+                "Can go up and down stairs without help",
+                "Can copy a circle/curved shape",
+                "Can for 3 or more worded sentences"
+            ],
+            "3 to 4 years" :[
+                "Can stand on one leg",
+                "Can jump from a stair",
+                "Can put on shoes and wear clothes except buttoning",
+                "Can count to 3",
+                ""
             ]
         }))
     });
