@@ -35,7 +35,7 @@ const DevelopmentMilestones = () => {
             "12 months to 18 months":[
                 "Can walk with help",
                 "Able to speak at least 2-3 words (give, that)",
-                "Will show familar objects when asked about them",
+                "Will show familiar objects when asked about them",
                 "Can roll a small ball",
                 "Can identify at least one body part"
             ],
@@ -44,7 +44,7 @@ const DevelopmentMilestones = () => {
                 "Can go up stairs without help",
                 "Can make a tower with 2-4 blocks",
                 "Can eat by themselves",
-                "Can speak like 10 words and can atleast make sentences with two words (come dad)",
+                "Can speak like 10 words and can at least make sentences with two words (come dad)",
                 "will shape lips to kiss"
             ],
             "2 to 3 years":[
@@ -58,16 +58,32 @@ const DevelopmentMilestones = () => {
                 "Can jump from a stair",
                 "Can put on shoes and wear clothes except buttoning",
                 "Can count to 3",
-                ""
+                "At least can say phrases like up-down, near-far",
+                "Can form full and complex sentences"
+            ],
+            "4 to 5 years":[
+                "Can jump with one leg",
+                "Can dress themselves",
+                "Can eat by themself",
+                "Can draw simple human images",
+                "Cooperates with older children when playing",
+                "Can describe pictures using the past,present and future tenses of verbs",
+                "Can say their full name and age",
             ]
         }))
     });
 
-    const handleTableChange = (index, field, value) => {
+    const handleTableChange = (index, key,field, value) => {
         setFormData(prev => ({
             ...prev,
             table: prev.table.map((table, i) =>
-                i === index ? { ...table, [field]: value } : table
+                i === index ? { ...table, 
+                    [key]:{
+                        ...(table[key] || {}),
+                        [field]:value
+                    }
+                }
+                : table
             )
         }));
     };
@@ -87,13 +103,14 @@ const DevelopmentMilestones = () => {
                 <tbody>
                     {formData.table.map((row, index) => (
                         Object.keys(row).map((key) => (
-                            <tr key={index + key}>
+                            <tr key={ `${index}-${key}`}>
                                 <td>{key}</td>
                                 <td>
                                     <ul>
-                                        {row[key].map((item, i) => (
-                                            <li key={i}>{item}</li>
-                                        ))}
+                                        {Array.isArray(row[key])
+                                        ? row[key].map((item,i) => <li key={i}>{item}</li>) :null
+                                        }
+                            
                                     </ul>
                                 </td>
                                 <td>
