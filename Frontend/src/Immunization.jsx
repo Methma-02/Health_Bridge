@@ -1,10 +1,10 @@
 import { useState } from 'react';
 
 const ImmunizationForm = () => {
-  const defaultVaccine = { date: '', batchNo: '', bcgScar: '', adverseEffects: false };
+  const defaultVaccine = { date: '', batchNo: '', bcgScar:'', adverseEffects: false };
 
   const initialVaccineSchedule = [
-    { age: 'At Birth', vaccines: ['B.C.G', 'B.C.G 2nd dose (if no scar'] },
+    { age: 'At Birth', vaccines: ['B.C.G'], bcgScar:'absent'},
     { age: '2 Months', vaccines: ['DPT 1', 'OPV 1', 'Hepatitis B1'] },
     { age: '4 Months', vaccines: ['DPT 2', 'OPV 2', 'Hepatitis B2'] },
     { age: '6 Months', vaccines: ['DPT 3', 'OPV 3', 'Hepatitis B3'] },
@@ -29,19 +29,19 @@ const ImmunizationForm = () => {
   };
 
   return (
-    <>
-      <h1 className="text-xl font-bold">Immunization Record</h1>
-      <div className="overflow-x-auto">
-        <table className="w-full border-collapse">
+    <div className="immunization-container">
+      <h1 className="immunization-title">Immunization Record</h1>
+      <div className="table-container">
+        <table className="immunization-table">
           <thead>
             <tr>
-              <th className="p-2 border text-left">Age</th>
-              <th className="p-2 border text-left">Type of Vaccine</th>
-              <th className="p-2 border text-left">Date</th>
-              <th className="p-2 border text-left">Batch No.</th>
-              <th className="p-2 border text-left">Adverse Effects (Yes/No)</th>
+              <th>Age</th>
+              <th>Type of Vaccine</th>
+              <th>Date</th>
+              <th>Batch No.</th>
+              <th>Adverse Effects (Yes/No)</th>
               {vaccineRecords.some(group => group.age === 'At Birth') && (
-                <th className="p-2 border text-left">BCG Scar</th>
+                <th>BCG Scar</th>
               )}
             </tr>
           </thead>
@@ -50,46 +50,46 @@ const ImmunizationForm = () => {
               ageGroup.vaccines.map((vaccine, vaccineIndex) => (
                 <tr key={`${ageIndex}-${vaccineIndex}`}>
                   {vaccineIndex === 0 && (
-                    <td 
-                      className="p-2 border" 
-                      rowSpan={ageGroup.vaccines.length}
-                    >
+                    <td rowSpan={ageGroup.vaccines.length}>
                       {ageGroup.age}
                     </td>
                   )}
-                  <td className="p-2 border">{vaccine.name}</td>
-                  <td className="p-2 border">
+                  <td>{vaccine.name}</td>
+                  <td>
                     <input
                       type="date"
                       value={vaccine.date}
                       onChange={(e) => handleInputChange(ageIndex, vaccineIndex, 'date', e.target.value)}
-                      className="w-full border-gray-300 border rounded-md"
+                      className="immunization-input"
                     />
                   </td>
-                  <td className="p-2 border">
+                  <td>
                     <input
                       type="text"
                       value={vaccine.batchNo}
                       onChange={(e) => handleInputChange(ageIndex, vaccineIndex, 'batchNo', e.target.value)}
-                      className="w-full border-gray-300 border rounded-md"
+                      className="immunization-input"
                     />
                   </td>
-                  <td className="p-2 border text-center">
+                  <td>
                     <button
                       onClick={() => handleInputChange(ageIndex, vaccineIndex, 'adverseEffects', !vaccine.adverseEffects)}
-                      className="px-2 py-1 border border-gray-300 rounded-md"
+                      className={`adverse-effects-btn ${vaccine.adverseEffects ? 'active' : ''}`}
                     >
                       {vaccine.adverseEffects ? 'Yes' : 'No'}
                     </button>
                   </td>
                   {ageGroup.age === 'At Birth' && (
-                    <td className="p-2 border">
-                      <input
+                    <td>
+                      <select
                         type="text"
                         value={vaccine.bcgScar}
                         onChange={(e) => handleInputChange(ageIndex, vaccineIndex, 'bcgScar', e.target.value)}
-                        className="w-full border-gray-300 border rounded-md"
-                      />
+                        className="immunization-input"
+                      >
+                        <option value="present">Present</option>
+                        <option value="absent">Absent</option>
+                        </select>
                     </td>
                   )}
                 </tr>
@@ -97,8 +97,8 @@ const ImmunizationForm = () => {
             ))}
           </tbody>
         </table>
-      </div>  
-    </>
+      </div>
+    </div>
   );
 };
 
