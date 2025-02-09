@@ -11,7 +11,7 @@ const Header = () => {
   return (
     <header className="health-bridge-header">
       <div className="logo-container">
-        <img src="src/components/1.png" alt="Health Bridge Logo" className="logo-image" />
+        <img src="src/HeaderFooter/1.png" alt="Health Bridge Logo" className="logo-image" />
         <span className="logo-text">Health Bridge</span>
       </div>
       
