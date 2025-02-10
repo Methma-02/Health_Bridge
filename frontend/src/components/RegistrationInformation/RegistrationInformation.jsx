@@ -17,7 +17,7 @@ const PregnancyRecordForm = () => {
     gramaNiladhariDivision: '',
     registrationNumber: '',
     registrationDate: '',
-    
+
     // Risk Conditions
     antenatalRiskConditions: '',
 
@@ -59,7 +59,7 @@ const PregnancyRecordForm = () => {
       hypertension: false,
       haematologicalDiseases: false,
       twinOrMultiplePregnancies: false,
-      otherConditions: ''
+      otherConditions: '',
     },
 
     // Medical/Surgical History
@@ -75,42 +75,45 @@ const PregnancyRecordForm = () => {
       haematologicalDiseases: false,
       tuberculosis: false,
       thyroidDiseases: false,
-      bronchialAsthma: false
+      bronchialAsthma: false,
     },
 
     // Additional Medical History
     additionalMedicalHistory: {
       previousDVT: false,
       surgeriesOtherThanLSCS: false,
-      otherSpecificConditions: ''
+      otherSpecificConditions: '',
     },
 
     // Social Z Score
     socialZScore: '',
 
     // Past Obstetric History
-    pastPregnancies: []
+    pastPregnancies: [],
   });
 
+  // Handle input changes for top-level fields
   const handleInputChange = (field, value) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [field]: value
+      [field]: value,
     }));
   };
 
+  // Handle input changes for nested fields (e.g., familyHistory, medicalConditions)
   const handleNestedInputChange = (section, field, value) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       [section]: {
         ...prev[section],
-        [field]: value
-      }
+        [field]: value,
+      },
     }));
   };
 
+  // Add a new past pregnancy entry
   const addPastPregnancy = () => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       pastPregnancies: [
         ...prev.pastPregnancies,
@@ -121,179 +124,309 @@ const PregnancyRecordForm = () => {
           birthWeight: '',
           postnatalComplications: '',
           sex: '',
-          age: ''
-        }
-      ]
+          age: '',
+        },
+      ],
     }));
   };
 
+  // Remove a past pregnancy entry
   const removePastPregnancy = (indexToRemove) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      pastPregnancies: prev.pastPregnancies.filter((_, index) => index !== indexToRemove)
+      pastPregnancies: prev.pastPregnancies.filter((_, index) => index !== indexToRemove),
     }));
   };
 
+  // Handle changes for past pregnancy fields
   const handlePastPregnancyChange = (index, field, value) => {
     const updatedPastPregnancies = [...formData.pastPregnancies];
     updatedPastPregnancies[index][field] = value;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      pastPregnancies: updatedPastPregnancies
+      pastPregnancies: updatedPastPregnancies,
     }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log('Submitted Pregnancy Record:', formData);
+  // Handle form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault(); // Prevent the default form submission behavior
+
+    try {
+      // Send a POST request to the backend API
+      const response = await fetch('http://localhost:5000/api/pregnancy-form1', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData), // Send the form data as JSON
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to submit form');
+      }
+
+      const result = await response.json();
+      console.log('Form submitted successfully:', result);
+      alert('Form submitted successfully!');
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      alert('Failed to submit form. Please try again.');
+    }
   };
-
-  // Helper function to render input fields
-  const renderInputFields = (fields) => {
-    return fields.map((field) => (
-      <div key={field.name}>
-        <label>{field.label}</label>
-        <input
-          type={field.type || 'text'}
-          value={formData[field.name]}
-          onChange={(e) => handleInputChange(field.name, e.target.value)}
-        />
-      </div>
-    ));
-  };
-
-  // Helper function to render checkbox fields
-  const renderCheckboxFields = (fields, section) => {
-    return fields.map((field) => (
-      <div key={field.name}>
-        <input
-          type="checkbox"
-          id={field.name}
-          checked={formData[section][field.name]}
-          onChange={(e) => handleNestedInputChange(section, field.name, e.target.checked)}
-        />
-        <label htmlFor={field.name}>{field.label}</label>
-      </div>
-    ));
-  };
-
-  // Basic Medical Information Fields
-  const basicMedicalFields = [
-    { name: 'bloodGroup', label: 'Blood Group', type: 'text' },
-    { name: 'bmi', label: 'BMI', type: 'number' },
-    { name: 'height', label: 'Height (cm)', type: 'number' },
-    { name: 'allergies', label: 'Allergies', type: 'text' }
-  ];
-
-  // Personal Information Fields
-  const personalInfoFields = [
-    { name: 'name', label: "Mother's Name", type: 'text' },
-    { name: 'ageOfMother', label: 'Age', type: 'number' },
-    { name: 'nameOfHospitalClinic', label: 'Name of Hospital/Clinic', type: 'text' },
-    { name: 'nameOfConsultantObstetrician', label: 'Name of Consultant Obstetrician', type: 'text' },
-    { name: 'mohArea', label: 'MOH Area', type: 'text' },
-    { name: 'phmArea', label: 'PHM Area', type: 'text' },
-    { name: 'nameOfFieldClinic', label: 'Name of Field Clinic', type: 'text' },
-    { name: 'gramaNiladhariDivision', label: 'Grama Niladhari Division', type: 'text' },
-    { name: 'registrationNumber', label: 'Registration Number', type: 'text' },
-    { name: 'registrationDate', label: 'Registration Date', type: 'date' }
-  ];
-
-  // Obstetric History Fields
-  const obstetricHistoryFields = [
-    { name: 'gravidity', label: 'Gravidity (G)', type: 'text' },
-    { name: 'parity', label: 'Parity (P)', type: 'text' },
-    { name: 'childrenCount', label: 'Children Count (C)', type: 'text' },
-    { name: 'ageOfYoungestChild', label: 'Age of Youngest Child', type: 'text' },
-    { name: 'lastMenstrualPeriod', label: 'Last Menstrual Period', type: 'date' },
-    { name: 'expectedDueDate', label: 'Expected Due Date', type: 'date' },
-    { name: 'dateOf40WeeksCompletion', label: 'Date of 40 Weeks Completion', type: 'date' },
-    { name: 'ultrasonographyCorrectEDD', label: 'Ultrasonography Correct EDD', type: 'date' },
-    { name: 'periodOfArrivalAtDatingScan', label: 'Period of Arrival at Dating Scan', type: 'text' },
-    { name: 'dateOfQuickening', label: 'Date of Quickening', type: 'date' },
-    { name: 'periodOfArrivalAtRegistration', label: 'Period of Arrival at Registration', type: 'text' }
-  ];
-
-  // Screening and Immunization Fields
-  const screeningFields = [
-    { name: 'consanguinity', label: 'Consanguinity', type: 'text' },
-    { name: 'rubellaStatus', label: 'Rubella Immunization Status', type: 'text' }
-  ];
-
-  // Wife's Personal Information Fields
-  const wifeInfoFields = [
-    { name: 'wifeAge', label: 'Age', type: 'number' },
-    { name: 'wifeHighestEducationLevel', label: 'Highest Education Level', type: 'text' },
-    { name: 'wifeOccupation', label: 'Occupation', type: 'text' }
-  ];
-
-  // Husband's Personal Information Fields
-  const husbandInfoFields = [
-    { name: 'husbandAge', label: 'Age', type: 'number' },
-    { name: 'husbandHighestEducationLevel', label: 'Highest Education Level', type: 'text' },
-    { name: 'husbandOccupation', label: 'Occupation', type: 'text' }
-  ];
-
-  // Family History Fields
-  const familyHistoryFields = [
-    { name: 'diabetesMellitus', label: 'Diabetes Mellitus' },
-    { name: 'hypertension', label: 'Hypertension' },
-    { name: 'haematologicalDiseases', label: 'Haematological Diseases' },
-    { name: 'twinOrMultiplePregnancies', label: 'Twin or Multiple Pregnancies' }
-  ];
-
-  // Medical/Surgical History Fields
-  const medicalHistoryFields = [
-    { name: 'diabetes', label: 'Diabetes' },
-    { name: 'hypertension', label: 'Hypertension' },
-    { name: 'cardiacDiseases', label: 'Cardiac Diseases' },
-    { name: 'renalDiseases', label: 'Renal Diseases' },
-    { name: 'hepaticDiseases', label: 'Hepatic Diseases' },
-    { name: 'psychiatricIllnesses', label: 'Psychiatric Illnesses' },
-    { name: 'epilepsy', label: 'Epilepsy' },
-    { name: 'malignancies', label: 'Malignancies' },
-    { name: 'haematologicalDiseases', label: 'Haematological Diseases' },
-    { name: 'tuberculosis', label: 'Tuberculosis' },
-    { name: 'thyroidDiseases', label: 'Thyroid Diseases' },
-    { name: 'bronchialAsthma', label: 'Bronchial Asthma' }
-  ];
-
-  // Additional Medical History Fields
-  const additionalMedicalHistoryFields = [
-    { name: 'previousDVT', label: 'Previous DVT' },
-    { name: 'surgeriesOtherThanLSCS', label: 'Surgeries other than LSCS' }
-  ];
 
   return (
     <form onSubmit={handleSubmit}>
       {/* Basic Medical Information */}
       <div>
-        <h2>Basic Medical Information</h2>
-        {renderInputFields(basicMedicalFields)}
+        <label>Blood Group</label>
+        <input
+          type="text"
+          value={formData.bloodGroup}
+          onChange={(e) => handleInputChange('bloodGroup', e.target.value)}
+        />
+
+        <label>BMI</label>
+        <input
+          type="number"
+          value={formData.bmi}
+          onChange={(e) => handleInputChange('bmi', e.target.value)}
+        />
+
+        <label>Height (cm)</label>
+        <input
+          type="number"
+          value={formData.height}
+          onChange={(e) => handleInputChange('height', e.target.value)}
+        />
+
+        <label>Allergies</label>
+        <input
+          type="text"
+          value={formData.allergies}
+          onChange={(e) => handleInputChange('allergies', e.target.value)}
+        />
       </div>
 
       {/* Personal Information */}
       <div>
         <h2>Personal Information</h2>
-        {renderInputFields(personalInfoFields)}
+        <label>Mother's Name</label>
+        <input
+          type="text"
+          value={formData.name}
+          onChange={(e) => handleInputChange('name', e.target.value)}
+        />
+
+        <label>Age</label>
+        <input
+          type="number"
+          value={formData.ageOfMother}
+          onChange={(e) => handleInputChange('ageOfMother', e.target.value)}
+        />
+
+        <label>Name of Hospital/Clinic</label>
+        <input
+          type="text"
+          value={formData.nameOfHospitalClinic}
+          onChange={(e) => handleInputChange('nameOfHospitalClinic', e.target.value)}
+        />
+
+        <label>Name of Consultant Obstetrician</label>
+        <input
+          type="text"
+          value={formData.nameOfConsultantObstetrician}
+          onChange={(e) => handleInputChange('nameOfConsultantObstetrician', e.target.value)}
+        />
+
+        <label>MOH Area</label>
+        <input
+          type="text"
+          value={formData.mohArea}
+          onChange={(e) => handleInputChange('mohArea', e.target.value)}
+        />
+
+        <label>PHM Area</label>
+        <input
+          type="text"
+          value={formData.phmArea}
+          onChange={(e) => handleInputChange('phmArea', e.target.value)}
+        />
+
+        <label>Name of Field Clinic</label>
+        <input
+          type="text"
+          value={formData.nameOfFieldClinic}
+          onChange={(e) => handleInputChange('nameOfFieldClinic', e.target.value)}
+        />
+
+        <label>Grama Niladhari Division</label>
+        <input
+          type="text"
+          value={formData.gramaNiladhariDivision}
+          onChange={(e) => handleInputChange('gramaNiladhariDivision', e.target.value)}
+        />
+
+        <label>Registration Number</label>
+        <input
+          type="text"
+          value={formData.registrationNumber}
+          onChange={(e) => handleInputChange('registrationNumber', e.target.value)}
+        />
+
+        <label>Registration Date</label>
+        <input
+          type="date"
+          value={formData.registrationDate}
+          onChange={(e) => handleInputChange('registrationDate', e.target.value)}
+        />
+
+        <label>Identified Antenatal Risk Conditions & Morbidities:</label>
+        <textarea
+          name="antenatalRiskConditions"
+          value={formData.antenatalRiskConditions}
+          onChange={(e) => handleInputChange('antenatalRiskConditions', e.target.value)}
+        />
       </div>
 
       {/* Obstetric History */}
       <div>
         <h2>Obstetric History</h2>
-        {renderInputFields(obstetricHistoryFields)}
+        <label>Gravidity (G)</label>
+        <input
+          type="text"
+          value={formData.gravidity}
+          onChange={(e) => handleInputChange('gravidity', e.target.value)}
+        />
+
+        <label>Parity (P)</label>
+        <input
+          type="text"
+          value={formData.parity}
+          onChange={(e) => handleInputChange('parity', e.target.value)}
+        />
+
+        <label>Children Count (C)</label>
+        <input
+          type="text"
+          value={formData.childrenCount}
+          onChange={(e) => handleInputChange('childrenCount', e.target.value)}
+        />
+
+        <label>Age of Youngest Child</label>
+        <input
+          type="text"
+          value={formData.ageOfYoungestChild}
+          onChange={(e) => handleInputChange('ageOfYoungestChild', e.target.value)}
+        />
+
+        <label>Last Menstrual Period</label>
+        <input
+          type="date"
+          value={formData.lastMenstrualPeriod}
+          onChange={(e) => handleInputChange('lastMenstrualPeriod', e.target.value)}
+        />
+
+        <label>Expected Due Date</label>
+        <input
+          type="date"
+          value={formData.expectedDueDate}
+          onChange={(e) => handleInputChange('expectedDueDate', e.target.value)}
+        />
+
+        <label>Date of 40 Weeks Completion</label>
+        <input
+          type="date"
+          value={formData.dateOf40WeeksCompletion}
+          onChange={(e) => handleInputChange('dateOf40WeeksCompletion', e.target.value)}
+        />
+
+        <label>Ultrasonography Correct EDD</label>
+        <input
+          type="date"
+          value={formData.ultrasonographyCorrectEDD}
+          onChange={(e) => handleInputChange('ultrasonographyCorrectEDD', e.target.value)}
+        />
+
+        <label>Period of Arrival at Dating Scan</label>
+        <input
+          type="text"
+          value={formData.periodOfArrivalAtDatingScan}
+          onChange={(e) => handleInputChange('periodOfArrivalAtDatingScan', e.target.value)}
+        />
+
+        <label>Date of Quickening</label>
+        <input
+          type="date"
+          value={formData.dateOfQuickening}
+          onChange={(e) => handleInputChange('dateOfQuickening', e.target.value)}
+        />
+
+        <label>Period of Arrival at Registration</label>
+        <input
+          type="text"
+          value={formData.periodOfArrivalAtRegistration}
+          onChange={(e) => handleInputChange('periodOfArrivalAtRegistration', e.target.value)}
+        />
       </div>
 
       {/* Screening and Immunization */}
       <div>
         <h2>Screening and Immunization</h2>
-        {renderInputFields(screeningFields)}
-        {renderCheckboxFields([
-          { name: 'prePregnancyScreening', label: 'Pre-Pregnancy Screening Done' },
-          { name: 'preconceptionalFolicAcid', label: 'Preconceptional Folic Acid' },
-          { name: 'subfertilityHistory', label: 'History of Subfertility' },
-          { name: 'plannedPregnancy', label: 'Planned Pregnancy' }
-        ], '')}
+        <label>Consanguinity</label>
+        <input
+          type="text"
+          value={formData.consanguinity}
+          onChange={(e) => handleInputChange('consanguinity', e.target.value)}
+        />
+
+        <label>Rubella Immunization Status</label>
+        <input
+          type="text"
+          value={formData.rubellaStatus}
+          onChange={(e) => handleInputChange('rubellaStatus', e.target.value)}
+        />
+
+        <div>
+          <input
+            type="checkbox"
+            id="prePregnancyScreening"
+            checked={formData.prePregnancyScreening}
+            onChange={(e) => handleInputChange('prePregnancyScreening', e.target.checked)}
+          />
+          <label htmlFor="prePregnancyScreening">Pre-Pregnancy Screening Done</label>
+        </div>
+
+        <div>
+          <input
+            type="checkbox"
+            id="preconceptionalFolicAcid"
+            checked={formData.preconceptionalFolicAcid}
+            onChange={(e) => handleInputChange('preconceptionalFolicAcid', e.target.checked)}
+          />
+          <label htmlFor="preconceptionalFolicAcid">Preconceptional Folic Acid</label>
+        </div>
+
+        <div>
+          <input
+            type="checkbox"
+            id="subfertilityHistory"
+            checked={formData.subfertilityHistory}
+            onChange={(e) => handleInputChange('subfertilityHistory', e.target.checked)}
+          />
+          <label htmlFor="subfertilityHistory">History of Subfertility</label>
+        </div>
+
+        <div>
+          <input
+            type="checkbox"
+            id="plannedPregnancy"
+            checked={formData.plannedPregnancy}
+            onChange={(e) => handleInputChange('plannedPregnancy', e.target.checked)}
+          />
+          <label htmlFor="plannedPregnancy">Planned Pregnancy</label>
+        </div>
+
         <label>Last Family Planning Method Used</label>
         <input
           type="text"
@@ -305,42 +438,146 @@ const PregnancyRecordForm = () => {
       {/* Wife's Personal Information */}
       <div>
         <h2>Wife's Personal Information</h2>
-        {renderInputFields(wifeInfoFields)}
+        <label>Age</label>
+        <input
+          type="number"
+          value={formData.wifeAge}
+          onChange={(e) => handleInputChange('wifeAge', e.target.value)}
+        />
+
+        <label>Highest Education Level</label>
+        <input
+          type="text"
+          value={formData.wifeHighestEducationLevel}
+          onChange={(e) => handleInputChange('wifeHighestEducationLevel', e.target.value)}
+        />
+
+        <label>Occupation</label>
+        <input
+          type="text"
+          value={formData.wifeOccupation}
+          onChange={(e) => handleInputChange('wifeOccupation', e.target.value)}
+        />
       </div>
 
       {/* Husband's Personal Information */}
       <div>
         <h2>Husband's Personal Information</h2>
-        {renderInputFields(husbandInfoFields)}
+        <label>Age</label>
+        <input
+          type="number"
+          value={formData.husbandAge}
+          onChange={(e) => handleInputChange('husbandAge', e.target.value)}
+        />
+
+        <label>Highest Education Level</label>
+        <input
+          type="text"
+          value={formData.husbandHighestEducationLevel}
+          onChange={(e) => handleInputChange('husbandHighestEducationLevel', e.target.value)}
+        />
+
+        <label>Occupation</label>
+        <input
+          type="text"
+          value={formData.husbandOccupation}
+          onChange={(e) => handleInputChange('husbandOccupation', e.target.value)}
+        />
       </div>
 
       {/* Family History */}
       <div>
         <h2>Family History</h2>
-        {renderCheckboxFields(familyHistoryFields, 'familyHistory')}
+        {Object.keys(formData.familyHistory)
+          .filter((key) => key !== 'otherConditions')
+          .map((condition) => (
+            <div key={condition}>
+              <input
+                type="checkbox"
+                id={condition}
+                checked={formData.familyHistory[condition]}
+                onChange={(e) =>
+                  handleNestedInputChange('familyHistory', condition, e.target.checked)
+                }
+              />
+              <label htmlFor={condition}>
+                {condition.replace(/([A-Z])/g, ' $1').replace(/^./, (str) => str.toUpperCase())}
+              </label>
+            </div>
+          ))}
+
         <label>Other Conditions</label>
         <input
           type="text"
           value={formData.familyHistory.otherConditions}
-          onChange={(e) => handleNestedInputChange('familyHistory', 'otherConditions', e.target.value)}
+          onChange={(e) =>
+            handleNestedInputChange('familyHistory', 'otherConditions', e.target.value)
+          }
         />
       </div>
 
       {/* Medical/Surgical History */}
       <div>
         <h2>Medical/Surgical History</h2>
-        {renderCheckboxFields(medicalHistoryFields, 'medicalConditions')}
+        {Object.keys(formData.medicalConditions).map((condition) => (
+          <div key={condition}>
+            <input
+              type="checkbox"
+              id={condition}
+              checked={formData.medicalConditions[condition]}
+              onChange={(e) =>
+                handleNestedInputChange('medicalConditions', condition, e.target.checked)
+              }
+            />
+            <label htmlFor={condition}>
+              {condition.replace(/([A-Z])/g, ' $1').replace(/^./, (str) => str.toUpperCase())}
+            </label>
+          </div>
+        ))}
       </div>
 
       {/* Additional Medical History */}
       <div>
         <h2>Additional Medical History</h2>
-        {renderCheckboxFields(additionalMedicalHistoryFields, 'additionalMedicalHistory')}
+        <div>
+          <input
+            type="checkbox"
+            id="previousDVT"
+            checked={formData.additionalMedicalHistory.previousDVT}
+            onChange={(e) =>
+              handleNestedInputChange('additionalMedicalHistory', 'previousDVT', e.target.checked)
+            }
+          />
+          <label htmlFor="previousDVT">Previous DVT</label>
+        </div>
+
+        <div>
+          <input
+            type="checkbox"
+            id="surgeriesOtherThanLSCS"
+            checked={formData.additionalMedicalHistory.surgeriesOtherThanLSCS}
+            onChange={(e) =>
+              handleNestedInputChange(
+                'additionalMedicalHistory',
+                'surgeriesOtherThanLSCS',
+                e.target.checked
+              )
+            }
+          />
+          <label htmlFor="surgeriesOtherThanLSCS">Surgeries other than LSCS</label>
+        </div>
+
         <label>Other Specific Conditions</label>
         <input
           type="text"
           value={formData.additionalMedicalHistory.otherSpecificConditions}
-          onChange={(e) => handleNestedInputChange('additionalMedicalHistory', 'otherSpecificConditions', e.target.value)}
+          onChange={(e) =>
+            handleNestedInputChange(
+              'additionalMedicalHistory',
+              'otherSpecificConditions',
+              e.target.value
+            )
+          }
         />
       </div>
 
@@ -360,27 +597,65 @@ const PregnancyRecordForm = () => {
         {formData.pastPregnancies.length === 0 && (
           <p>No past pregnancies added. Click "Add Past Pregnancy" to enter details.</p>
         )}
+
         {formData.pastPregnancies.map((pregnancy, index) => (
           <div key={index}>
             <h3>Pregnancy {index + 1}</h3>
-            {renderInputFields([
-              { name: 'gravidity', label: 'Antenatal Complications', type: 'text' },
-              { name: 'placeAndModeOfDelivery', label: 'Place & Mode of Delivery', type: 'text' },
-              { name: 'outcome', label: 'Outcome', type: 'text' },
-              { name: 'birthWeight', label: 'Birth Weight (g)', type: 'text' },
-              { name: 'postnatalComplications', label: 'Postnatal Complications', type: 'text' },
-              { name: 'sex', label: 'Sex', type: 'text' },
-              { name: 'age', label: 'Age', type: 'text' }
-            ].map(field => ({
-              ...field,
-              value: pregnancy[field.name],
-              onChange: (e) => handlePastPregnancyChange(index, field.name, e.target.value)
-            })))}
+            <label>Antenatal Complications</label>
+            <input
+              type="text"
+              value={pregnancy.gravidity}
+              onChange={(e) => handlePastPregnancyChange(index, 'gravidity', e.target.value)}
+            />
+
+            <label>Place & Mode of Delivery</label>
+            <input
+              type="text"
+              value={pregnancy.placeAndModeOfDelivery}
+              onChange={(e) => handlePastPregnancyChange(index, 'placeAndModeOfDelivery', e.target.value)}
+            />
+
+            <label>Outcome</label>
+            <input
+              type="text"
+              value={pregnancy.outcome}
+              onChange={(e) => handlePastPregnancyChange(index, 'outcome', e.target.value)}
+            />
+
+            <label>Birth Weight (g)</label>
+            <input
+              type="text"
+              value={pregnancy.birthWeight}
+              onChange={(e) => handlePastPregnancyChange(index, 'birthWeight', e.target.value)}
+            />
+
+            <label>Postnatal Complications</label>
+            <input
+              type="text"
+              value={pregnancy.postnatalComplications}
+              onChange={(e) => handlePastPregnancyChange(index, 'postnatalComplications', e.target.value)}
+            />
+
+            <label>Sex</label>
+            <input
+              type="text"
+              value={pregnancy.sex}
+              onChange={(e) => handlePastPregnancyChange(index, 'sex', e.target.value)}
+            />
+
+            <label>Age</label>
+            <input
+              type="text"
+              value={pregnancy.age}
+              onChange={(e) => handlePastPregnancyChange(index, 'age', e.target.value)}
+            />
+
             <button type="button" onClick={() => removePastPregnancy(index)}>
               Remove Pregnancy
             </button>
           </div>
         ))}
+
         <button type="button" onClick={addPastPregnancy}>
           Add Past Pregnancy
         </button>
