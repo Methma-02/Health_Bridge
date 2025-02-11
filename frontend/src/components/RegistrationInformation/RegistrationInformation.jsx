@@ -245,6 +245,33 @@ const PregnancyRecordForm = () => {
     }
   };
 
+  // Fetch data by registration number
+  const fetchDataByRegistrationNumber = async () => {
+    const { registrationNumber } = formData;
+
+    if (!registrationNumber) {
+      alert('Please enter a registration number.');
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `http://localhost:5000/api/pregnancy-form1/${registrationNumber}`
+      );
+
+      if (!response.ok) {
+        throw new Error('No data found for this registration number.');
+      }
+
+      const data = await response.json();
+      setFormData(data); // Auto-fill the form with the fetched data
+      alert('Data loaded successfully!');
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      alert('No data found for this registration number.');
+    }
+  };
+
   return (
     <form onSubmit={handleSubmit}>
       {/* Basic Medical Information */}
@@ -342,7 +369,14 @@ const PregnancyRecordForm = () => {
           type="text"
           value={formData.registrationNumber}
           onChange={(e) => handleInputChange('registrationNumber', e.target.value)}
-        />
+        /> <br />
+
+        <button
+          type="button"
+          onClick={fetchDataByRegistrationNumber}
+        >
+          Get Info
+        </button> <br /> <br />
 
         <label>Registration Date</label>
         <input
