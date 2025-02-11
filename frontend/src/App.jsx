@@ -8,6 +8,7 @@ import Registration from "./components/RegistrationInformation/RegistrationInfor
 import ClinicCareTables from "./components/ClinicCare/Tables"; 
 import PostnatalCare from "./components/PostnatalCare/PostnatalCare";
 import Refferal from "./components/Refferal/Refferal";
+import Pregnancy from "./Pregnancy";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/clinic-care" element={<ClinicCareTables />} />
         <Route path="/postnatal-care" element={<PostnatalCare />} />
         <Route path="/refferal" element={<Refferal />} />
+        <Route path="/PartB" element={<Pregnancy />} />
       </Routes>
     </Router>
   );

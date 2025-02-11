@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import GrowthChart from './BMI';
 import FundalHeightChart from './FundalHeightChart';
 import ClinicCare from './ClinicCare';
-import BMI from "./BMI";
 
 const Tables = () => {
     const [formData, setFormData] = useState({
@@ -516,36 +515,37 @@ const Tables = () => {
 </div>
 
 <div>
-<h2>Family Planning</h2>
-<tr>
-    <td>Date of counselling</td>
-    <td><input type='date'></input></td>
-</tr>
+    <h2>Family Planning</h2>
+    <tr>
+        <td>Date of counselling</td>
+        <td><input type='date'></input></td>
+    </tr>
 
-<tr>
-<td>Chosen method</td>
-<label>T<input type='radio'/></label> 
-<label>PL<input type='radio'/></label>
-<label>L<input type='radio'/></label>
-<label>IP<input type='radio'/></label>
-<label>N<input type='radio'/></label>
-<label>P<input type='radio'/></label>
-<label>C<input type='radio'/></label>
-</tr>
+    <tr>
+        <td>Chosen method</td>
+        <label>T<input type='radio'/></label> 
+        <label>PL<input type='radio'/></label>
+        <label>L<input type='radio'/></label>
+        <label>IP<input type='radio'/></label>
+        <label>N<input type='radio'/></label>
+        <label>P<input type='radio'/></label>
+        <label>C<input type='radio'/></label>
+    </tr>
 
-<tr>
-    <td>Reason for not using a method</td> {createTwoCellRow('planningreason')}
-</tr>
+    <tr>
+        <td>Reason for not using a method</td> {createTwoCellRow('planningreason')}
+    </tr>
 
-<tr>
-    <td>Consent form signed date</td> {createTwoCellRow('consentdate')}
-</tr>
+    <tr>
+        <td>Consent form signed date</td> {createTwoCellRow('consentdate')}
+    </tr>
 </div>
-<button type='submit'>Submit</button>
+
 </form>
 
-
 <ClinicCare/>
+<button type='submit'>Submit</button>
+<br /> <br />
 
      </>
 
