@@ -276,6 +276,20 @@ const PregnancyRecordForm = () => {
     <form onSubmit={handleSubmit}>
       {/* Basic Medical Information */}
       <div>
+        <label>Registration Number</label>
+        <input
+          type="text"
+          value={formData.registrationNumber}
+          onChange={(e) => handleInputChange('registrationNumber', e.target.value)}
+        /> <br />
+
+        <button
+          type="button"
+          onClick={fetchDataByRegistrationNumber}
+        >
+          Get Info
+        </button> <br /> <br />
+        
         <label>Blood Group</label>
         <input
           type="text"
@@ -363,20 +377,6 @@ const PregnancyRecordForm = () => {
           value={formData.gramaNiladhariDivision}
           onChange={(e) => handleInputChange('gramaNiladhariDivision', e.target.value)}
         />
-
-        <label>Registration Number</label>
-        <input
-          type="text"
-          value={formData.registrationNumber}
-          onChange={(e) => handleInputChange('registrationNumber', e.target.value)}
-        /> <br />
-
-        <button
-          type="button"
-          onClick={fetchDataByRegistrationNumber}
-        >
-          Get Info
-        </button> <br /> <br />
 
         <label>Registration Date</label>
         <input
