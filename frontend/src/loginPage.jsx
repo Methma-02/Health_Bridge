@@ -1,72 +1,120 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from './authContext';
+import * as api from './api';
+import { GoogleLogin } from '@react-oauth/google';
 
-const LoginPage = ({ onNavigate }) => {
+const LoginPage = () => {
+  const navigate = useNavigate();
+  const { login } = useAuth();
   const [loginData, setLoginData] = useState({
     email: '',
     password: ''
   });
   const [errors, setErrors] = useState({});
   const [showForgotPassword, setShowForgotPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  // Password validation function
+  // Enhanced password validation
   const validatePassword = (password) => {
     const errors = [];
     
-    if (password.length === 0) {
+    if (!password) {
       errors.push("Password is required");
-    } else {
-      if (password.length < 6) {
-        errors.push("Password must be at least 6 characters long");
-      }
-      
-      if (!/\d/.test(password)) {
-        errors.push("Password must contain at least one number");
-      }
-      
-      if (!/[a-zA-Z]/.test(password)) {
-        errors.push("Password must contain at least one letter");
-      }
+      return { isValid: false, errors };
     }
-    
+
+    const requirements = [
+      {
+        test: password.length >= 12,
+        message: "Password must be at least 12 characters long"
+      },
+      {
+        test: /[A-Z]/.test(password),
+        message: "Password must contain at least one uppercase letter"
+      },
+      {
+        test: /[a-z]/.test(password),
+        message: "Password must contain at least one lowercase letter"
+      },
+      {
+        test: /[0-9]/.test(password),
+        message: "Password must contain at least one number"
+      },
+      {
+        test: /[!@#$%^&*(),.?":{}|<>]/.test(password),
+        message: "Password must contain at least one special character"
+      }
+    ];
+
+    requirements.forEach(({ test, message }) => {
+      if (!test) {
+        errors.push(message);
+      }
+    });
+
     return {
       isValid: errors.length === 0,
       errors
     };
   };
 
-  // Handle input changes
+  // Handle input changes with validation
   const handleChange = (e) => {
     const { name, value } = e.target;
     
-    // Special handling for password
-    if (name === 'password') {
-      const passwordValidation = validatePassword(value);
-      
-      if (!passwordValidation.isValid) {
-        setErrors(prev => ({
-          ...prev,
-          password: passwordValidation.errors
-        }));
-      } else {
-        // Clear password errors if valid
-        setErrors(prev => {
-          const newErrors = { ...prev };
-          delete newErrors.password;
-          return newErrors;
-        });
-      }
-    }
-    
-    // Update login data
     setLoginData(prev => ({
       ...prev,
       [name]: value
     }));
+
+    // Clear errors for the field being changed
+    setErrors(prev => ({
+      ...prev,
+      [name]: undefined
+    }));
+
+    // Validate password on change
+    if (name === 'password') {
+      const validation = validatePassword(value);
+      if (!validation.isValid) {
+        setErrors(prev => ({
+          ...prev,
+          password: validation.errors
+        }));
+      }
+    }
   };
 
-  // Handle login submission
-  const handleLogin = (e) => {
+  // Handle Google login success
+  const handleGoogleSuccess = async (credentialResponse) => {
+    try {
+      setIsLoading(true);
+      const { token } = await api.googleLogin(credentialResponse.credential);
+      login(token);
+      navigate('/dashboard');
+    } catch (error) {
+      setErrors(prev => ({
+        ...prev,
+        submit: 'Google login failed. Please try again.'
+      }));
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Handle Google login error
+  const handleGoogleError = () => {
+    setErrors(prev => ({
+      ...prev,
+      submit: 'Google login failed. Please try again.'
+    }));
+  };
+
+  // Handle regular login
+  const handleLogin = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     const loginErrors = {};
 
     // Email validation
@@ -82,31 +130,51 @@ const LoginPage = ({ onNavigate }) => {
 
     if (Object.keys(loginErrors).length > 0) {
       setErrors(loginErrors);
+      setIsLoading(false);
       return;
     }
 
-    // If validation passes, proceed with login
-    console.log("Login Attempt:", loginData);
-    // Here you would typically make an API call to login
+    try {
+      // API call to login
+      const { token } = await api.login(loginData);
+      login(token);
+      navigate('/dashboard');
+    } catch (error) {
+      setErrors(prev => ({
+        ...prev,
+        submit: error.response?.data?.message || 'Login failed. Please try again.'
+      }));
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  // Handle forgot password submission
-  const handleForgotPassword = (e) => {
+  // Handle forgot password
+  const handleForgotPassword = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     const resetErrors = {};
 
-    // Email validation for password reset
     if (!loginData.email.trim() || !/\S+@\S+\.\S+/.test(loginData.email)) {
       resetErrors.email = "Valid email is required for password reset";
-    }
-
-    if (Object.keys(resetErrors).length > 0) {
       setErrors(resetErrors);
+      setIsLoading(false);
       return;
     }
 
-    console.log("Password Reset Request:", loginData.email);
-    // Here you would typically make an API call to initiate password reset
+    try {
+      await api.requestPasswordReset(loginData.email);
+      // Show success message
+      alert('Password reset instructions have been sent to your email.');
+      setShowForgotPassword(false);
+    } catch (error) {
+      setErrors(prev => ({
+        ...prev,
+        submit: 'Failed to send reset instructions. Please try again.'
+      }));
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -115,6 +183,12 @@ const LoginPage = ({ onNavigate }) => {
         <h2 className="text-2xl font-bold text-center mb-6">
           {showForgotPassword ? 'Reset Password' : 'Login'}
         </h2>
+
+        {errors.submit && (
+          <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
+            {errors.submit}
+          </div>
+        )}
 
         <form 
           onSubmit={showForgotPassword ? handleForgotPassword : handleLogin} 
@@ -131,6 +205,7 @@ const LoginPage = ({ onNavigate }) => {
               onChange={handleChange}
               className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3"
               required
+              disabled={isLoading}
             />
             {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
           </div>
@@ -147,48 +222,77 @@ const LoginPage = ({ onNavigate }) => {
                 onChange={handleChange}
                 className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3"
                 required
+                disabled={isLoading}
               />
-              {errors.password && errors.password.map((error, index) => (
-                <p key={index} className="text-red-500 text-sm">{error}</p>
-              ))}
+              {errors.password && Array.isArray(errors.password) ? (
+                errors.password.map((error, index) => (
+                  <p key={index} className="text-red-500 text-sm">{error}</p>
+                ))
+              ) : errors.password && (
+                <p className="text-red-500 text-sm">{errors.password}</p>
+              )}
             </div>
           )}
 
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition-colors"
+            className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition-colors disabled:opacity-50"
+            disabled={isLoading}
           >
-            {showForgotPassword ? 'Reset Password' : 'Login'}
+            {isLoading ? 'Processing...' : (showForgotPassword ? 'Reset Password' : 'Login')}
           </button>
         </form>
 
         {!showForgotPassword && (
-          <div className="mt-4 text-center">
-            <button
-              onClick={() => setShowForgotPassword(true)}
-              className="text-sm text-blue-600 hover:underline"
-            >
-              Forgot Password?
-            </button>
-          </div>
-        )}
+          <>
+            <div className="mt-4">
+              <div className="relative">
+                <div className="absolute inset-0 flex items-center">
+                  <div className="w-full border-t border-gray-300" />
+                </div>
+                <div className="relative flex justify-center text-sm">
+                  <span className="px-2 bg-white text-gray-500">Or continue with</span>
+                </div>
+              </div>
 
-        {!showForgotPassword && (
-          <p className="mt-4 text-center text-sm text-gray-600">
-            Don't have an account?{' '}
-            <button 
-              onClick={() => onNavigate('register')}
-              className="text-blue-600 hover:underline"
-            >
-              Register
-            </button>
-          </p>
+              <div className="mt-4">
+                <GoogleLogin
+                  onSuccess={handleGoogleSuccess}
+                  onError={handleGoogleError}
+                  useOneTap
+                  className="w-full"
+                />
+              </div>
+            </div>
+
+            <div className="mt-4 text-center">
+              <button
+                onClick={() => setShowForgotPassword(true)}
+                className="text-sm text-blue-600 hover:underline"
+                disabled={isLoading}
+              >
+                Forgot Password?
+              </button>
+            </div>
+
+            <p className="mt-4 text-center text-sm text-gray-600">
+              Don't have an account?{' '}
+              <button 
+                onClick={() => navigate('/register')}
+                className="text-blue-600 hover:underline"
+                disabled={isLoading}
+              >
+                Register
+              </button>
+            </p>
+          </>
         )}
 
         {showForgotPassword && (
           <button
             onClick={() => setShowForgotPassword(false)}
             className="mt-4 w-full text-sm text-blue-600 hover:underline"
+            disabled={isLoading}
           >
             Back to Login
           </button>

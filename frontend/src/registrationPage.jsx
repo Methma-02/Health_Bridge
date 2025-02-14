@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from './authContext';
+import * as api from './api';
 
-const RegistrationPage = ({ onNavigate }) => {
+const RegistrationPage = () => {
+  const navigate = useNavigate();
+  const { login } = useAuth();
   const [formData, setFormData] = useState({
     role: '',
     fullName: '',
@@ -14,6 +19,7 @@ const RegistrationPage = ({ onNavigate }) => {
   });
 
   const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Password validation function
   const validatePassword = (password) => {
@@ -72,8 +78,9 @@ const RegistrationPage = ({ onNavigate }) => {
   };
 
   // Handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
     const submitErrors = {};
 
     // Validate password
@@ -127,25 +134,41 @@ const RegistrationPage = ({ onNavigate }) => {
     // If there are errors, stop submission
     if (Object.keys(submitErrors).length > 0) {
       setErrors(submitErrors);
+      setIsSubmitting(false);
       return;
     }
 
-    // Sanitize password before submission
-    const sanitizedPassword = formData.password.replace(/[^a-zA-Z0-9]/g, '');
-    const sanitizedFormData = {
-      ...formData,
-      password: sanitizedPassword
-    };
+    try {
+      // Sanitize password before submission
+      const sanitizedPassword = formData.password.replace(/[^a-zA-Z0-9]/g, '');
+      const sanitizedFormData = {
+        ...formData,
+        password: sanitizedPassword
+      };
 
-    // If validation passes, proceed with registration
-    console.log("Registration Data:", sanitizedFormData);
-    // Here you would typically make an API call to register
+      const { token } = await api.register(sanitizedFormData);
+      login(token);
+      navigate('/dashboard');
+    } catch (error) {
+      setErrors(prev => ({
+        ...prev,
+        submit: error.response?.data?.message || 'Registration failed. Please try again.'
+      }));
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4 py-8">
       <div className="max-w-md w-full bg-white shadow-md rounded-lg p-8">
         <h2 className="text-2xl font-bold text-center mb-6">Register</h2>
+        
+        {errors.submit && (
+          <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
+            {errors.submit}
+          </div>
+        )}
         
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Role Selection */}
@@ -167,6 +190,7 @@ const RegistrationPage = ({ onNavigate }) => {
               <option value="midwife">Midwife</option>
               <option value="phm">Public Health Midwife</option>
             </select>
+            {errors.role && <p className="text-red-500 text-sm">{errors.role}</p>}
           </div>
 
           {/* Common Fields */}
@@ -304,8 +328,9 @@ const RegistrationPage = ({ onNavigate }) => {
           <button
             type="submit"
             className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition-colors"
+            disabled={isSubmitting}
           >
-            Register
+            {isSubmitting ? 'Registering...' : 'Register'}
           </button>
         </form>
 
@@ -313,7 +338,7 @@ const RegistrationPage = ({ onNavigate }) => {
         <p className="mt-4 text-center text-sm text-gray-600">
           Already have an account?{' '}
           <button 
-            onClick={() => onNavigate('login')}
+            onClick={() => navigate('/login')}
             className="text-blue-600 hover:underline"
           >
             Login

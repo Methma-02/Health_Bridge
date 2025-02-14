@@ -63,7 +63,7 @@ const LandingPage = ({ onNavigate }) => {
           <FaLinkedin />
         </a>
         <a
-          href="https://www.instagram.com/healthbridge"
+          href="https://www.instagram.com/healthbridge2025?igsh=a2hzNm44bXJ3dzN4"
           target="_blank"
           rel="noopener noreferrer"
           className="text-pink-600 hover:text-pink-800 text-5xl transition-all"
