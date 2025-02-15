@@ -82,75 +82,7 @@ const PregnancyRecordForm = () => {
       console.log('Form submitted successfully:', result);
       alert('Form submitted successfully!');
       // Clear the form fields after successful submission
-      setFormData({
-        bloodGroup: '',
-        bmi: '',
-        height: '',
-        allergies: '',
-        name: '',
-        ageOfMother: '',
-        nameOfHospitalClinic: '',
-        nameOfConsultantObstetrician: '',
-        mohArea: '',
-        phmArea: '',
-        nameOfFieldClinic: '',
-        gramaNiladhariDivision: '',
-        registrationNumber: '',
-        registrationDate: '',
-        antenatalRiskConditions: '',
-        gravidity: '',
-        parity: '',
-        childrenCount: '',
-        ageOfYoungestChild: '',
-        lastMenstrualPeriod: '',
-        expectedDueDate: '',
-        dateOf40WeeksCompletion: '',
-        ultrasonographyCorrectEDD: '',
-        periodOfArrivalAtDatingScan: '',
-        dateOfQuickening: '',
-        periodOfArrivalAtRegistration: '',
-        consanguinity: '',
-        rubellaStatus: '',
-        prePregnancyScreening: false,
-        preconceptionalFolicAcid: false,
-        subfertilityHistory: false,
-        plannedPregnancy: false,
-        lastFamilyPlanningMethod: '',
-        wifeAge: '',
-        wifeHighestEducationLevel: '',
-        wifeOccupation: '',
-        husbandAge: '',
-        husbandHighestEducationLevel: '',
-        husbandOccupation: '',
-        familyHistory: {
-          diabetesMellitus: false,
-          hypertension: false,
-          haematologicalDiseases: false,
-          twinOrMultiplePregnancies: false,
-          otherConditions: '',
-        },
-        medicalConditions: {
-          diabetes: false,
-          hypertension: false,
-          cardiacDiseases: false,
-          renalDiseases: false,
-          hepaticDiseases: false,
-          psychiatricIllnesses: false,
-          epilepsy: false,
-          malignancies: false,
-          haematologicalDiseases: false,
-          tuberculosis: false,
-          thyroidDiseases: false,
-          bronchialAsthma: false,
-        },
-        additionalMedicalHistory: {
-          previousDVT: false,
-          surgeriesOtherThanLSCS: false,
-          otherSpecificConditions: '',
-        },
-        socialZScore: '',
-        pastPregnancies: [],
-      });
+     
     } catch (error) {
       console.error('Error submitting form:', error);
       alert('Failed to submit form. Please try again.');
@@ -176,7 +108,10 @@ const PregnancyRecordForm = () => {
       }
 
       const data = await response.json();
-      setFormData(data); // Auto-fill the form with the fetched data
+      setFormData(prevFormData => ({
+        ...prevFormData, 
+        ...data           
+    })); // Auto-fill the form with the fetched data
       alert('Data loaded successfully!');
     } catch (error) {
       console.error('Error fetching data:', error);

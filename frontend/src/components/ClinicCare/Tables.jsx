@@ -1,79 +1,15 @@
 // eslint-disable-next-line no-unused-vars
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import GrowthChart from './BMI';
 import FundalHeightChart from './FundalHeightChart';
 import ClinicCare from './ClinicCare';
+import { useFormContext } from '../../contexts/FormContext';
 
 const Tables = () => {
-    const [formData, setFormData] = useState({
-        visits: Array(10).fill().map(() => ({
-            date: '',
-            poa: '',
-            urine: '',
-            suger: '',
-            pallor: '',
-            oedema: '',
-            bp: '',
-            fundalHeight: '',
-            foetalLie: '',
-            presentation: '',
-            engagement: '',
-            fm: '',
-            Fhs: '',
-            Iron: '',
-            folate: '',
-            calcium: '',
-            vitaminC: '',
-            supplementation: '',
-            signature: '',
-            designation: '',
-            POA:'',
-            weight:'',
-            weightGain:'',
-        })),
-        Auscultation: Array(2).fill().map(() =>({
-            auscultation:'',
-            mentalHealth:'',
-            T1:'',
-            T2:'',
-            T3:'',
-            bloodsugerPoa:'',
-            bloodsugerResult:'',
-            haemoglobinPoa:'',
-            haemoglobinResult:'',
-            Hospital:'',
-            transport:'',
-            cost:'',
-            distance:'',
-            time:'',
-
-        })),
-        
-
-        twoCell: Array(1).fill().map(() =>({
-            respiratory:'',
-            examination:'',
-            suger:'',
-            haemoglobin:'',
-            other:'',
-            drugs:'',
-            kick:'',
-            poaBlood:'',
-            dateBlood:'',
-            referall:'',
-            hiv:'',
-            informedDate:'',
-            companion:'',
-            postnatal:'',
-            milk:'',
-            earlyChildhood: '',
-            familyPlanning:'',
-            counselling:'',
-            planningReason:'',
-            consentdate:'',
-
-        })),
-    });
+    const {formData, setFormData} = useFormContext();
+    useEffect(() => {
+        console.log(formData);
+    }, [formData]);
 
     const headers = ["Session", "Date", "Husband", "Wife", "Other", "Signature"];
     const rows = ["1st T", "2nd T", "3rd T"];
