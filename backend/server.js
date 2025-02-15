@@ -181,7 +181,8 @@ const pregnancyForm1Schema = new mongoose.Schema({
         urine: String,
         suger: String,
         pallor: String,
-        oedema: String,
+        oedemaankle: String,
+        oedemafacial: String,
         bp: String,
         fundalHeight: String,
         foetalLie: String,
@@ -241,48 +242,7 @@ const pregnancyForm1Schema = new mongoose.Schema({
         counselling: String,
         planningreason: String,
         consentdate: String
-    }],
-
-     // Newly added sections
-     clinicNumber: String,
-     clinicalObservationTable: [{
-         date: String,
-         poa: String,
-         weight: String,
-         urine: String,
-         oedema: String,
-         bp: { systolic: String, diastolic: String },
-         fundalHeight: String,
-         lie: String,
-         presentation: String,
-         fmFhs: { fm: String, fhs: String },
-         signature: String,
-         designation: String,
-         nextVisitDate: String
-     }],
-     usScanTable: [{
-         date: String,
-         poa: String,
-         ebw: String,
-         crl: String,
-         gestSac: String,
-         bpd: String,
-         hc: String,
-         ac: String,
-         fl: String,
-         liguor: String,
-         placenta: String,
-         averagePoa: String,
-         otherFindings: String,
-         signature: String,
-         designation: String
-     }],
-     cardiac: String,
-     pulmonary: String,
-     riskFactors: String,
-     managementPlan: String,
-     clinicNotes: String
-     
+    }]
 }, { collection: 'Pregnancy_Form1_Record' });
 
 const PregnancyForm1Model = mongoose.model('PregnancyForm1', pregnancyForm1Schema);

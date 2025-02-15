@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 
 // Create the Context
 const FormContext = createContext();
@@ -100,7 +100,8 @@ export const FormProvider = ({ children }) => {
                 urine: '',
                 suger: '',
                 pallor: '',
-                oedema: '',
+                oedemaankle: '',
+                oedemafacial: '',
                 bp: '',
                 fundalHeight: '',
                 foetalLie: '',
@@ -202,7 +203,10 @@ export const FormProvider = ({ children }) => {
     managementPlan: '',
     clinicNotes: ''
   });
-
+ useEffect(() => {
+            console.log("in context")
+           console.log(formData);
+   }, [formData]);
   return (
     <FormContext.Provider value={{ formData, setFormData }}>
       {children}

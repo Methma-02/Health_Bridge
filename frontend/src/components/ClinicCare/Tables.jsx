@@ -142,7 +142,7 @@ const Tables = () => {
 
 
     const fields = [
-        'date', 'poa', 'urine', 'suger/Albumin', 'pallor', 'oedema - Ankle','odema - Facial'
+        'date', 'poa', 'urine', 'suger/Albumin', 'pallor', 'oedemaankle','oedemafacial'
     ];
 
     const bpLevels = [
