@@ -103,11 +103,14 @@ const PregnancyRecordForm = () => {
         `http://localhost:5000/api/pregnancy-form1/${registrationNumber}`
       );
 
+      
+
       if (!response.ok) {
         throw new Error('No data found for this registration number.');
       }
 
       const data = await response.json();
+      console.log(data);
       setFormData(prevFormData => ({
         ...prevFormData, 
         ...data           

@@ -41,6 +41,10 @@ const Tables = () => {
 
     
     const handleVisitChange = (index, field, value) => {
+        console.log(field);
+        console.log(value);
+        field = field.toLowerCase();
+        console.log(field);
         setFormData(prev => ({
             ...prev,
             visits: prev.visits.map((visit, i) =>
@@ -98,19 +102,47 @@ const Tables = () => {
      // Handle input changes and update state
   const handleInputChange = (index, field, value) => {
     const updatedData = [...attendanceData];
+    console.log("this is index",index);
+    console.log("this is field",field);
+    console.log("this is value",value);
+    console.log("this is updatedData",updatedData);
     updatedData[index][field] = value;
     setAttendanceData(updatedData);
   };
       
-  const handleSubmit = (e) => {
-  console.log("Submitting Data:", allData);
+  // Handle form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault(); // Prevent the default form submission behavior
 
-    
-};
+    try {
+      // Send a POST request to the backend API
+      const response = await fetch('http://localhost:5000/api/pregnancy-form1', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData), // Send the form data as JSON
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to submit form');
+      }
+
+      const result = await response.json();
+      console.log('Form submitted successfully:', result);
+      alert('Form submitted successfully!');
+      // Clear the form fields after successful submission
+     
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      alert('Failed to submit form. Please try again.');
+    }
+  };
+
 
 
     const fields = [
-        'Date', 'poa', 'urine', 'suger/Albumin', 'pallor', 'oedema - Ankle','odema - Facial'
+        'date', 'poa', 'urine', 'suger/Albumin', 'pallor', 'oedema - Ankle','odema - Facial'
     ];
 
     const bpLevels = [
@@ -460,7 +492,7 @@ const Tables = () => {
 </form>
 
 <ClinicCare/>
-<button type='submit'>Submit</button>
+<button type='submit' onClick={handleSubmit}>Submit</button>
 <br /> <br />
 
      </>
