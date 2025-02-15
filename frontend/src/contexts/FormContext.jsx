@@ -161,6 +161,46 @@ export const FormProvider = ({ children }) => {
         consentdate:'',
 
     })),
+
+    // Newly added sections
+    clinicNumber: '',
+    clinicalObservationTable: Array(13).fill().map(() => ({
+      date: '',
+      poa: '',
+      weight: '',
+      urine: '',
+      oedema: '',
+      bp: { systolic: '', diastolic: '' },
+      fundalHeight: '',
+      lie: '',
+      presentation: '',
+      fmFhs: { fm: '', fhs: '' },
+      signature: '',
+      designation: '',
+      nextVisitDate: ''
+    })),
+    usScanTable: Array(15).fill().map(() => ({
+      date: '',
+      poa: '',
+      ebw: '',
+      crl: '',
+      gestSac: '',
+      bpd: '',
+      hc: '',
+      ac: '',
+      fl: '',
+      liguor: '',
+      placenta: '',
+      averagePoa: '',
+      otherFindings: '',
+      signature: '',
+      designation: ''
+    })),
+    cardiac: '',
+    pulmonary: '',
+    riskFactors: '',
+    managementPlan: '',
+    clinicNotes: ''
   });
 
   return (

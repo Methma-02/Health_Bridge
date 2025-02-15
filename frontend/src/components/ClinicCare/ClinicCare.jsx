@@ -1,50 +1,15 @@
 /* eslint-disable */
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef , useEffect} from 'react';
 import SignatureCanvas from 'react-signature-canvas';
 import './ClinicCare.css'; 
+import { useFormContext } from '../../contexts/FormContext';
 
 const ClinicCare = () => {
-  const [formData, setFormData] = useState({
-    clinicNumber: '',
-    clinicalObservationTable: Array(13).fill().map(() => ({
-      date: '',
-      poa: '',
-      weight: '',
-      urine: '',
-      oedema: '',
-      bp: { systolic: '', diastolic: '' },
-      fundalHeight: '',
-      lie: '',
-      presentation: '',
-      fmFhs: { fm: '', fhs: '' },
-      signature: '',
-      designation: '',
-      nextVisitDate: ''
-    })),
-    usScanTable: Array(15).fill().map(() => ({
-      date: '',
-      poa: '',
-      ebw: '',
-      crl: '',
-      gestSac: '',
-      bpd: '',
-      hc: '',
-      ac: '',
-      fl: '',
-      liguor: '',
-      placenta: '',
-      averagePoa: '',
-      otherFindings: '',
-      signature: '',
-      designation: ''
-    })),
-    cardiac: '',
-    pulmonary: '',
-    riskFactors: '',
-    managementPlan: '',
-    clinicNotes: ''
-  });
+  const {formData, setFormData} = useFormContext();
+  useEffect(() => {
+          console.log(formData);
+  }, [formData]); 
 
   // Create separate refs for each row
   const signatureRefs = {

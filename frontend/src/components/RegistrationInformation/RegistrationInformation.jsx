@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useFormContext
  } from '../../contexts/FormContext';
 const PregnancyRecordForm = () => {
   const { formData, setFormData } = useFormContext();
+  useEffect(() => {
+          console.log(formData);
+  }, [formData]);
 
   // Handle input changes for top-level fields
   const handleInputChange = (field, value) => {
