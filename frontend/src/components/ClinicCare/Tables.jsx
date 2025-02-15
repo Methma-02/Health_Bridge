@@ -167,29 +167,9 @@ const Tables = () => {
   };
       
   const handleSubmit = (e) => {
-    e.preventDefault();
-    const allData = {
-        visits: formData.visits,
-        auscultation: formData.Auscultation,
-        twoCell: formData.twoCell,
-        attendance: attendanceData,
-        fundalHeightPoints: fundalHeightPoints,
-        bmiPoints: bmiPoints,
-    };
+  console.log("Submitting Data:", allData);
 
-    console.log("Submitting Data:", allData);
-
-    // You can send this data to a backend API
-    fetch('/submit-endpoint', { // Change the endpoint accordingly
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(allData),
-    })
-    .then(response => response.json())
-    .then(data => console.log("Submission Successful:", data))
-    .catch(error => console.error("Error submitting data:", error));
+    
 };
 
 

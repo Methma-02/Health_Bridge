@@ -105,7 +105,7 @@ const pregnancyForm1Schema = new mongoose.Schema({
     dateOfQuickening: String,
     periodOfArrivalAtRegistration: String,
     consanguinity: String,
-    rubellaSatus: String,
+    rubellaStatus: String,
     prePregnancyScreening: Boolean,
     preconceptionalFolicAcid: Boolean,
     subfertilityHistory: Boolean,
