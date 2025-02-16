@@ -325,29 +325,29 @@ const Tables = () => {
     <tbody>
                 
     <tr>
-    <td>Date</td>
-    {Array.from({ length: 6 }, (_, i) => (
-    <td
-     key={i} className="border p-2"> <input type="date"/>
- </td> ))}
-</tr>
+        <td>Date</td>
+            {Array.from({ length: 6 }, (_, i) => (
+            <td
+            key={i} className="border p-2"> <input type="date"/>
+        </td> ))}
+    </tr>
                 
     <tr>
-    <td>Batch No.</td>
-        {Array.from({ length: 6 }, (_, i) => (
-        <td key={i}>
-         <input type="text"/>
-    </td>))}
-</tr>
-              </tbody>
-            </table>
+        <td>Batch No.</td>
+            {Array.from({ length: 6 }, (_, i) => (
+            <td key={i}>
+            <input type="text"/>
+        </td>))}
+    </tr>
+    </tbody>
+</table>
 
 </div>
 
 <div>
     <h2>Weight Gain Chart</h2>
     <tr>
-        <td>POA</td> {createTableRow('POA')}
+        <td>POA</td> {createTableRow('poaweight')}
     </tr>
 
     <tr>
@@ -355,7 +355,7 @@ const Tables = () => {
     </tr>
 
     <tr>
-        <td  className='weightGain'>Weight gain</td> {createTableRow('weightGain')}
+        <td  className='weightGain'>Weight gain</td> {createTableRow('weightgain')}
     </tr>
  </div>
 

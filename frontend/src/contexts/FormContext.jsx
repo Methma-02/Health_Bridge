@@ -127,9 +127,9 @@ export const FormProvider = ({ children }) => {
                 supplementation: '',
                 signature: '',
                 designation: '',
-                POA:'',
+                poaweight:'',
                 weight:'',
-                weightGain:'',
+                weightgain:'',
             })),
     Auscultation: Array(2).fill().map(() =>({
         auscultation:'',

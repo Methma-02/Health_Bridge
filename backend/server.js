@@ -208,9 +208,9 @@ const pregnancyForm1Schema = new mongoose.Schema({
         supplementation: String,
         signature: String,
         designation: String,
-        POA: String,
+        poaweight: String,
         weight: String,
-        weightGain: String
+        weightgain: String
     }],
 
     // Auscultation (Array of Objects)
