@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from './authContext';
 import * as api from './api';
 import { GoogleLogin } from '@react-oauth/google';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -101,14 +102,6 @@ const LoginPage = () => {
     } finally {
       setIsLoading(false);
     }
-  };
-
-  // Handle Google login error
-  const handleGoogleError = () => {
-    setErrors(prev => ({
-      ...prev,
-      submit: 'Google login failed. Please try again.'
-    }));
   };
 
   // Handle regular login
@@ -256,12 +249,23 @@ const LoginPage = () => {
               </div>
 
               <div className="mt-4">
-                <GoogleLogin
-                  onSuccess={handleGoogleSuccess}
-                  onError={handleGoogleError}
-                  useOneTap
-                  className="w-full"
-                />
+                <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
+                  <GoogleLogin
+                    onSuccess={handleGoogleSuccess}
+                    onError={() => {
+                      setErrors(prev => ({
+                        ...prev,
+                        submit: 'Google login failed. Please try again.'
+                      }));
+                    }}
+                    useOneTap={false}
+                    theme="outline"
+                    size="large"
+                    width="100%"
+                    text="continue_with"
+                    shape="rectangular"
+                  />
+                </GoogleOAuthProvider>
               </div>
             </div>
 
