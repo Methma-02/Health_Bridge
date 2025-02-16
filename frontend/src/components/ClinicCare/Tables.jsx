@@ -379,7 +379,7 @@ const Tables = () => {
         <td>&nbsp;In an emergency</td>
         
         <tr>
-        <td>Intended hospital</td> {createAuscultation('intendedHospital')}
+        <td>Intended hospital</td> {createAuscultation('intendedhospital')}
         </tr><tr>
         <td>Mode of transport</td> {createAuscultation('transport')} </tr>
         <tr>

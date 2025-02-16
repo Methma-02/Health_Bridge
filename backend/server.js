@@ -224,7 +224,7 @@ const pregnancyForm1Schema = new mongoose.Schema({
         bloodsugerResult: String,
         haemoglobinPoa: String,
         haemoglobinResult: String,
-        Hospital: String,
+        intendedhospital: String,
         transport: String,
         cost: String,
         distance: String,

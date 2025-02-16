@@ -141,7 +141,7 @@ export const FormProvider = ({ children }) => {
         bloodsugerResult:'',
         haemoglobinPoa:'',
         haemoglobinResult:'',
-        Hospital:'',
+        intendedhospital:'',
         transport:'',
         cost:'',
         distance:'',
