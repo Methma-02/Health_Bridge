@@ -1,7 +1,9 @@
 import React from "react";
 import { FaFacebook, FaInstagram, FaLinkedin } from "react-icons/fa";
+import { useNavigate } from 'react-router-dom';
 
-const LandingPage = ({ onNavigate }) => {
+const LandingPage = () => {
+  const navigate = useNavigate();
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-100 to-white flex flex-col justify-center items-center px-4">
       {/* Container for content */}
@@ -38,13 +40,13 @@ const LandingPage = ({ onNavigate }) => {
         {/* Buttons */}
         <div className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-6">
           <button
-            onClick={() => onNavigate("login")}
+            onClick={() => navigate("/login")}
             className="px-8 py-3 text-lg font-medium bg-blue-600 text-white rounded-lg shadow-lg hover:bg-blue-700 transition-all duration-300 transform hover:scale-105"
           >
             Login
           </button>
           <button
-            onClick={() => onNavigate("register")}
+            onClick={() => navigate("/register")}
             className="px-8 py-3 text-lg font-medium bg-white text-blue-600 border-2 border-blue-600 rounded-lg shadow-lg hover:bg-blue-50 transition-all duration-300 transform hover:scale-105"
           >
             Register
