@@ -195,7 +195,7 @@ const Tables = () => {
         </div>
         <div>
 
-        <table className="table-auscultation">
+<table className="table-auscultation">
     <tbody className='asculation'>
         <td></td>
         <td>Auscultation &nbsp;</td>
@@ -217,8 +217,9 @@ const Tables = () => {
         <tr>
             <td>Respiratory system</td> {createTwoCellRow('respiratory')}
         </tr>
+        
         <tr>
-            <td>Breast examination</td> {createTwoCellRow('be')}
+            <td>Breast examination</td> {createTwoCellRow('breast')}
         </tr>
 </div>
 

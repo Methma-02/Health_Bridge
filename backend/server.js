@@ -234,6 +234,7 @@ const pregnancyForm1Schema = new mongoose.Schema({
     // TwoCell (Array of Objects)
     twoCell: [{
         respiratory: String,
+        breast: String,
         examination: String,
         suger: String,
         haemoglobin: String,
