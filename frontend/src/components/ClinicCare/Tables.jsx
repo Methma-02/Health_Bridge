@@ -90,6 +90,7 @@ const Tables = () => {
     }
 
     const handleTwoCellChange = (index, field, value) => {
+        console.log(index, field, value);
         setFormData(prev => ({
           ...prev,
           twoCell: prev.twoCell.map((cell, i) =>
@@ -236,7 +237,7 @@ const Tables = () => {
 <div>
     <h2>Investigations</h2>
 
-    <table>
+<table>
     <tbody>
         <td></td>
         <td>POA &nbsp;</td>
@@ -264,7 +265,7 @@ const Tables = () => {
             <td>Antihelminthic <br></br>drugs</td> {createTwoCellRow('drugs')}
         </tr>
         <tr>
-            <td>Date of issuing <br></br> kick count chart</td> <td><input type='date'></input></td>
+            <td>Date of issuing <br></br> kick count chart</td> <td><input type='date' id></input></td>
         </tr>
     </tbody>
 </table>
@@ -274,7 +275,7 @@ const Tables = () => {
     <h2>Syphilis screening</h2>
 
     <tr>
-        <td>POA at blood sampling</td> {createTwoCellRow('be')}
+        <td>POA at blood sampling</td> {createTwoCellRow('bloodsample')}
     </tr>
     <tr>
         <td>Date of blood sampling</td> 

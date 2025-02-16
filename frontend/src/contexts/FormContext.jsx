@@ -159,6 +159,7 @@ export const FormProvider = ({ children }) => {
         other:'',
         drugs:'',
         kick:'',
+        bloodsample: '',
         poaBlood:'',
         dateBlood:'',
         referall:'',

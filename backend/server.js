@@ -241,6 +241,7 @@ const pregnancyForm1Schema = new mongoose.Schema({
         other: String,
         drugs: String,
         kick: String,
+        bloodsample: String,
         poaBlood: String,
         dateBlood: String,
         referall: String,
