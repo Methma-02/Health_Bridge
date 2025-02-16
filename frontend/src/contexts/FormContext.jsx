@@ -98,7 +98,7 @@ export const FormProvider = ({ children }) => {
                 date: '',
                 poa: '',
                 urine: '',
-                suger: '',
+                sugeralbumin: '',
                 pallor: '',
                 oedemaankle: '',
                 oedemafacial: '',

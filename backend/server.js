@@ -179,7 +179,7 @@ const pregnancyForm1Schema = new mongoose.Schema({
         date: String,
         poa: String,
         urine: String,
-        suger: String,
+        sugeralbumin: String,
         pallor: String,
         oedemaankle: String,
         oedemafacial: String,
