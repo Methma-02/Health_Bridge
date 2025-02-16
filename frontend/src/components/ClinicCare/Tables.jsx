@@ -150,8 +150,8 @@ const Tables = () => {
     ];
 
     const fields2 = [
-        'fundalHeight', 'foetalLie', 'presentation', 'engagement', 'fm', 'Fhs',
-        'Iron', 'folate', 'calcium', 'vitaminC', 'supplementation', 'signature', 'designation'
+        'fundalheight', 'foetallie', 'presentation', 'engagement', 'fm', 'fhs',
+        'iron', 'folate', 'calcium', 'vitaminc', 'supplementation', 'signature', 'designation'
     ];
 
     const dateTables =[
