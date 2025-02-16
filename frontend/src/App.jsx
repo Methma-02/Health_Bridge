@@ -1,25 +1,22 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import LandingPage from './landingPage';
 import LoginPage from './loginPage';
 import RegistrationPage from './registrationPage';
-import { BrowserRouter } from 'react-router-dom';
-import { AuthProvider } from './authContext'; // Ensure this is correct
-import { GoogleOAuthProvider } from '@react-oauth/google'; // Import GoogleOAuthProvider
+import { AuthProvider } from './authContext';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 
 function App() {
-  const [currentPage, setCurrentPage] = useState('landing');
-
-  const handleNavigation = (page) => {
-    setCurrentPage(page);
-  };
-
   return (
     <AuthProvider>
-      <GoogleOAuthProvider clientId="YOUR_GOOGLE_CLIENT_ID">
+      <GoogleOAuthProvider clientId="995536188022-t1bci6di33lak0lfulniv7me90mj172t.apps.googleusercontent.com">
         <BrowserRouter>
-          {currentPage === 'landing' && <LandingPage onNavigate={handleNavigation} />}
-          {currentPage === 'login' && <LoginPage onNavigate={handleNavigation} />}
-          {currentPage === 'register' && <RegistrationPage onNavigate={handleNavigation} />}
+          <Routes>
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegistrationPage />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
         </BrowserRouter>
       </GoogleOAuthProvider>
     </AuthProvider>
