@@ -1,42 +1,143 @@
-#root {
-  max-width: 1280px;
+/* Global Styles */
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f7f7f7;
+  margin: 0;
+  padding: 0;
+  color: #333;
+}
+
+.symptom-tracker-container {
+  max-width: 600px;
   margin: 0 auto;
-  padding: 2rem;
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.header-text {
+  font-size: 24px;
   text-align: center;
+  color: #4f88b3; /* Light Blue */
+  font-weight: 600;
+  margin-bottom: 20px;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.calendar-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.calendar {
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+/* Highlighted Date Style */
+.react-calendar__tile.highlighted-date {
+  background-color: #f7a7d4; /* Light Pink */
+  color: white;
+  border-radius: 50%;
+  font-weight: bold;
 }
 
-.card {
-  padding: 2em;
+.react-calendar__tile.highlighted-date:hover {
+  background-color: #f582a1; /* Darker Pink when hovered */
 }
 
-.read-the-docs {
-  color: #888;
+.symptoms-list {
+  margin-top: 20px;
+}
+
+.date-title {
+  font-size: 18px;
+  color: #4f88b3; /* Light Blue */
+  font-weight: 500;
+}
+
+.symptom-items {
+  list-style-type: none;
+  padding: 0;
+  margin-top: 10px;
+}
+
+.symptom-item {
+  background-color: #f7d6e7; /* Light Pink */
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+
+.input-section {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.input-field {
+  flex-grow: 1;
+  padding: 10px;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+  margin-right: 10px;
+}
+
+.add-button {
+  background-color: #f7a7d4; /* Light Pink */
+  color: white;
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.add-button:hover {
+  background-color: #f582a1; /* Darker Pink */
+}
+
+/* All Recorded Symptoms Section */
+.all-symptoms-container {
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 2px solid #f7a7d4;
+}
+
+.all-symptoms-title {
+  font-size: 20px;
+  color: #4f88b3;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.all-symptoms-list {
+  list-style: none;
+  padding: 0;
+}
+
+.no-symptoms-text {
+  text-align: center;
+  color: #ff8686;
+  font-size: 16px;
+}
+
+.symptoms-group {
+  background-color: #97d0ffcb;
+  border-radius: 8px;
+  padding: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 10px;
+}
+
+.symptoms-group-date {
+  font-size: 18px;
+  color: #000000;
+  font-weight: 500;
+  margin-bottom: 5px;
 }
