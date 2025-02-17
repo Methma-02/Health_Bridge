@@ -1,13 +1,15 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from './HeaderFooter/Header';
 import Footer from './HeaderFooter/Footer';
-import { Heart, Calendar, FileText, Gift, AlertCircle } from 'lucide-react';
+import { Heart, Calendar, FileText, Gift, AlertCircle, ArrowLeft, ArrowRight } from 'lucide-react';
 import './Homepage.css';
 
 const Homepage = () => {
   const servicesRef = useRef(null);
+  const servicesContainerRef = useRef(null);
   const navigate = useNavigate();
+  const [scrollPosition, setScrollPosition] = useState(0);
 
   const scrollToServices = () => {
     servicesRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -46,6 +48,33 @@ const Homepage = () => {
     }
   ];
 
+  const scrollLeft = () => {
+    if (servicesContainerRef.current) {
+      const container = servicesContainerRef.current;
+      const cardWidth = container.querySelector('.service-card').offsetWidth;
+      const newPosition = Math.max(scrollPosition - cardWidth, 0);
+      container.scrollTo({ left: newPosition, behavior: 'smooth' });
+      setScrollPosition(newPosition);
+    }
+  };
+
+  const scrollRight = () => {
+    if (servicesContainerRef.current) {
+      const container = servicesContainerRef.current;
+      const cardWidth = container.querySelector('.service-card').offsetWidth;
+      const maxScroll = container.scrollWidth - container.clientWidth;
+      const newPosition = Math.min(scrollPosition + cardWidth, maxScroll);
+      container.scrollTo({ left: newPosition, behavior: 'smooth' });
+      setScrollPosition(newPosition);
+    }
+  };
+
+  const handleScroll = () => {
+    if (servicesContainerRef.current) {
+      setScrollPosition(servicesContainerRef.current.scrollLeft);
+    }
+  };
+
   return (
     <div className="health-bridge-homepage">
       <Header />
@@ -66,17 +95,53 @@ const Homepage = () => {
         </div>
       </section>
 
-      {/* Services Section */}
+      {/* Services Section with Carousel Navigation */}
       <section ref={servicesRef} className="services-section">
         <h2>Our Services</h2>
-        <div className="services-grid">
-          {services.map((service, index) => (
-            <div key={index} className="service-card">
-              {service.icon}
-              <h3>{service.name}</h3>
-              <p>{service.description}</p>
-              <button onClick={() => navigate(service.path)}>Learn More</button>
-            </div>
+        <div className="services-carousel-container">
+          {/* Changed from ChevronLeft to ArrowLeft for consistency with footer buttons */}
+          <button 
+            className="carousel-nav-button carousel-prev"
+            onClick={scrollLeft}
+            aria-label="Previous services"
+          >
+            <ArrowLeft className="h-6 w-6" />
+          </button>
+          
+          <div 
+            ref={servicesContainerRef}
+            className="services-grid"
+            onScroll={handleScroll}
+          >
+            {services.map((service, index) => (
+              <div key={index} className="service-card">
+                {service.icon}
+                <h3>{service.name}</h3>
+                <p>{service.description}</p>
+                <button onClick={() => navigate(service.path)}>Learn More</button>
+              </div>
+            ))}
+          </div>
+          
+          {/* Changed from ChevronRight to ArrowRight for consistency with footer buttons */}
+          <button 
+            className="carousel-nav-button carousel-next"
+            onClick={scrollRight}
+            aria-label="Next services"
+          >
+            <ArrowRight className="h-6 w-6" />
+          </button>
+        </div>
+        
+        {/* Optional: Add indicator dots */}
+        <div className="carousel-indicators">
+          {services.map((_, index) => (
+            <span 
+              key={index} 
+              className={`indicator-dot ${index * (servicesContainerRef.current?.querySelector('.service-card')?.offsetWidth || 0) <= scrollPosition && 
+                        (index + 1) * (servicesContainerRef.current?.querySelector('.service-card')?.offsetWidth || 0) > scrollPosition ? 
+                        'active' : ''}`}
+            />
           ))}
         </div>
       </section>
