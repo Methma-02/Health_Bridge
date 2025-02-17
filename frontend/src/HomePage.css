@@ -154,7 +154,7 @@ html, body {
 }
 
 .carousel-nav-button:hover {
-  background-color: #db2777; /* Same hover color as scroll buttons */
+  background-color: whitesmoke; /* Same hover color as scroll buttons */
 }
 
 .carousel-prev {
