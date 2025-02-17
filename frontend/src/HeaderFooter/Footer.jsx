@@ -31,9 +31,9 @@ const Footer = () => {
           <div className="footer-column">
             <h3 className="text-xl font-semibold mb-2">Contact Us</h3>
             <div className="space-y-2">
-              <a href="mailto:info@healthbridge.lk" className="footer-link">
+              <a href="mailto:healthbridge.official25@gmail.com " className="footer-link">
                 <Mail className="footer-icon" />
-                info@healthbridge.lk
+                healthbridge.official25@gmail.com 
               </a>
               <p> </p>
               <a href="tel:+94112345678" className="footer-link">
