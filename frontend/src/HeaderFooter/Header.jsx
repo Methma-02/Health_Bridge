@@ -11,8 +11,10 @@ const Header = () => {
   return (
     <header className="health-bridge-header">
       <div className="logo-container">
-        <img src="src/HeaderFooter/1.png" alt="Health Bridge Logo" className="logo-image" />
-        <span className="logo-text">Health Bridge</span>
+        <a href="/" className="logo-link">
+          <img src="src/HeaderFooter/1.png" alt="Health Bridge Logo" className="logo-image" />
+          <span className="logo-text">Health Bridge</span>
+        </a>
       </div>
       
       <nav className={`navbar ${isMenuOpen ? 'open' : ''}`}>
