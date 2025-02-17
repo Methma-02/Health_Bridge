@@ -1,25 +1,35 @@
-// middleware/auth.js
 const jwt = require('jsonwebtoken');
-const { getDB } = require('../config/database');
-const logger = require('../utils/logger');
+const User = require('../models/User');
 
-function verifyToken(token) {
+async function authenticate(req, res, next) {
   try {
-    return jwt.verify(token, process.env.JWT_SECRET);
+    const token = req.headers.authorization?.split(' ')[1];
+    
+    if (!token) {
+      return res.status(401).json({ error: 'Authentication required' });
+    }
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const user = await User.findById(decoded.id);
+
+    if (!user) {
+      return res.status(401).json({ error: 'User not found' });
+    }
+
+    req.user = user;
+    next();
   } catch (error) {
-    return null;
+    res.status(401).json({ error: 'Invalid token' });
   }
 }
 
-async function findUser(id) {
-  const db = getDB();
-  return await db.collection('users').findOne(
-    { _id: id },
-    { projection: { password: 0 } }
-  );
+function authorize(roles = []) {
+  return (req, res, next) => {
+    if (!roles.includes(req.user.role)) {
+      return res.status(403).json({ error: 'Access denied' });
+    }
+    next();
+  };
 }
 
-module.exports = {
-  verifyToken,
-  findUser
-};
+module.exports = { authenticate, authorize };
