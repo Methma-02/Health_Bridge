@@ -396,33 +396,34 @@ const Tables = () => {
 </div>
 
 <div>
-<h2>Attendance at antenatal classes</h2>
-<table>
-    <thead>
-      <tr>
-        {headers.map((header) => (
-        <th key={header}>
-            {header}
-        </th>
-            ))}
-        </tr>
-        </thead>
-        <tbody>
-        {attendanceData.map((row, index) => (
-        <tr key={row.session}>
-          {headers.map((header, i) => (
-            <td key={i}>
-            {i === 0 ? ( row.session) : (
-            <input type="text" value={row[header.toLowerCase()]} onChange={(e) => handleInputChange(index, header.toLowerCase(), e.target.value)
-            }
-        />
-                  )}
-                </td>
-              ))}
+    <h2>Attendance at antenatal classes</h2>
+    <table>
+        <thead>
+            <tr>
+                {headers.map((header) => (
+                <th key={header}>
+                    {header}
+                </th>
+                    ))}
             </tr>
-          ))}
+        </thead>
+
+        <tbody>
+            {attendanceData.map((row, index) => (
+            <tr key={row.session}>
+            {headers.map((header, i) => (
+                <td key={i}>
+                {i === 0 ? ( row.session) : (
+                <input type="text" value={row[header.toLowerCase()]} onChange={(e) => handleInputChange(index, header.toLowerCase(), e.target.value)
+                }
+            />
+                    )}
+                    </td>
+                ))}
+                </tr>
+            ))}
         </tbody>
-      </table>
+    </table>
 </div>
 
 <div>
