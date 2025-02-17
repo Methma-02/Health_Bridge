@@ -132,18 +132,6 @@ const Homepage = () => {
             <ArrowRight className="h-6 w-6" />
           </button>
         </div>
-        
-        {/* Optional: Add indicator dots */}
-        <div className="carousel-indicators">
-          {services.map((_, index) => (
-            <span 
-              key={index} 
-              className={`indicator-dot ${index * (servicesContainerRef.current?.querySelector('.service-card')?.offsetWidth || 0) <= scrollPosition && 
-                        (index + 1) * (servicesContainerRef.current?.querySelector('.service-card')?.offsetWidth || 0) > scrollPosition ? 
-                        'active' : ''}`}
-            />
-          ))}
-        </div>
       </section>
 
       {/* Sri Lanka Section */}
