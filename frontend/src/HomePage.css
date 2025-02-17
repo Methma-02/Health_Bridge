@@ -8,7 +8,6 @@ html, body {
   box-sizing: border-box;
 }
 
-
 .hero-section,
 .services-section,
 .sri-lanka-section {
@@ -77,25 +76,36 @@ html, body {
   padding: 0;
 }
 
+/* Services carousel container - NEW */
+.services-carousel-container {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  margin: 2rem 0;
+}
+
+/* Modified services-grid to integrate carousel functionality */
 .services-grid {
   display: flex;
   flex-wrap: nowrap; /* Prevent wrapping, keeping cards in one row */
   gap: 2rem;
   overflow-x: auto; /* Enable horizontal scrolling */
   scroll-snap-type: x mandatory; /* Smooth scrolling behavior */
-  padding-bottom: 1rem; /* Prevent cards from being cut off */
+  padding: 1rem 0;
   width: 100%;
   max-width: 100vw; /* Make sure it doesn't exceed the viewport */
   -ms-overflow-style: none; /* Hide scrollbar in IE and Edge */
   scrollbar-width: none; /* Hide scrollbar in Firefox */
+  scroll-behavior: smooth; /* Ensure smooth scrolling with buttons */
 }
 
-/* Hide horizontal scrollbar on WebKit browsers (optional) */
+/* Hide horizontal scrollbar on WebKit browsers */
 .services-grid::-webkit-scrollbar {
   display: none;
 }
 
-/* Make sure each service card is correctly sized */
+/* Modified service card to work with carousel */
 .service-card {
   background-color: white;
   padding: 2rem;
@@ -106,6 +116,7 @@ html, body {
   flex: 0 0 auto; /* Prevent shrinking, keeps them in a row */
   width: 250px; /* Set a fixed width */
   scroll-snap-align: start; /* Align smoothly during scroll */
+  margin: 0 1rem; /* Added horizontal margin for spacing */
 }
 
 .service-card:hover {
@@ -120,6 +131,62 @@ html, body {
   border-radius: 5px;
   cursor: pointer;
   margin-top: 1rem;
+}
+
+/* Carousel navigation buttons - NEW */
+/* Merged styles for carousel buttons to match scroll buttons */
+.carousel-nav-button {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  background-color: white;
+  color: black;
+  border: none;
+  border-radius: 9999px; /* Full rounded like the scroll buttons */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  z-index: 10;
+  transition: background-color 0.3s;
+  padding: 0.75rem;
+}
+
+.carousel-nav-button:hover {
+  background-color: #db2777; /* Same hover color as scroll buttons */
+}
+
+.carousel-prev {
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.carousel-next {
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* Indicator dots - NEW */
+.carousel-indicators {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.indicator-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #ccc;
+  margin: 0 5px;
+  transition: background-color 0.3s;
+}
+
+.indicator-dot.active {
+  background-color: #60a5fa;
 }
 
 .sri-lanka-section {
@@ -152,4 +219,19 @@ html, body {
   color: #2C3E50;
   min-height: 100vh;
   width: 100vw;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .service-card {
+    width: 220px;
+  }
+  
+  .hero-section h2 {
+    font-size: 6vw; /* Larger text on smaller screens */
+  }
+  
+  .hero-section p {
+    font-size: 3.5vw;
+  }
 }
