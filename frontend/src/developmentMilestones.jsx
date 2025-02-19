@@ -60,6 +60,7 @@ const DevelopmentMilestones = () => {
 
     return (
         <div>
+        <h2 className="title">Development Milestones</h2>
             <table border="1">
                 <thead>
                     <tr>
