@@ -1,4 +1,5 @@
 import { useState } from "react";
+
 export default function SensoryScreening() {
   const [answers, setAnswers] = useState({});
 
@@ -103,4 +104,3 @@ export default function SensoryScreening() {
     </>
   );
 }
-
