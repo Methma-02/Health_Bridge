@@ -27,6 +27,7 @@ const userRoutes = require('./routes/users');
 const auditRoutes = require('./routes/audit');
 const { errorHandler } = require('./middleware/errorHandler');
 const logger = require('./utils/logger');
+const { validateEnv } = require('./config/env');
 
 require('dotenv').config();
 
@@ -42,9 +43,19 @@ app.use(cors({
 // Rate limiting
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100 // limit each IP to 100 requests per windowMs
+  max: 100,// limit each IP to 100 requests per windowMs
+  message: 'Too many requests from this IP, please try again after 15 minutes'
 });
 app.use('/api/', limiter);
+
+// Add basic health check endpoint
+app.get('/health', (req, res) => {
+  res.status(200).json({ 
+    status: 'healthy',
+    timestamp: new Date(),
+    uptime: process.uptime()
+  });
+});
 
 // Logging
 app.use(morgan('combined', { stream: { write: message => logger.info(message.trim()) } }));
