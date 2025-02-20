@@ -53,7 +53,7 @@ const Footer = () => {
             <div className="footer-social">
               <a href="https://www.facebook.com/share/15fPLQWJUw/" className="footer-link"><Facebook className="h-6 w-6" /></a>
               <a href="https://www.linkedin.com/company/healthbridgeoffical/" className="footer-link"><Linkedin className="h-6 w-6" /></a>
-              <a href="https://www.instagram.com/healthbridge__/?hl=en" className="footer-link"><Instagram className="h-6 w-6" /></a>
+              <a href="https://www.instagram.com/healthbridge2025/?hl=en" className="footer-link"><Instagram className="h-6 w-6" /></a>
             </div>
           </div>
           
