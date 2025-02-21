@@ -31,17 +31,17 @@ const Footer = () => {
           <div className="footer-column">
             <h3 className="text-xl font-semibold mb-2">Contact Us</h3>
             <div className="space-y-2">
-              <a href="mailto:healthbridge.official25@gmail.com " className="footer-link">
+              <a href="mailto:healthbridge.official25@gmail.com" className="footer-link" target="_blank" rel="noopener noreferrer">
                 <Mail className="footer-icon" />
                 healthbridge.official25@gmail.com 
               </a>
               <p> </p>
-              <a href="tel:+94112345678" className="footer-link">
+              <a href="tel:+94743715955" className="footer-link" target="_blank" rel="noopener noreferrer">
                 <Phone className="footer-icon" />
                 +94 74 371 5955
               </a>
               <p> </p>
-              <a href="tel:+94112345678" className="footer-link">
+              <a href="tel:+94710780371" className="footer-link" target="_blank" rel="noopener noreferrer">
                 <Phone className="footer-icon" />
                 +94 71 078 0371
               </a>
@@ -51,19 +51,18 @@ const Footer = () => {
           <div className="footer-column">
             <h3 className="text-xl font-semibold mb-2">Follow Us</h3>
             <div className="footer-social">
-              <a href="https://www.facebook.com/share/15fPLQWJUw/" className="footer-link"><Facebook className="h-6 w-6" /></a>
-              <a href="https://www.linkedin.com/company/healthbridgeoffical/" className="footer-link"><Linkedin className="h-6 w-6" /></a>
-              <a href="https://www.instagram.com/healthbridge2025/?hl=en" className="footer-link"><Instagram className="h-6 w-6" /></a>
+              <a href="https://www.facebook.com/share/15fPLQWJUw/" className="footer-link" target="_blank" rel="noopener noreferrer"><Facebook className="h-6 w-6" /></a>
+              <a href="https://www.linkedin.com/company/healthbridgeoffical/" className="footer-link" target="_blank" rel="noopener noreferrer"><Linkedin className="h-6 w-6" /></a>
+              <a href="https://www.instagram.com/healthbridge2025/?hl=en" className="footer-link" target="_blank" rel="noopener noreferrer"><Instagram className="h-6 w-6" /></a>
             </div>
           </div>
           
           <div className="footer-column">
             <h3 className="text-xl font-semibold mb-2">Quick Links</h3>
             <div className="space-y-2">
-              <a href="/about" className="footer-link">How To Use</a>
+              <a href="/about" className="footer-link" target="_blank" rel="noopener noreferrer">How To Use</a>
               <p> </p>
-              <a href="https://healthbridgemarketing.netlify.app/" className="footer-link">Marketing Website</a>
-              
+              <a href="https://healthbridgemarketing.netlify.app/" className="footer-link" target="_blank" rel="noopener noreferrer">Marketing Website</a>
             </div>
           </div>
         </div>
