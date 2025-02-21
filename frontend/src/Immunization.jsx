@@ -29,67 +29,68 @@ const ImmunizationForm = () => {
   };
 
   return (
-    <div className="immunization-container">
-      <h1 className="immunization-title">Immunization Record</h1>
-      <div className="table-container">
-        <table className="immunization-table">
+    <div className="max-w-5xl mx-auto p-6 bg-white shadow-lg rounded-lg">
+      <h1 className="text-2xl font-bold text-gray-800 mb-4 text-center">Immunization Record</h1>
+      <div className="overflow-x-auto">
+        <table className="min-w-full border border-gray-300 shadow-md rounded-lg">
           <thead>
-            <tr>
-              <th>Age</th>
-              <th>Type of Vaccine</th>
-              <th>Date</th>
-              <th>Batch No.</th>
-              <th>Adverse Effects (Yes/No)</th>
+            <tr className="bg-gray-200 text-gray-700">
+              <th className="p-2 border">Age</th>
+              <th className="p-2 border">Type of Vaccine</th>
+              <th className="p-2 border">Date</th>
+              <th className="p-2 border">Batch No.</th>
+              <th className="p-2 border">Adverse Effects</th>
               {vaccineRecords.some(group => group.age === 'At Birth') && (
-                <th>BCG Scar</th>
+                <th className="p-2 border">BCG Scar</th>
               )}
             </tr>
           </thead>
           <tbody>
             {vaccineRecords.map((ageGroup, ageIndex) => (
               ageGroup.vaccines.map((vaccine, vaccineIndex) => (
-                <tr key={`${ageIndex}-${vaccineIndex}`}>
+                <tr key={`${ageIndex}-${vaccineIndex}`} className="hover:bg-gray-100">
                   {vaccineIndex === 0 && (
-                    <td rowSpan={ageGroup.vaccines.length}>
+                    <td rowSpan={ageGroup.vaccines.length} className="p-2 border font-semibold">
                       {ageGroup.age}
                     </td>
                   )}
-                  <td>{vaccine.name}</td>
-                  <td>
+                  <td className="p-2 border">{vaccine.name}</td>
+                  <td className="p-2 border">
                     <input
                       type="date"
                       value={vaccine.date}
                       onChange={(e) => handleInputChange(ageIndex, vaccineIndex, 'date', e.target.value)}
-                      className="immunization-input"
+                      className="p-1 border rounded w-full focus:ring focus:ring-blue-200"
                     />
                   </td>
-                  <td>
+                  <td className="p-2 border">
                     <input
                       type="text"
                       value={vaccine.batchNo}
                       onChange={(e) => handleInputChange(ageIndex, vaccineIndex, 'batchNo', e.target.value)}
-                      className="immunization-input"
+                      className="p-1 border rounded w-full focus:ring focus:ring-blue-200"
                     />
                   </td>
-                  <td>
+                  <td className="p-2 border text-center">
                     <button
                       onClick={() => handleInputChange(ageIndex, vaccineIndex, 'adverseEffects', !vaccine.adverseEffects)}
-                      className={`adverse-effects-btn ${vaccine.adverseEffects ? 'active' : ''}`}
+                      className={`px-3 py-1 rounded text-white transition ${
+                        vaccine.adverseEffects ? 'bg-red-500 hover:bg-red-600' : 'bg-green-500 hover:bg-green-600'
+                      }`}
                     >
                       {vaccine.adverseEffects ? 'Yes' : 'No'}
                     </button>
                   </td>
                   {ageGroup.age === 'At Birth' && (
-                    <td>
+                    <td className="p-2 border">
                       <select
-                        type="text"
                         value={vaccine.bcgScar}
                         onChange={(e) => handleInputChange(ageIndex, vaccineIndex, 'bcgScar', e.target.value)}
-                        className="immunization-input"
+                        className="p-1 border rounded w-full focus:ring focus:ring-blue-200"
                       >
                         <option value="present">Present</option>
                         <option value="absent">Absent</option>
-                        </select>
+                      </select>
                     </td>
                   )}
                 </tr>
