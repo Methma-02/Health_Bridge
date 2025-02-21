@@ -224,7 +224,7 @@ const BabyDetails = () => {
                         <td className="apgar">
                             <div className="apgar-container">
                                 <div className="field-label">APGAR Score</div>
-                                {["1M", "2M", "3M"].map((minute, idx) => (
+                                {["1M", "2M", "3M"].map((minute) => (
                                     <div key={minute} className="apgar-row">
                                         <label className="apgar-label">{minute}</label>
                                         <input
