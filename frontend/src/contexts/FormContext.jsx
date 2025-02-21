@@ -95,42 +95,42 @@ export const FormProvider = ({ children }) => {
     pastPregnancies: [],
 
     visits: Array(10).fill().map(() => ({
-                date: '',
-                poa: '',
-                urine: '',
-                sugeralbumin: '',
-                pallor: '',
-                oedemaankle: '',
-                oedemafacial: '',
-                160: '',
-                150: '',
-                140: '',
-                130: '',
-                120: '',
-                110: '',
-                100: '',
-                90: '',
-                80: '',
-                70: '',
-                60: '',
-                50: '',
-                fundalheight: '',
-                foetallie: '',
-                presentation: '',
-                engagement: '',
-                fm: '',
-                fhs: '',
-                iron: '',
-                folate: '',
-                calcium: '',
-                vitaminc: '',
-                supplementation: '',
-                signature: '',
-                designation: '',
-                poaweight:'',
-                weight:'',
-                weightgain:'',
-            })),
+        date: '',
+        poa: '',
+        urine: '',
+        sugeralbumin: '',
+        pallor: '',
+        oedemaankle: '',
+        oedemafacial: '',
+        160: '',
+        150: '',
+        140: '',
+        130: '',
+        120: '',
+        110: '',
+        100: '',
+        90: '',
+        80: '',
+        70: '',
+        60: '',
+        50: '',
+        fundalheight: '',
+        foetallie: '',
+        presentation: '',
+        engagement: '',
+        fm: '',
+        fhs: '',
+        iron: '',
+        folate: '',
+        calcium: '',
+        vitaminc: '',
+        supplementation: '',
+        signature: '',
+        designation: '',
+        poaweight:'',
+        weight:'',
+        weightgain:'',
+    })),
     Auscultation: Array(2).fill().map(() =>({
         auscultation:'',
         mentalHealth:'',
@@ -149,7 +149,7 @@ export const FormProvider = ({ children }) => {
 
     })),
     
-    
+
     twoCell: Array(1).fill().map(() =>({
         respiratory:'',
         breast: '',
@@ -210,16 +210,51 @@ export const FormProvider = ({ children }) => {
       signature: '',
       designation: ''
     })),
+
     cardiac: '',
     pulmonary: '',
     riskFactors: '',
     managementPlan: '',
-    clinicNotes: ''
+    clinicNotes: '',
+    
+    // Postanal care data
+    hospital: '',
+    birthWeight: '',
+    poapostnatal: '',
+    liveBirth: '',
+    stillBirth: '',
+    abnormalitiesDetected: '',
+    dateOfDelivery: '',
+    gender: '',
+    modeOfDelivery:'',
+    bloodPressure: '',
+    episitomy: '',
+    bodyTempNormal: '',
+    vaginalExam: '',
+    maternalComplications: '',
+    episInfection: '',
+    familyPlanning: '',
+    postpartumSignals: '',
+    breastfeedingEstablished: '',
+    vitAMegadose: '',
+    rubellaImmunization: '',
+    antiD: '',
+    diagnosisCard: '',
+    chrd: '',
+    prescription: '',
+    referred: '',
+    otherNotes: '',
+    dateOfDischarge: '',
+    signature: '',
+    specialNotes: ''
   });
+
+  
  useEffect(() => {
             console.log("in context")
            console.log(formData);
    }, [formData]);
+   
   return (
     <FormContext.Provider value={{ formData, setFormData }}>
       {children}

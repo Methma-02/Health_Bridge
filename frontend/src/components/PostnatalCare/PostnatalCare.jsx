@@ -1,40 +1,13 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import SignatureCanvas from "react-signature-canvas";
 import PostnatalPage8 from "./PostnatalPage8";
-
+import { useFormContext } from '../../contexts/FormContext';
 
 const PostnatalCare = () => {
-  const [formData, setFormData] = useState({
-    hospital: "",
-    birthWeight: "",
-    poa: "",
-    liveBirth: "",
-    stillBirth: "",
-    abnormalitiesDetected: "",
-    dateOfDelivery: "",
-    gender: "",
-    modeOfDelivery: "",
-    bloodPressure: "",
-    episitomy: "",
-    bodyTempNormal: "",
-    vaginalExam: "",
-    maternalComplications: "",
-    episInfection: "",
-    familyPlanning: "",
-    postpartumSignals: "",
-    breastfeedingEstablished: "",
-    vitAMegadose: "",
-    rubellaImmunization: "",
-    antiD: "",
-    diagnosisCard: "",
-    chrd: "",
-    prescription: "",
-    referred: "",
-    otherNotes: "",
-    dateOfDischarge: "",
-    signature: "",
-    specialNotes: ""
-  });
+  const {formData, setFormData} = useFormContext();
+  useEffect(() => {
+            console.log(formData);
+  }, [formData]); 
 
   const signatureRef = useRef(null);
 
@@ -96,8 +69,8 @@ const PostnatalCare = () => {
             type="text"
             className="border p-2 w-full"
             placeholder="Enter POA"
-            value={formData.poa}
-            onChange={(e) => handleInputChange("poa", e.target.value)}
+            value={formData.poapostnatal}
+            onChange={(e) => handleInputChange("poapostnatal", e.target.value)}
           />
         </div>
         <div>
