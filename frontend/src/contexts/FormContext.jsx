@@ -246,7 +246,43 @@ export const FormProvider = ({ children }) => {
     otherNotes: '',
     dateOfDischarge: '',
     signature: '',
-    specialNotes: ''
+    specialNotes: '',
+
+    // New Fields from PregnancyRecodForm8
+    postPartumMorbidities: "",
+    zScore: "",
+    homeVisitDates: [],
+    micronutrientsIssueDates: [],
+    postpartumClinicDate: "",
+    postpartumClinicPlace: "",
+    clinicDate: "",
+    breastProblems: "",
+    vaginalDischarge: "",
+    excessiveVaginalBleeding: "",
+    pallor: "",
+    icterus: "",
+    oedema: "",
+    bp: "",
+    cardiovascularSystem: "",
+    respiratorySystem: "",
+    abdominalExamination: "",
+    vaginalExamination: "",
+    mentalStatusEPDS: "",
+    otherNotes: "",
+    identifiedProblems: "",
+    familyPlanningMethodInUse: "",
+    familyPlanningChosen: "",
+    familyPlanningNotUsingReason: "",
+    familyPlanningClinicPlace: "",
+    familyPlanningClinicDate: "",
+    familyPlanningClinicTime: "",
+    familyPlanningSpecialNotes: "",
+    emergencyContactName: "",
+    emergencyContactTelephone: "",
+    phmTelephone: "",
+    mohOfficeTelephone: "",
+    officerSignature: "",
+    officerDesignation: ""
   });
 
   
@@ -254,7 +290,7 @@ export const FormProvider = ({ children }) => {
             console.log("in context")
            console.log(formData);
    }, [formData]);
-   
+
   return (
     <FormContext.Provider value={{ formData, setFormData }}>
       {children}
