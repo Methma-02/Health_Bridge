@@ -10,6 +10,7 @@
 .footer-container {
   max-width: 1200px;
   margin: 0 auto;
+  align-items:center;
 }
 
 /* Scroll Buttons */
@@ -72,6 +73,7 @@
 .footer-social {
   display: flex;
   gap: 1rem;
+  text-align: center;
 }
 
 /* Divider */
