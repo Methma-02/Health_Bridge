@@ -69,7 +69,7 @@ const DevelopmentMilestones = () => {
                             <th className="p-4 text-left font-semibold">Milestones</th>
                             <th className="p-4 text-left font-semibold">Month</th>
                             <th className="p-4 text-left font-semibold">Month Proved</th>
-                            <th className="p-4 text-left font-semibold">Officer's Designation</th>
+                            <th className="p-4 text-left font-semibold">Officers Designation</th>
                         </tr>
                     </thead>
                     <tbody>
