@@ -62,7 +62,7 @@ const Footer = () => {
             <div className="space-y-2">
               <a href="/about" className="footer-link">How To Use</a>
               <p> </p>
-              <a href="/marketing" className="footer-link">Marketing Website</a>
+              <a href="https://healthbridgemarketing.netlify.app/" className="footer-link">Marketing Website</a>
               
             </div>
           </div>
