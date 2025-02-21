@@ -55,14 +55,38 @@ const PregnancyRecodForm = () => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const signatureDataURL = signaturePadRef.current ? signaturePadRef.current.toDataURL() : '';
     setFormData((prev) => ({ ...prev, officerSignature: signatureDataURL }));
 
     console.log(formData);
+
     // Add submission logic
+    try {
+      // Send a POST request to the backend API
+      const response = await fetch('http://localhost:5000/api/pregnancy-form1', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData), // Send the form data as JSON
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to submit form');
+      }
+
+      const result = await response.json();
+      console.log('Form submitted successfully:', result);
+      alert('Form submitted successfully!');
+      // Clear the form fields after successful submission
+     
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      alert('Failed to submit form. Please try again.');
+    }
   };
 
   return (
@@ -454,7 +478,7 @@ const PregnancyRecodForm = () => {
         </div>
       </div>
 
-      <button type="submit" style={{ marginTop: '20px' }}>
+      <button type="submit" style={{ marginTop: '20px' }} onClick={handleSubmit} >
         Submit
       </button>
     </form>
