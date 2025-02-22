@@ -380,6 +380,10 @@ const pregnancyForm1Schema = new mongoose.Schema({
             x: Number, // X-coordinate (e.g., POA in weeks)
             y: Number, // Y-coordinate (e.g., weight gain in kg)
         }],
+        fundalHeightPoints: [{
+            x: Number, // X-coordinate (e.g., POA in weeks)
+            y: Number, // Y-coordinate (e.g., weight gain in kg)
+        }],
         
 }, { collection: 'Pregnancy_Form1_Record' });
 

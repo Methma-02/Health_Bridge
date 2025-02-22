@@ -287,7 +287,8 @@ export const FormProvider = ({ children }) => {
     ],
 
     // BMI Chart Points
-    bmiChartPoints: [] 
+    bmiChartPoints: [],
+    fundalHeightPoints: []
   });
 
   

@@ -1,7 +1,7 @@
 
 // eslint-disable-next-line no-unused-vars
 import React, { useState } from 'react';
-
+import { useFormContext } from '../../contexts/FormContext';
 //a chart that displays the fundal height growth chart
 // eslint-disable-next-line no-unused-vars, react/prop-types
 const FundalHeightChart = ({ points, onPlotPoint, onDeletePoint }) => {
@@ -299,9 +299,7 @@ const FundalHeightChart = ({ points, onPlotPoint, onDeletePoint }) => {
 };
 
 const GrowthChart = () => {
-  const [formData, setFormData] = useState({
-    fundalHeightPoints: []
-  });
+  const { formData, setFormData } = useFormContext();
 
   const handlePlotPoint = (point) => {
     setFormData(prev => ({
@@ -317,7 +315,7 @@ const GrowthChart = () => {
           <h3>Fundal Height Growth Chart</h3>
         </div>
         <div>
-          <FundalHeightChart 
+        <FundalHeightChart 
             points={formData.fundalHeightPoints} 
             onPlotPoint={handlePlotPoint}
           />
@@ -326,5 +324,54 @@ const GrowthChart = () => {
     </div>
   );
 };
+
+// const GrowthChart = () => {
+ 
+  
+//   const handleDeleteBMIPoint = (index) => {
+//     setFormData((prev) => ({
+//       ...prev,
+//       bmiChartPoints: prev.bmiChartPoints.filter((_, i) => i !== index),
+//     }));
+//   };
+//  useEffect(() => {
+//         console.log(formData);
+//     }, [formData]);
+//   return (
+//     <div>
+//       {/* BMI Chart Section */}
+//       <div className="bg-white rounded-lg shadow mt-6">
+//         <div className="border-b p-4">
+//           <h3 className="text-lg font-semibold">BMI / Weight Gain Chart</h3>
+//         </div>
+//         <div>
+      
+//         </div>
+//       </div>
+
+//       {/* BMI Table */}
+//       <table className="BMI" border={1}>
+//         <thead>
+//           <tr>
+//             <th>BMI</th>
+//             <th>&lt;18</th>
+//             <th>18.5-24.9</th>
+//             <th>25-29.9</th>
+//             <th>&gt;30</th>
+//           </tr>
+//         </thead>
+//         <thead>
+//           <tr>
+//             <th>Zone</th>
+//             <th>A & B</th>
+//             <th>B & C</th>
+//             <th>C & D</th>
+//             <th>Below D</th>
+//           </tr>
+//         </thead>
+//       </table>
+//     </div>
+//   );
+// };
 
 export default GrowthChart;
