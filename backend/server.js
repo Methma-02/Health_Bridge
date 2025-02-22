@@ -368,7 +368,15 @@ const pregnancyForm1Schema = new mongoose.Schema({
         phmTelephone: String,
         mohOfficeTelephone: String,
         officerSignature: String,
-        officerDesignation: String
+        officerDesignation: String,
+
+         // Referrals (Array of Objects)
+         referrals: [{
+            text: { type: String, required: true },
+            date: { type: String, required: true },
+            type: { type: String, required: true }
+        }]
+        
 }, { collection: 'Pregnancy_Form1_Record' });
 
 const PregnancyForm1Model = mongoose.model('PregnancyForm1', pregnancyForm1Schema);
@@ -436,9 +444,8 @@ app.get('/api/pregnancy-form1/:registrationNumber', async (req, res) => {
 
 app.post('/api/pregnancy-form1', async (req, res) => {
     try {
+        console.log(req);
         const { registrationNumber } = req.body;
-
-        console.log(req.body);
         console.log("meka thama",registrationNumber);
 
         // Check if a record with the same registrationNumber exists
