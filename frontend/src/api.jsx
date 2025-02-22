@@ -30,8 +30,16 @@ api.interceptors.response.use(
 );
 
 export const register = async (userData) => {
-  const response = await api.post('/register', userData);
-  return response.data;
+  try {
+    const response = await api.post('/auth/register', userData); // Updated endpoint to match router
+    return response.data;
+  } catch (error) {
+    throw {
+      message: error.message || 'Registration failed',
+      status: error.status,
+      data: error.data
+    };
+  }
 };
 
 export const login = async (credentials) => {
