@@ -1,0 +1,115 @@
+/* RequestModal.css */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.request-modal {
+  background-color: white;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 1px solid #eee;
+}
+
+.modal-header h2 {
+  color: #6a1b9a;
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  font-size: 1.8rem;
+  color: #777;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.donation-summary {
+  display: flex;
+  align-items: center;
+  padding: 20px 24px;
+  background-color: #f9f5fc;
+  border-bottom: 1px solid #eee;
+}
+
+.donation-image-small {
+  width: 70px;
+  height: 70px;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-right: 16px;
+}
+
+.donation-image-small img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.donation-brief h3 {
+  color: #4a4a4a;
+  font-size: 1.1rem;
+  margin-bottom: 5px;
+}
+
+.donation-brief p {
+  color: #777;
+  font-size: 0.9rem;
+  margin-bottom: 2px;
+}
+
+.request-modal form {
+  padding: 24px;
+}
+
+.request-note {
+  background-color: #f0f0f0;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 20px;
+}
+
+.request-note p {
+  color: #666;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.donation-image-small .no-image {
+  opacity: 0.5;
+}
+
+@media (max-width: 480px) {
+  .request-modal {
+    max-height: 100vh;
+    border-radius: 0;
+  }
+  
+  .modal-header,
+  .donation-summary,
+  .request-modal form {
+    padding: 16px;
+  }
+}
