@@ -173,12 +173,34 @@ const Tables = () => {
         'iron', 'folate', 'calcium', 'vitaminc', 'supplementation', 'signature', 'designation'
     ];
 
-    const dateTables =[
-        {title: "Family health service officer visitation date" , rows:2, cols:6},
-        {title:"clinic examination date", rows:2, cols:6},
-    ];
-
+    const [dateTablesData, setDateTablesData] = useState(
+        formData.dateTablesData || [
+          {
+            title: "Family health service officer visitation date",
+            rows: 2,
+            cols: 6,
+            data: Array.from({ length: 2 }, () => Array.from({ length: 6 }, () => "")),
+          },
+          {
+            title: "clinic examination date",
+            rows: 2,
+            cols: 6,
+            data: Array.from({ length: 2 }, () => Array.from({ length: 6 }, () => "")),
+          },
+        ]
+      );
     
+      const handleDateChange = (tableIndex, rowIndex, colIndex, value) => {
+        const updatedTablesData = [...dateTablesData];
+        updatedTablesData[tableIndex].data[rowIndex][colIndex] = value;
+        setDateTablesData(updatedTablesData);
+    
+        // Update formData
+        setFormData((prev) => ({
+          ...prev,
+          dateTablesData: updatedTablesData,
+        }));
+      };
 
     return (
         <>
@@ -479,24 +501,36 @@ const Tables = () => {
 </div>
 
 <div>
-{dateTables.map(({ title, rows, cols }, i) => (
-      <div key={i}>
-        <h4>{title}</h4>
-        <table>
-          <tbody>
-            {[...Array(rows)].map((_, r) => (
-            <tr key={r}>
-                {[...Array(cols)].map((_, c) => (
-            <td key={c}>
-                <input type="date" />
-            </td>    ))}
-            </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    ))}
-</div>
+      {dateTablesData.map(({ title, rows, cols, data }, tableIndex) => (
+        <div key={tableIndex}>
+          <h4>{title}</h4>
+          <table>
+            <tbody>
+              {[...Array(rows)].map((_, rowIndex) => (
+                <tr key={rowIndex}>
+                  {[...Array(cols)].map((_, colIndex) => (
+                    <td key={colIndex}>
+                      <input
+                        type="date"
+                        value={data[rowIndex][colIndex]}
+                        onChange={(e) =>
+                          handleDateChange(
+                            tableIndex,
+                            rowIndex,
+                            colIndex,
+                            e.target.value
+                          )
+                        }
+                      />
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      ))}
+    </div>
 
 <div>
     <h2>Family Planning</h2>
