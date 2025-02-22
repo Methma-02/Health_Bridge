@@ -14,6 +14,15 @@ const Tables = () => {
     const headers = ["Session", "Date", "Husband", "Wife", "Other", "Signature"];
     const rows = ["1st T", "2nd T", "3rd T"];
 
+    function updateResult(value) {
+
+        setFormData(prev => ({
+            ...prev,
+            result : value
+        }));
+        
+    }
+
     const [attendanceData, setAttendanceData] = useState(
         rows.map((session) => ({
           session,
@@ -265,7 +274,7 @@ const Tables = () => {
             <td>Antihelminthic <br></br>drugs</td> {createTwoCellRow('drugs')}
         </tr>
         <tr>
-            <td>Date of issuing <br></br> kick count chart</td> <td><input type='date' id></input></td>
+            <td>Date of issuing <br></br> kick count chart</td>{createTwoCellRow('kick')}
         </tr>
     </tbody>
 </table>
@@ -279,21 +288,36 @@ const Tables = () => {
     </tr>
     <tr>
         <td>Date of blood sampling</td> 
-        <td><input type='date'></input></td>
+        {createTwoCellRow('poaBlood')}
     </tr>
     <tr>
         <td>Date of result received</td> 
-        <td><input type='date'></input></td>
+        {createTwoCellRow('dateBlood')}
     </tr>
-    <td>Result: &nbsp;
-    <label>NR
-    <input type='radio' name='result' value="NR" ></input>
-    </label>
 
-    <label>&nbsp; R
-    <input type='radio' name='result' value="R" ></input>
-    </label>
-    </td>
+    <td>Result: &nbsp;
+            <label>
+                NR
+                <input 
+                    type="radio" 
+                    name="result" 
+                    value="NR"
+                    checked={formData.result === "NR"}
+                    onChange={(e) => updateResult(e.target.value)} 
+                />
+            </label>
+
+            <label>
+                &nbsp; R
+                <input 
+                    type="radio" 
+                    name="result" 
+                    value="R"
+                    checked={formData.result === "R"}
+                    onChange={(e) => updateResult(e.target.value)} 
+                />
+            </label>
+        </td>
 
     <tr>
         <td>If (R) date of referral</td> <td><input type='date'></input></td>

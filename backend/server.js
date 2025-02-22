@@ -256,7 +256,7 @@ const pregnancyForm1Schema = new mongoose.Schema({
         planningreason: String,
         consentdate: String
     }],
-
+    result: String,
     // Newly added fields
     clinicNumber: String,
     clinicalObservationTable: [{

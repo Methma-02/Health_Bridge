@@ -175,7 +175,7 @@ export const FormProvider = ({ children }) => {
         consentdate:'',
 
     })),
-
+    result:'',
     // Newly added sections
     clinicNumber: '',
     clinicalObservationTable: Array(13).fill().map(() => ({
