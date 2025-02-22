@@ -282,7 +282,9 @@ export const FormProvider = ({ children }) => {
     phmTelephone: "",
     mohOfficeTelephone: "",
     officerSignature: "",
-    officerDesignation: ""
+    officerDesignation: "",
+    referrals: [
+    ]
   });
 
   

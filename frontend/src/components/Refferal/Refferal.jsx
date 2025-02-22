@@ -1,11 +1,15 @@
-import React, { useState } from "react";
-import './Refferal.css'; 
+import React, { useState, useEffect } from "react";
+import { useFormContext } from '../../contexts/FormContext';
+import './Refferal.css';
+
 const Refferal = () => {
+  const { formData, setFormData } = useFormContext();
+
+  useEffect(() => {
+                console.log(formData);
+      }, [formData]); 
+
   const [newReferral, setNewReferral] = useState("");
-  const [referrals, setReferrals] = useState([
-    { text: "Referral to cardiologist on 2025-01-30", date: "2025-01-30", type: "upcoming" },
-    { text: "Referral to endocrinologist on 2024-12-15", date: "2024-12-15", type: "past" }
-  ]);
   const [isAdding, setIsAdding] = useState(false);
 
   const handleAddReferral = () => {
@@ -14,7 +18,8 @@ const Refferal = () => {
       if (date) {
         const today = new Date().toISOString().split("T")[0];
         const type = date >= today ? "upcoming" : "past";
-        setReferrals((prev) => [...prev, { text: newReferral, date, type }]);
+        const updatedReferrals = [...formData.referrals, { text: newReferral, date, type }];
+        setFormData((prev) => ({ ...prev, referrals: updatedReferrals }));
         setNewReferral("");
         setIsAdding(false);
       } else {
@@ -25,13 +30,40 @@ const Refferal = () => {
     }
   };
 
-  const upcomingReferrals = referrals.filter((ref) => ref.type === "upcoming");
-  const pastReferrals = referrals.filter((ref) => ref.type === "past");
+  const upcomingReferrals = formData.referrals.filter((ref) => ref.type === "upcoming");
+  const pastReferrals = formData.referrals.filter((ref) => ref.type === "past");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault(); // Prevent the default form submission behavior
+
+    try {
+      // Send a POST request to the backend API
+      const response = await fetch('http://localhost:5000/api/pregnancy-form1', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData), // Send the form data as JSON
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to submit form');
+      }
+
+      const result = await response.json();
+      console.log('Form submitted successfully:', result);
+      alert('Form submitted successfully!');
+      // Clear the form fields after successful submission
+     
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      alert('Failed to submit form. Please try again.');
+    }
+  };
 
   return (
     <div className="p-4 space-y-4">
       <h1 className="text-2xl font-bold">Referral Information</h1>
-      
 
       {/* Add Referral Button */}
       <button
@@ -107,6 +139,17 @@ const Refferal = () => {
           )}
         </div>
       </div>
+
+      {/* Submit Button */}
+      <div className="mt-6">
+        <button
+          className="bg-purple-500 text-white px-6 py-2 rounded"
+          onClick={handleSubmit}
+        >
+          Submit
+        </button>
+      </div>
+      
     </div>
   );
 };

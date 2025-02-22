@@ -1,9 +1,13 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import SignatureCanvas from "react-signature-canvas";
 import { useFormContext } from '../../contexts/FormContext';
 
 const PregnancyRecodForm = () => {
   const { formData, setFormData } = useFormContext();
+  useEffect(() => {
+              console.log(formData);
+    }, [formData]); 
+  
   const signaturePadRef = useRef();
 
   // Home Visit Dates Functions
