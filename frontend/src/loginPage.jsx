@@ -24,36 +24,36 @@ const LoginPage = () => {
       errors.push("Password is required");
       return { isValid: false, errors };
     }
-
+  
     const requirements = [
       {
-        test: password.length >= 12,
-        message: "Password must be at least 12 characters long"
+        test: password.length < 8,  // Will be true if password is too short
+        message: "Password must be at least 8 characters long"
       },
       {
-        test: /[A-Z]/.test(password),
+        test: !/[A-Z]/.test(password),  // Will be true if no uppercase
         message: "Password must contain at least one uppercase letter"
       },
       {
-        test: /[a-z]/.test(password),
+        test: !/[a-z]/.test(password),  // Will be true if no lowercase
         message: "Password must contain at least one lowercase letter"
       },
       {
-        test: /[0-9]/.test(password),
+        test: !/[0-9]/.test(password),  // Will be true if no number
         message: "Password must contain at least one number"
       },
       {
-        test: /[!@#$%^&*(),.?":{}|<>]/.test(password),
+        test: !/[!@#$%^&*(),.?":{}|<>]/.test(password),  // Will be true if no special char
         message: "Password must contain at least one special character"
       }
     ];
-
+  
     requirements.forEach(({ test, message }) => {
-      if (!test) {
+      if (test) {  // If test is true, it means the requirement failed
         errors.push(message);
       }
     });
-
+  
     return {
       isValid: errors.length === 0,
       errors
