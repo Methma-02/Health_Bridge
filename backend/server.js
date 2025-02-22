@@ -252,11 +252,12 @@ const pregnancyForm1Schema = new mongoose.Schema({
         milkBook: String,
         earlychildhood: String,
         familyPlanning: String,
-        counselling: String,
+        counsellingdate: String,
         planningreason: String,
         consentdate: String
     }],
     result: String,
+    chosenmethod: String,
     // Newly added fields
     clinicNumber: String,
     clinicalObservationTable: [{

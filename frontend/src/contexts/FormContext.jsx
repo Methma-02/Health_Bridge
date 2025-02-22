@@ -170,12 +170,13 @@ export const FormProvider = ({ children }) => {
         milkBook:'',
         earlychildhood: '',
         familyPlanning:'',
-        counselling:'',
+        counsellingdate:'',
         planningReason:'',
         consentdate:'',
 
     })),
     result:'',
+    chosenmethod: '',
     // Newly added sections
     clinicNumber: '',
     clinicalObservationTable: Array(13).fill().map(() => ({

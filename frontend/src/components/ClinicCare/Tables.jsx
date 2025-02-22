@@ -23,6 +23,15 @@ const Tables = () => {
         
     }
 
+    function chosenMethod(value) {
+
+        setFormData(prev => ({
+            ...prev,
+            chosenmethod : value
+        }));
+        
+    }
+
     const [attendanceData, setAttendanceData] = useState(
         rows.map((session) => ({
           session,
@@ -493,18 +502,81 @@ const Tables = () => {
     <h2>Family Planning</h2>
     <tr>
         <td>Date of counselling</td>
-        <td><input type='date'></input></td>
+        {createTwoCellRow('counsellingdate')}
     </tr>
 
     <tr>
         <td>Chosen method</td>
-        <label>T<input type='radio'/></label> 
-        <label>PL<input type='radio'/></label>
-        <label>L<input type='radio'/></label>
-        <label>IP<input type='radio'/></label>
-        <label>N<input type='radio'/></label>
-        <label>P<input type='radio'/></label>
-        <label>C<input type='radio'/></label>
+        <label>
+                T
+                <input
+                  type="radio"
+                  name="method"
+                  value="T"
+                  checked={formData.chosenmethod === "T"}
+                  onChange={(e) => chosenMethod(e.target.value)}
+                />
+              </label>
+              <label>
+                PL
+                <input
+                  type="radio"
+                  name="method"
+                  value="PL"
+                  checked={formData.chosenmethod === "PL"}
+                  onChange={(e) => chosenMethod(e.target.value)}
+                />
+              </label>
+              <label>
+                L
+                <input
+                  type="radio"
+                  name="method"
+                  value="L"
+                  checked={formData.chosenmethod === "L"}
+                  onChange={(e) => chosenMethod(e.target.value)}
+                />
+              </label>
+              <label>
+                IP
+                <input
+                  type="radio"
+                  name="method"
+                  value="IP"
+                  checked={formData.chosenmethod === "IP"}
+                  onChange={(e) => chosenMethod(e.target.value)}
+                />
+              </label>
+              <label>
+                N
+                <input
+                  type="radio"
+                  name="method"
+                  value="N"
+                  checked={formData.chosenmethod === "N"}
+                  onChange={(e) => chosenMethod(e.target.value)}
+                />
+              </label>
+              <label>
+                P
+                <input
+                  type="radio"
+                  name="method"
+                  value="P"
+                  checked={formData.chosenmethod === "P"}
+                  onChange={(e) => chosenMethod(e.target.value)}
+                />
+              </label>
+              <label>
+                C
+                <input
+                  type="radio"
+                  name="method"
+                  value="C"
+                  checked={formData.chosenmethod === "C"}
+                  onChange={(e) => chosenMethod(e.target.value)}
+                />
+              </label>
     </tr>
 
     <tr>
