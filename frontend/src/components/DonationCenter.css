@@ -1,0 +1,141 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', sans-serif;
+}
+
+.donation-center-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.donation-center-header {
+  background: linear-gradient(to right, #f8e4eb, #f0eafa);
+  border-radius: 12px;
+  padding: 40px 30px;
+  margin-bottom: 30px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.header-content {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.donation-center-header h1 {
+  color: #6a1b9a;
+  font-size: 2.5rem;
+  margin-bottom: 12px;
+}
+
+.donation-center-header p {
+  color: #5a5a5a;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+.moh-division-indicator {
+  background-color: #fff;
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 16px;
+  border-radius: 50px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.moh-division-label {
+  color: #6a6a6a;
+  font-size: 0.9rem;
+  margin-right: 8px;
+}
+
+.moh-division-value {
+  color: #6a1b9a;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.donate-button {
+  background-color: #7b1fa2;
+  color: white;
+  font-weight: 600;
+  padding: 12px 28px;
+  border: none;
+  border-radius: 50px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.2s;
+  box-shadow: 0 4px 10px rgba(123, 31, 162, 0.3);
+}
+
+.donate-button:hover {
+  background-color: #6a1b9a;
+  transform: translateY(-2px);
+}
+
+.donate-button:active {
+  transform: translateY(0);
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+}
+
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 5px solid #f3e5f5;
+  border-top: 5px solid #7b1fa2;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 20px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@media (max-width: 768px) {
+  .donation-center-header {
+    padding: 30px 20px;
+  }
+  
+  .donation-center-header h1 {
+    font-size: 2rem;
+  }
+  
+  .donation-center-header p {
+    font-size: 1rem;
+  }
+  
+  .donate-button {
+    padding: 10px 24px;
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .donation-center-container {
+    padding: 15px;
+  }
+  
+  .donation-center-header {
+    padding: 25px 15px;
+  }
+  
+  .donation-center-header h1 {
+    font-size: 1.8rem;
+  }
+}
