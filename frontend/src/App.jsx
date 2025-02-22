@@ -1,50 +1,22 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
-import "./App.css";
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+//import Header from './components/common/Header';
+//import Footer from './components/common/Footer';
+import DonationCenter from './components/DonationCenter';
 
 function App() {
-  const [count, setCount] = useState(0);
-  const [data, setData] = useState(null);
-
-  // Fetch data from backend when component mounts
-  useEffect(() => {
-    axios.get("http://localhost:5000/")
-      .then(response => setData(response.data))
-      .catch(error => console.error("Error fetching data:", error));
-  }, []);
-
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <Router>
+      <div className="app-container">
+        {/*<Header />*/}
+        <main className="main-content">
+          <Routes>
+            {/* Your other routes would go here */}
+            <Route path="/" element={<DonationCenter />} />
+          </Routes>
+        </main>
+        {/*<Footer />*/}
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-
-      {/* Display data from backend */}
-      <div className="backend-data">
-        <h2>Backend Response:</h2>
-        {data ? <p>{data.message}</p> : <p>Loading data...</p>}
-      </div>
-
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    </Router>
   );
 }
 
