@@ -385,6 +385,14 @@ const pregnancyForm1Schema = new mongoose.Schema({
             x: Number, // X-coordinate (e.g., POA in weeks)
             y: Number, // Y-coordinate (e.g., weight gain in kg)
         }],
+
+        // Date Tables Data
+        dateTablesData: [{
+            title: String,
+            rows: Number,
+            cols: Number,
+            data: [[String]] // 2D array of strings for dates
+        }]
         
 }, { collection: 'Pregnancy_Form1_Record' });
 

@@ -289,7 +289,23 @@ export const FormProvider = ({ children }) => {
 
     // BMI Chart Points
     bmiChartPoints: [],
-    fundalHeightPoints: []
+    fundalHeightPoints: [],
+
+    // Date Tables Data
+    dateTablesData: [
+      {
+        title: "Family health service officer visitation date",
+        rows: 2,
+        cols: 6,
+        data: Array.from({ length: 2 }, () => Array.from({ length: 6 }, () => "")),
+      },
+      {
+        title: "clinic examination date",
+        rows: 2,
+        cols: 6,
+        data: Array.from({ length: 2 }, () => Array.from({ length: 6 }, () => "")),
+      },
+    ],
   });
 
   
