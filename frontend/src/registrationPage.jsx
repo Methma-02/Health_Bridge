@@ -24,29 +24,46 @@ const RegistrationPage = () => {
   // Password validation function
   const validatePassword = (password) => {
     const errors = [];
-    
-    if (password.length === 0) {
+  
+    if (!password) {
       errors.push("Password is required");
-    } else {
-      if (password.length < 6) {
-        errors.push("Password must be at least 6 characters long");
-      }
-      
-      if (!/\d/.test(password)) {
-        errors.push("Password must contain at least one number");
-      }
-      
-      if (!/[a-zA-Z]/.test(password)) {
-        errors.push("Password must contain at least one letter");
-      }
+      return { isValid: false, errors };
     }
+  
+    const requirements = [
+      {
+        test: password.length < 8,  // This will be true if password is too short
+        message: "Password must be at least 8 characters long"
+      },
+      {
+        test: !/[A-Z]/.test(password),  // This will be true if no uppercase
+        message: "Password must contain at least one uppercase letter"
+      },
+      {
+        test: !/[a-z]/.test(password),  // This will be true if no lowercase
+        message: "Password must contain at least one lowercase letter"
+      },
+      {
+        test: !/[0-9]/.test(password),  // This will be true if no number
+        message: "Password must contain at least one number"
+      },
+      {
+        test: !/[!@#$%^&*(),.?":{}|<>]/.test(password),  // This will be true if no special char
+        message: "Password must contain at least one special character"
+      }
+    ];
+  
+    requirements.forEach(({ test, message }) => {
+      if (test) {  // If the test is true, it means the requirement failed
+        errors.push(message);
+      }
+    });
     
     return {
       isValid: errors.length === 0,
       errors
     };
   };
-
   // Handle input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -139,25 +156,23 @@ const RegistrationPage = () => {
     }
 
     try {
-      // Sanitize password before submission
-      const sanitizedPassword = formData.password.replace(/[^a-zA-Z0-9]/g, '');
-      const sanitizedFormData = {
-        ...formData,
-        password: sanitizedPassword
-      };
 
-      const { token } = await api.register(sanitizedFormData);
+      const { token } = await api.register(formData);
+    
+    if (token) {
       login(token);
       navigate('/dashboard');
-    } catch (error) {
-      setErrors(prev => ({
-        ...prev,
-        submit: error.response?.data?.message || 'Registration failed. Please try again.'
-      }));
-    } finally {
-      setIsSubmitting(false);
     }
-  };
+  } catch (error) {
+    console.error('Registration error:', error); // Add this for debugging
+    setErrors(prev => ({
+      ...prev,
+      submit: error.response?.data?.message || 'Registration failed. Please try again.'
+    }));
+  } finally {
+    setIsSubmitting(false);
+  }
+};
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4 py-8">
