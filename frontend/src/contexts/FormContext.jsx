@@ -284,7 +284,10 @@ export const FormProvider = ({ children }) => {
     officerSignature: "",
     officerDesignation: "",
     referrals: [
-    ]
+    ],
+
+    // BMI Chart Points
+    bmiChartPoints: [] 
   });
 
   

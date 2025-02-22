@@ -1,14 +1,27 @@
 // eslint-disable-next-line no-unused-vars
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 // eslint-disable-next-line no-unused-vars
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
 import { X } from 'lucide-react';
+import { useFormContext } from '../../contexts/FormContext';
 
 // eslint-disable-next-line react/prop-types
 const BMIChart = ({ points, onPlotPoint, onDeletePoint }) => {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [showCrosshair, setShowCrosshair] = useState(false);
   const [hoveredPoint, setHoveredPoint] = useState(null);
+
+      useEffect(() => {
+          console.log("This is pos", mousePos);
+      }, [mousePos]);
+
+      useEffect(() => {
+              console.log("This is showCrosshair",showCrosshair);
+      }, [showCrosshair]);
+
+      useEffect(() => {
+        console.log("This is hoveredPoint",hoveredPoint);
+      }, [hoveredPoint]);
 
   const width = 600;
   const height = 400;
@@ -313,53 +326,63 @@ const BMIChart = ({ points, onPlotPoint, onDeletePoint }) => {
   );
 };
 
+
 const GrowthChart = () => {
-  const [formData, setFormData] = useState({
-    bmiChartPoints: []
-  });
+  const { formData, setFormData } = useFormContext();
 
   const handlePlotBMIPoint = (point) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      bmiChartPoints: [...prev.bmiChartPoints, point]
+      bmiChartPoints: [...prev.bmiChartPoints, point],
     }));
   };
-
+  
+  const handleDeleteBMIPoint = (index) => {
+    setFormData((prev) => ({
+      ...prev,
+      bmiChartPoints: prev.bmiChartPoints.filter((_, i) => i !== index),
+    }));
+  };
+ useEffect(() => {
+        console.log(formData);
+    }, [formData]);
   return (
     <div>
-
       {/* BMI Chart Section */}
       <div className="bg-white rounded-lg shadow mt-6">
         <div className="border-b p-4">
           <h3 className="text-lg font-semibold">BMI / Weight Gain Chart</h3>
         </div>
         <div>
-          < BMIChart 
-            points={formData.bmiChartPoints} 
+          <BMIChart
+            points={formData.bmiChartPoints}
             onPlotPoint={handlePlotBMIPoint}
+            onDeletePoint={handleDeleteBMIPoint}
           />
-          
         </div>
-        
       </div>
-      <table  className='BMI' border={1} >
-            <thead>
-              <th>BMI</th>
-              <th>&lt;18</th>
-              <th>18.5-24.9</th>
-              <th>25-29.9</th>
-              <th>&gt;30</th>    
-          </thead>
-          <thead>
+
+      {/* BMI Table */}
+      <table className="BMI" border={1}>
+        <thead>
+          <tr>
+            <th>BMI</th>
+            <th>&lt;18</th>
+            <th>18.5-24.9</th>
+            <th>25-29.9</th>
+            <th>&gt;30</th>
+          </tr>
+        </thead>
+        <thead>
+          <tr>
             <th>Zone</th>
             <th>A & B</th>
             <th>B & C</th>
             <th>C & D</th>
             <th>Below D</th>
-          </thead>
-          </table>
-          
-
+          </tr>
+        </thead>
+      </table>
     </div>
   );
 };
