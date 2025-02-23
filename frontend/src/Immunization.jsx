@@ -29,12 +29,12 @@ const ImmunizationForm = () => {
   };
 
   return (
-    <div className="max-w-5xl mx-auto p-6 bg-white shadow-lg rounded-lg">
+    <div className="max-w-5xl mx-auto p-6 bg-blue shadow-lg rounded-lg">
       <h1 className="text-2xl font-bold text-gray-800 mb-4 text-center">Immunization Record</h1>
       <div className="overflow-x-auto">
         <table className="min-w-full border border-gray-300 shadow-md rounded-lg">
           <thead>
-            <tr className="bg-gray-200 text-gray-700">
+            <tr className="bg-pink-200 text-gray-700">
               <th className="p-2 border">Age</th>
               <th className="p-2 border">Type of Vaccine</th>
               <th className="p-2 border">Date</th>
