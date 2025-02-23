@@ -59,12 +59,12 @@ const DevelopmentMilestones = () => {
     };
 
     return (
-        <div className="p-6 max-w-6xl mx-auto bg-gray-100 rounded-lg shadow-md">
+        <div className="p-6 max-w-6xl mx-auto bg-pink-100 rounded-lg shadow-md">
             <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">Development Milestones Tracker</h2>
             <div className="overflow-x-auto bg-white rounded-lg shadow-md">
                 <table className="w-full border-collapse">
                     <thead>
-                        <tr className="bg-gray-200">
+                        <tr className="bg-pink-200">
                             <th className="p-4 text-left font-semibold">Age</th>
                             <th className="p-4 text-left font-semibold">Milestones</th>
                             <th className="p-4 text-left font-semibold">Month</th>
