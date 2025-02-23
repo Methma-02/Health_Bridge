@@ -1,11 +1,11 @@
-import StudentHealthRecords from "./studentHealthRecords";
-import BabyDetails from "./babyDetails";
-import ImmunizationForm from "./Immunization";
-import DevelopmentMilestones from "./developmentMilestones";
-import HealthRecords from "./childHealthRecord";
-import SensoryScreening from "./sensoryScreening";
-import WeightGainChart from "../WeightChart";
-import HeightGainChart from "../HeightChart";
+import StudentHealthRecords from "./pages/studentHealthRecords";
+import BabyDetails from "./pages/babyDetails";
+import ImmunizationForm from "./pages/Immunization";
+import DevelopmentMilestones from "./pages/developmentMilestones";
+import HealthRecords from "./pages/childHealthRecord";
+import SensoryScreening from "./pages/sensoryScreening";
+import WeightGainChart from "./pages/WeightChart";
+import HeightGainChart from "./pages/HeightChart";
 
 
 function App(){
