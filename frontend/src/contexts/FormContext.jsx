@@ -306,6 +306,12 @@ export const FormProvider = ({ children }) => {
         data: Array.from({ length: 2 }, () => Array.from({ length: 6 }, () => "")),
       },
     ],
+
+    // Immunization Data
+    immunizationData: {
+      dates: Array(6).fill(""), // Initialize with 6 empty strings for dates
+      batchNumbers: Array(6).fill(""), // Initialize with 6 empty strings for batch numbers
+    },
   });
 
   

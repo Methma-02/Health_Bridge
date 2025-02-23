@@ -202,6 +202,30 @@ const Tables = () => {
         }));
       };
 
+      const handleTetanusDateChange = (index, value) => {
+        const updatedDates = [...formData.immunizationData.dates];
+        updatedDates[index] = value;
+        setFormData((prev) => ({
+          ...prev,
+          immunizationData: {
+            ...prev.immunizationData,
+            dates: updatedDates,
+          },
+        }));
+      };
+      
+      const handleBatchNumberChange = (index, value) => {
+        const updatedBatchNumbers = [...formData.immunizationData.batchNumbers];
+        updatedBatchNumbers[index] = value;
+        setFormData((prev) => ({
+          ...prev,
+          immunizationData: {
+            ...prev.immunizationData,
+            batchNumbers: updatedBatchNumbers,
+          },
+        }));
+      };
+
     return (
         <>
         <form onSubmit={handleSubmit}>
@@ -370,33 +394,41 @@ const Tables = () => {
     <h2>Tetanus Toxoid Immunization</h2>
     
     <table>
-    <thead>
-        <tr>
-        <th>Dose</th>
-        {Array.from({ length: 5 }, (_, i) => (<th key={i + 1}>{i + 1}</th>))}
-        <th>NE</th>
-        </tr>
-    </thead>
-    <tbody>
-                
-    <tr>
-        <td>Date</td>
-            {Array.from({ length: 6 }, (_, i) => (
-            <td
-            key={i} className="border p-2"> <input type="date"/>
-        </td> ))}
-    </tr>
-                
-    <tr>
-        <td>Batch No.</td>
-            {Array.from({ length: 6 }, (_, i) => (
-            <td key={i}>
-            <input type="text"/>
-        </td>))}
-    </tr>
-    </tbody>
-</table>
-
+        <thead>
+            <tr>
+                <th>Dose</th>
+                {Array.from({ length: 5 }, (_, i) => (<th key={i + 1}>{i + 1}</th>))}
+                <th>NE</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Date</td>
+                {Array.from({ length: 6 }, (_, i) => (
+                    <td key={i} className="border p-2">
+                        <input
+                            type="date"
+                            value={formData.immunizationData.dates[i] || ''}
+                            onChange={(e) => handleTetanusDateChange(i, e.target.value)}
+                        />
+                    </td>
+                ))}
+            </tr>
+            
+            <tr>
+                <td>Batch No.</td>
+                {Array.from({ length: 6 }, (_, i) => (
+                    <td key={i}>
+                        <input
+                            type="text"
+                            value={formData.immunizationData.batchNumbers[i] || ''}
+                            onChange={(e) => handleBatchNumberChange(i, e.target.value)}
+                        />
+                    </td>
+                ))}
+            </tr>
+        </tbody>
+    </table>
 </div>
 
 <div>
