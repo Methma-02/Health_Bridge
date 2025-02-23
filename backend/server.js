@@ -392,7 +392,13 @@ const pregnancyForm1Schema = new mongoose.Schema({
             rows: Number,
             cols: Number,
             data: [[String]] // 2D array of strings for dates
-        }]
+        }],
+
+        // Immunization Data
+        immunizationData: {
+            dates: [String], // Array of strings for dates
+            batchNumbers: [String], // Array of strings for batch numbers
+        }
         
 }, { collection: 'Pregnancy_Form1_Record' });
 
