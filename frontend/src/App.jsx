@@ -4,6 +4,8 @@ import ImmunizationForm from "./Immunization";
 import DevelopmentMilestones from "./developmentMilestones";
 import HealthRecords from "./childHealthRecord";
 import SensoryScreening from "./sensoryScreening";
+import WeightGainChart from "../WeightChart";
+import HeightGainChart from "../HeightChart";
 
 
 function App(){
@@ -16,6 +18,8 @@ function App(){
     <HealthRecords/>
     <StudentHealthRecords/>
     <SensoryScreening/>
+    <WeightGainChart/>
+    <HeightGainChart/>
     
     </>
   )
