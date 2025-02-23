@@ -25,7 +25,11 @@ api.interceptors.response.use(
       localStorage.removeItem('authToken');
       window.location.href = '/login';
     }
-    return Promise.reject(error);
+    return Promise.reject({
+      message: error.response?.data?.message || error.message || 'Request failed',
+      status: error.response?.status,
+      data: error.response?.data
+    });
   }
 );
 
