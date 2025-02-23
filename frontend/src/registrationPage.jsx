@@ -199,11 +199,9 @@ const RegistrationPage = () => {
           submit: error.message || 'Registration failed. Please try again.'
         });
       }
-
-      // Log error in development
-      if (process.env.NODE_ENV === 'development') {
-        console.error('Registration error:', error);
-      }
+      
+      console.error('Registration error:', error);
+      
     } finally {
       setIsSubmitting(false);
     }
