@@ -1,12 +1,21 @@
 import { useState } from 'react';
 import { X } from 'lucide-react';
 import Other from './other';
+import FormSubmitHandler from '../components/submit';
 
 const WeightGainChart = () => {
   const [gender, setGender] = useState('boy');
   const [formData, setFormData] = useState({
     chartPoints: []
   });
+
+  const formattedData = {
+    type: 'weightGain',
+    data: {
+      gender,
+      measurements: formData.chartPoints
+    }
+  };
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [showCrosshair, setShowCrosshair] = useState(false);
   const [hoveredPoint, setHoveredPoint] = useState(null);
@@ -418,6 +427,7 @@ const WeightGainChart = () => {
       </div>
 
       <Other/>
+      <FormSubmitHandler formData={formattedData} />
     </div>
   );
 };

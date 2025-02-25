@@ -1,4 +1,5 @@
 import React,{ useState } from "react";
+import FormSubmitHandler from "../components/submit";
 
 const BabyDetails = () => {
     const [formData, setFormData] = useState({
@@ -25,17 +26,17 @@ const BabyDetails = () => {
             vitaminK: '',
         }],
         specialNeeds: [{
-            premature: '',
-            underWeight: '',
-            neonatalComplications: '',
-            congenitalDiseases: '',
-            afterBirthDiseases: '',
-            powderMilk: '',
-            growthStunting: '',
-            feedingComplications: '',
-            parentalDeath: '',
-            parentalImmigration: '',
-            other: '',
+            premature: { checked: false, date: '' },
+            underWeight: { checked: false, date: '' },
+            neonatalComplications: { checked: false, date: '' },
+            congenitalDiseases: { checked: false, date: '' },
+            afterBirthDiseases: { checked: false, date: '' },
+            powderMilk: { checked: false, date: '' },
+            growthStunting: { checked: false, date: '' },
+            feedingComplications: { checked: false, date: '' },
+            parentalDeath: { checked: false, date: '' },
+            parentalImmigration: { checked: false, date: '' },
+            other: { checked: false, date: '' },
         }],
         healthDetails: [{
             skinColor: '',
@@ -52,6 +53,10 @@ const BabyDetails = () => {
         clinicDays: '',
     });
 
+    const formattedData = {
+        type: 'babyDetails',
+        data: formData
+      };
     const handleBirthDataChange = (index, field, value) => {
         setFormData(prev => ({
             ...prev,
@@ -78,7 +83,10 @@ const BabyDetails = () => {
             ...prev,
             specialNeeds: prev.specialNeeds.map((needs) => ({
                 ...needs,
-                [field]: !needs[field]  // Toggle boolean value
+                [field]: {
+                    ...needs[field],
+                    checked: !needs[field].checked
+                }
             }))
         }));
     };
@@ -88,7 +96,10 @@ const BabyDetails = () => {
             ...prev,
             specialNeeds: prev.specialNeeds.map((needs) => ({
                 ...needs,
-                [field]: value,  // Update the date value
+                [field]: {
+                    ...needs[field],
+                    date: value
+                }
             }))
         }));
     };
@@ -255,14 +266,22 @@ const BabyDetails = () => {
                     <tbody>
                         {Object.keys(formData.specialNeeds[0]).map((field) =>(
                             <tr key={field}>
-                                <td className="field-label">{field.replace(/([A-Z])/g, " $1").trim()}</td>
-                                
+                                <td className="field-label">{field.replace(/([A-Z])/g, " $1").trim()}</td>     
                                 <td>
-                                    <input type="checkbox" checked = {formData.specialNeeds[0][field]} onChange={() => handleSpecialNeedsCheckBoxChange(field)} className="checks"/>
+                                <input 
+                                        type="checkbox" 
+                                        checked={formData.specialNeeds[0][field].checked}
+                                        onChange={() => handleSpecialNeedsCheckBoxChange(field)} 
+                                        className="checks"
+                                    />
                                 </td> 
 
                                 <td>
-                                    <input type="date" value={formData.specialNeeds[0][field]} onChange={(e) => handleSpecialNeedsDateChange(field,e.target.value)}/>
+                                <input 
+                                        type="date" 
+                                        value={formData.specialNeeds[0][field].date}
+                                        onChange={(e) => handleSpecialNeedsDateChange(field, e.target.value)}
+                                    />
                                 </td>
                                 
                             </tr>
@@ -327,6 +346,7 @@ const BabyDetails = () => {
             </table>
 
             </div>
+            <FormSubmitHandler formData={formattedData} />
         </div>
     
 )};
