@@ -6,7 +6,7 @@ const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const morgan = require('morgan');
 const compression = require('compression');
-const { connectDB } = require('./config/database');
+const { connectDB, waitForDB } = require('./config/database');
 const { validateEnv } = require('./config/env');
 const logger = require('./utils/logger');
 
@@ -67,7 +67,7 @@ if (process.env.NODE_ENV !== 'test') {
 app.use(express.json({ limit: '10kb' }));
 app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 
-// Health check endpoint
+// Health check endpoint - keep this before DB middleware
 app.get('/health', (req, res) => {
   res.status(200).json({
     status: 'healthy',
@@ -77,7 +77,23 @@ app.get('/health', (req, res) => {
   });
 });
 
-// API routes
+// Database connection middleware - now placed BEFORE routes
+app.use(async (req, res, next) => {
+  try {
+    // Skip health check endpoint (redundant check, but kept for safety)
+    if (req.path === '/health') {
+      return next();
+    }
+    
+    await waitForDB();
+    next();
+  } catch (error) {
+    logger.error('Database connection middleware error:', error);
+    res.status(500).json({ error: 'Database connection failed' });
+  }
+});
+
+// API routes - registered ONLY ONCE
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/audit', auditRoutes);
@@ -117,7 +133,21 @@ const PORT = process.env.PORT || 3000;
 
 async function startServer() {
   try {
-    await connectDB();
+    // Connect to database with retry logic
+    let retries = 5;
+    while (retries > 0) {
+      try {
+        await connectDB();
+        break; // Connection successful
+      } catch (err) {
+        retries--;
+        if (retries === 0) {
+          throw err; // No more retries, propagate error
+        }
+        logger.warn(`Database connection failed, retrying... (${retries} attempts left)`);
+        await new Promise(resolve => setTimeout(resolve, 5000)); // Wait 5 seconds before retry
+      }
+    }
     
     const server = app.listen(PORT, () => {
       logger.info(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`);
