@@ -1,0 +1,30 @@
+{
+  "name": "health_bridge",
+  "version": "1.0.0",
+  "description": "A virtual platform for mothers and infants to record their health reports.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Methma-02/Health_Bridge.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Methma-02/Health_Bridge/issues"
+  },
+  "homepage": "https://github.com/Methma-02/Health_Bridge#readme",
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "body-parser": "^1.20.3",
+    "cors": "^2.8.5",
+    "crypto-js": "^4.2.0",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.10.1"
+  }
+}
