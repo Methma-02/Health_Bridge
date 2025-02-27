@@ -54,6 +54,14 @@ body {
   margin-bottom: 10px;
   font-size: 16px;
   font-weight: bold;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Hover Effect for Symptoms */
+.symptom-item:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+  transform: scale(1.02);
+  cursor: pointer;
 }
 
 /* Intensity Levels */
@@ -74,7 +82,7 @@ body {
 .input-field {
   width: 90%;
   padding: 10px;
-  border: 2px solid #ffdaf3;
+  border: 2px solid #ccc;
   border-radius: 8px;
   font-size: 16px;
   margin-bottom: 10px;
@@ -116,10 +124,18 @@ body {
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
+/* Hover Effect for Add Button */
+.add-button:hover {
+  background-color: #f582a1;
+  transform: scale(1.05);
+}
+
+/* Disabled Add Button */
 .add-button:disabled {
   background-color: #ccc;
   cursor: not-allowed;
+  transform: none;
 }
