@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import dayjs from "dayjs";
 import "./App.css";
+
+const API_URL = "http://localhost:5000"; // Update this if backend URL changes
 
 const SymptomTracker = () => {
   const [date, setDate] = useState(new Date());
@@ -14,26 +16,73 @@ const SymptomTracker = () => {
   const selectedDate = dayjs(date).format("YYYY-MM-DD");
   const isFutureDate = dayjs(selectedDate).isAfter(today);
 
-  const handleAddSymptom = () => {
+  // Fetch symptoms from backend
+  const fetchSymptoms = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      console.log("No token found, please log in.");
+      return;
+    }
+  
+    const response = await fetch("http://localhost:5000/symptoms", {
+      headers: { Authorization: token }
+    });
+  
+    const data = await response.json();
+    console.log("Decrypted Symptoms:", data);
+  };
+
+  // Save symptom to backend
+  const handleAddSymptom = async () => {
     if (!newSymptom.trim() || isFutureDate) return;
     const timestamp = dayjs().format("HH:mm:ss");
 
-    setSymptoms((prev) => ({
-      ...prev,
-      [selectedDate]: [
-        ...(prev[selectedDate] || []),
-        { symptom: newSymptom, time: timestamp, intensity },
-      ],
-    }));
+    const symptomData = {
+      date: selectedDate,
+      symptom: newSymptom,
+      time: timestamp,
+      intensity
+    };
 
-    setNewSymptom("");
-    setIntensity(3);
+    try {
+      const token = localStorage.getItem("token"); // Retrieve JWT
+      if (!token) {
+        console.log("No authentication token found");
+        return;
+      }
+
+      const response = await fetch(`${API_URL}/symptoms`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify(symptomData)
+      });
+
+      if (!response.ok) throw new Error("Failed to save symptom");
+
+      setSymptoms((prev) => ({
+        ...prev,
+        [selectedDate]: [...(prev[selectedDate] || []), symptomData]
+      }));
+
+      setNewSymptom("");
+      setIntensity(3);
+    } catch (error) {
+      console.error("Error saving symptom:", error);
+    }
   };
 
-  const getTileClassName = ({ date, view }) => {
+  // Highlight calendar dates with symptoms
+  const getTileClassName = ({ date }) => {
     const dateKey = dayjs(date).format("YYYY-MM-DD");
     return symptoms[dateKey] ? "highlighted-date" : "";
   };
+
+  useEffect(() => {
+    fetchSymptoms();
+  }, []);
 
   return (
     <div className="symptom-tracker-container">
@@ -41,19 +90,12 @@ const SymptomTracker = () => {
 
       {/* Calendar */}
       <div className="calendar-container">
-        <Calendar
-          onChange={setDate}
-          value={date}
-          className="calendar"
-          tileClassName={getTileClassName}
-        />
+        <Calendar onChange={setDate} value={date} tileClassName={getTileClassName} />
       </div>
 
       {/* Symptoms List */}
       <div className="symptoms-list">
-        <h3 className="date-title">
-          Symptoms on {dayjs(date).format("MMM D, YYYY")}
-        </h3>
+        <h3 className="date-title">Symptoms on {dayjs(date).format("MMM D, YYYY")}</h3>
         <ul className="symptom-items">
           {(symptoms[selectedDate] || []).map((entry, index) => (
             <li key={index} className={`symptom-item intensity-${entry.intensity}`}>
