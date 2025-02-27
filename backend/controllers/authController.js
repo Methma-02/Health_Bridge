@@ -6,6 +6,8 @@ const { generateRegistrationId } = require('../utils/generators');
 const { OAuth2Client } = require('google-auth-library');
 const logger = require('../utils/logger');
 const crypto = require('crypto');
+const mongoose = require('mongoose');
+
 
 const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
@@ -13,6 +15,10 @@ class AuthController {
   static async register(req, res) {
     try {
       const { email, password, role, ...userData } = req.body;
+
+      if (mongoose.connection.readyState !== 1) {
+        await connectDB(); // Ensure DB is connected before querying
+      }
 
       // Check if user already exists
       const existingUser = await User.findOne({ email });
