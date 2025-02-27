@@ -20,7 +20,8 @@ async function connectDB() {
       connectTimeoutMS: 60000, // Increased from 30000
       maxPoolSize: 10, // Add connection pooling
       retryWrites: true,
-      w: 'majority'
+      w: 'majority',
+      
     });
     
     // Set up connection event listeners
