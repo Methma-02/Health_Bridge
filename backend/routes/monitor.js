@@ -2,7 +2,6 @@
 const express = require('express');
 const router = express.Router();
 const { getDB } = require('../config/database');
-const mongoose = require('mongoose');
 
 router.get('/status', async (req, res) => {
   try {
