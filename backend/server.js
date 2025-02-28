@@ -314,5 +314,40 @@ const BabySchema = new mongoose.Schema({
           default: Date.now
         }
       }
-    ]
+    ],
+    hospitalizations: [
+      {
+        date: String, // Date of hospitalization
+        reason: String, // Reason for hospitalization
+        disease: String, // Disease or condition
+        result: String, // Result or outcome
+        createdAt: {
+          type: Date,
+          default: Date.now
+        },
+        updatedAt: {
+          type: Date,
+          default: Date.now
+        }
+      }
+    ],
+    referrals: [
+      {
+        date: String, // Date of referral
+        reason: String, // Reason for referral
+        place: String, // Place referred to
+        result: String, // Result or outcome
+        createdAt: {
+          type: Date,
+          default: Date.now
+        },
+        updatedAt: {
+          type: Date,
+          default: Date.now
+        }
+      }
+    ]  
 });
+
+const Baby = mongoose.model('Baby', BabySchema);
+module.exports = Baby;
