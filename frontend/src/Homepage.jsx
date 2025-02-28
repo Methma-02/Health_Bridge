@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import Header from './HeaderFooter/Header';
 import Footer from './HeaderFooter/Footer';
 import { Heart, Calendar, FileText, Gift, AlertCircle, ArrowLeft, ArrowRight, Check } from 'lucide-react';
-import './Homepage.css';
+import VideoBackground from './VideoBackground'; // Import the VideoBackground component
+import './HomePageStyles.css';
 
 const Homepage = () => {
   const servicesRef = useRef(null);
@@ -132,12 +133,13 @@ const Homepage = () => {
     <div className="health-bridge-homepage">
       <Header />
       
-      {/* Hero Section */}
+      {/* Hero Section with Video Background */}
       <section className="hero-section">
+        <VideoBackground />
         <div className="hero-content">
           <h2>A Digital Bridge to Safer Motherhood</h2>
           <p>
-            Empowering mothers and children in Sri Lanka with digital healthcare solutions for a healthier tomorrow.
+            Revolutionizing Sri Lanka with digital healthcare solutions for a healthier tomorrow.
           </p>
           <div className="hero-buttons">
             <button 
@@ -213,45 +215,43 @@ const Homepage = () => {
 
       {/* About Us Section */}
       <section ref={aboutRef} className="about-section">
-  <div className="container">
-    <h2>About Us</h2>
-    <h3>Health Bridge: Connecting Mothers & Healthcare for a Healthier Future</h3>
-    
-    <div className="about-content">
-      <div className="about-text">
-        <p>
-          At Health Bridge, we believe that every mother and child deserve access to seamless, technology-driven healthcare. Our platform was created to <strong>digitize maternal and child health records in Sri Lanka</strong>, ensuring that mothers, doctors, and healthcare professionals can easily track, update, and manage essential medical information.
-        </p>
-        
-        <p>
-          Traditionally, pregnancy and child health records have been maintained on paper, making them difficult to store, update, and access. <strong>Health Bridge eliminates these challenges</strong> by providing a secure, digital platform where:
-        </p>
-        
-        <div className="benefits-list">
-          <div className="benefit-item">
-            <div className="benefit-icon">
-              <Check size={18} color="white" />
+        <div className="container">
+          <h2>About Us</h2>
+          <h3>Health Bridge: Connecting Mothers & Healthcare for a Healthier Future</h3>
+          
+          <div className="about-content">
+            <div className="about-text">
+              <p>
+                At Health Bridge, we believe that every mother and child deserve access to seamless, technology-driven healthcare. Our platform was created to <strong>digitize maternal and child health records in Sri Lanka</strong>, ensuring that mothers, doctors, and healthcare professionals can easily track, update, and manage essential medical information.
+              </p>
+              
+              <p>
+                Traditionally, pregnancy and child health records have been maintained on paper, making them difficult to store, update, and access. <strong>Health Bridge eliminates these challenges</strong> by providing a secure, digital platform where:
+              </p>
+              
+              <div className="benefits-list">
+                <div className="benefit-item">
+                  <div className="benefit-icon">
+                    <Check size={18} color="white" />
+                  </div>
+                  <p><strong>Mothers</strong> can log symptoms, track their health, and stay informed.</p>
+                </div>
+                <div className="benefit-item">
+                  <div className="benefit-icon">
+                    <Check size={18} color="white" />
+                  </div>
+                  <p><strong>Doctors and healthcare professionals</strong> can access patient records in real-time for better decision-making.</p>
+                </div>
+                <div className="benefit-item">
+                  <div className="benefit-icon">
+                    <Check size={18} color="white" />
+                  </div>
+                  <p><strong>Emergency alerts and donation support</strong> ensure timely assistance when needed.</p>
+                </div>
+              </div>
             </div>
-            <p><strong>Mothers</strong> can log symptoms, track their health, and stay informed.</p>
-          </div>
-          <div className="benefit-item">
-            <div className="benefit-icon">
-              <Check size={18} color="white" />
-            </div>
-            <p><strong>Doctors and healthcare professionals</strong> can access patient records in real-time for better decision-making.</p>
-          </div>
-          <div className="benefit-item">
-            <div className="benefit-icon">
-              <Check size={18} color="white" />
-            </div>
-            <p><strong>Emergency alerts and donation support</strong> ensure timely assistance when needed.</p>
           </div>
         </div>
-      </div>
-      
-    </div>
-    
-  </div>
       </section>
 
       {/* How It Works Section */}
@@ -269,9 +269,6 @@ const Homepage = () => {
               </div>
             ))}
           </div>
-          <p className="centered-text highlight-text">
-            <em>Health Bridge makes maternal and child healthcare simple, accessible, and secure.</em> <strong>Start your journey today!</strong>
-          </p>
         </div>
       </section>
 
@@ -288,6 +285,8 @@ const Homepage = () => {
       <Footer />
     </div>
   );
+
+  
 };
 
 export default Homepage;
