@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Plus, Trash2 } from "lucide-react";
 
-const MedicalTracker = () => {
+const Referal = () => {
   // Combined state for both hospitalizations and referrals
   const [hospitalizations, setHospitalizations] = useState([
     {
@@ -206,4 +206,4 @@ const MedicalTracker = () => {
   );
 };
 
-export default MedicalTracker;
+export default Referal;
