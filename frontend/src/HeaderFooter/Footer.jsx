@@ -16,7 +16,7 @@ const Footer = () => {
 
   return (
     <footer className="footer">
-      <div className="container mx-auto footer-container">
+      <div className="container">
         <div className="scroll-buttons">
           <button onClick={scrollToTop} className="scroll-button scroll-top">
             <ArrowUp className="h-6 w-6" />
@@ -26,49 +26,50 @@ const Footer = () => {
           </button>
         </div>
         
-        {/* Footer layout in columns */}
-        <div className="footer-columns">
+        <div className="footer-content">
           <div className="footer-column">
-            <h3 className="text-xl font-semibold mb-2">Contact Us</h3>
-            <div className="space-y-2">
-              <a href="mailto:healthbridge.official25@gmail.com" className="footer-link" target="_blank" rel="noopener noreferrer">
+            <h3>Contact Us</h3>
+            <div className="footer-links">
+              <a href="mailto:healthbridge.official25@gmail.com" className="footer-link">
                 <Mail className="footer-icon" />
-                healthbridge.official25@gmail.com 
+                <span>healthbridge.official25@gmail.com</span>
               </a>
-              <p> </p>
-              <a href="tel:+94743715955" className="footer-link" target="_blank" rel="noopener noreferrer">
+              <a href="tel:+94743715955" className="footer-link">
                 <Phone className="footer-icon" />
-                +94 74 371 5955
+                <span>+94 74 371 5955</span>
               </a>
-              <p> </p>
-              <a href="tel:+94710780371" className="footer-link" target="_blank" rel="noopener noreferrer">
+              <a href="tel:+94710780371" className="footer-link">
                 <Phone className="footer-icon" />
-                +94 71 078 0371
+                <span>+94 71 078 0371</span>
+              </a>
+            </div>
+          </div>
+          
+          <div className="footer-column center-column">
+            <h3>Follow Us</h3>
+            <div className="social-links">
+              <a href="https://www.facebook.com/share/15fPLQWJUw/" target="_blank" rel="noopener noreferrer">
+                <Facebook />
+              </a>
+              <a href="https://www.linkedin.com/company/healthbridgeoffical/" target="_blank" rel="noopener noreferrer">
+                <Linkedin />
+              </a>
+              <a href="https://www.instagram.com/healthbridge2025/?hl=en" target="_blank" rel="noopener noreferrer">
+                <Instagram />
               </a>
             </div>
           </div>
           
           <div className="footer-column">
-            <h3 className="text-xl font-semibold mb-2">Follow Us</h3>
-            <div className="footer-social">
-              <a href="https://www.facebook.com/share/15fPLQWJUw/" className="footer-link" target="_blank" rel="noopener noreferrer"><Facebook className="h-6 w-6" /></a>
-              <a href="https://www.linkedin.com/company/healthbridgeoffical/" className="footer-link" target="_blank" rel="noopener noreferrer"><Linkedin className="h-6 w-6" /></a>
-              <a href="https://www.instagram.com/healthbridge2025/?hl=en" className="footer-link" target="_blank" rel="noopener noreferrer"><Instagram className="h-6 w-6" /></a>
-            </div>
-          </div>
-          
-          <div className="footer-column">
-            <h3 className="text-xl font-semibold mb-2">Quick Links</h3>
-            <div className="space-y-2">
-              <a href="/about" className="footer-link" target="_blank" rel="noopener noreferrer">How To Use</a>
-              <p> </p>
-              <a href="https://healthbridgemarketing.netlify.app/" className="footer-link" target="_blank" rel="noopener noreferrer">Marketing Website</a>
+            <h3>Quick Links</h3>
+            <div className="footer-links">
+              <a href="/about" className="quick-link">How To Use</a>
+              <a href="https://healthbridgemarketing.netlify.app/" className="quick-link">Marketing Website</a>
             </div>
           </div>
         </div>
         
-        {/* Centered copyright text */}
-        <div className="footer-divider text-center">
+        <div className="footer-bottom">
           <p>&copy; {new Date().getFullYear()} Health Bridge. All rights reserved.</p>
         </div>
       </div>
