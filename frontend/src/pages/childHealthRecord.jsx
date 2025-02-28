@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const HealthRecords = () => {
+const ChildHealthRecords = () => {
     const ageStages = [
         "1 month", "2 months", "4 months", "6 months", "9 months", 
         "18 months", "3 years", "4 years", "5 years"
@@ -66,4 +66,4 @@ const HealthRecords = () => {
     );
 };
 
-export default HealthRecords;
+export default ChildHealthRecords;
