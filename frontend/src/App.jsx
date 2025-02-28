@@ -1,51 +1,25 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
-import "./App.css";
 
-function App() {
-  const [count, setCount] = useState(0);
-  const [data, setData] = useState(null);
+import React from 'react';
+import { Routes, Route } from 'react-router-dom';
+import Homepage from './Homepage';
+//import PregnancyForm from './pages/PregnancyForm';
+//import ChildHealth from './pages/ChildHealth';
+//import SymptomRecorder from './pages/SymptomRecorder';
+//import DonationCenter from './pages/DonationCenter';
+//import EmergencyAlert from './pages/EmergencyAlert';
 
-  // Fetch data from backend when component mounts
-  useEffect(() => {
-    axios.get("http://localhost:5000/")
-      .then(response => setData(response.data))
-      .catch(error => console.error("Error fetching data:", error));
-  }, []);
-
+const App = () => {
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
 
-      {/* Display data from backend */}
-      <div className="backend-data">
-        <h2>Backend Response:</h2>
-        {data ? <p>{data.message}</p> : <p>Loading data...</p>}
-      </div>
-
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <Routes>
+      <Route path="/" element={<Homepage />} />
+      {/*<Route path="/pregnancy-form" element={<PregnancyForm />} />
+      <Route path="/child-health" element={<ChildHealth />} />
+      <Route path="/symptom-recorder" element={<SymptomRecorder />} />
+      <Route path="/donation-center" element={<DonationCenter />} />
+      <Route path="/emergency-alert" element={<EmergencyAlert />} />*/}
+    </Routes>
   );
-}
+};
 
 export default App;
