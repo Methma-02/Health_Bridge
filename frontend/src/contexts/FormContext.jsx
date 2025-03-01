@@ -312,6 +312,12 @@ export const FormProvider = ({ children }) => {
       dates: Array(6).fill(""), // Initialize with 6 empty strings for dates
       batchNumbers: Array(6).fill(""), // Initialize with 6 empty strings for batch numbers
     },
+
+    dentalCare: {
+      referredDate: '', // For referred date
+      examinationDate: '', // For date of examination
+      treatment: '', // For treatment details
+    },
   });
 
   

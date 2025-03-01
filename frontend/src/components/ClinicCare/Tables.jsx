@@ -290,12 +290,63 @@ const Tables = () => {
 
 <div className='dental'>
     <h2>Dental care</h2>
-    <tr>Refferred date</tr><td><input type='date'></input></td>
-    <tr>Date of examination</tr> <td><input type='date'></input></td>
-    <tr>
-        Treatment &nbsp;
-        <textarea value={formData.twoCell.twocells} onChange={(e) => handleTwoCellChange (e.target.value)}/>
-    </tr>
+    <table>
+        <tbody>
+            <tr>
+                <td>Referred date</td>
+                <td>
+                    <input
+                        type='date'
+                        value={formData.dentalCare.referredDate || ''}
+                        onChange={(e) =>
+                            setFormData((prev) => ({
+                                ...prev,
+                                dentalCare: {
+                                    ...prev.dentalCare,
+                                    referredDate: e.target.value,
+                                },
+                            }))
+                        }
+                    />
+                </td>
+            </tr>
+            <tr>
+                <td>Date of examination</td>
+                <td>
+                    <input
+                        type='date'
+                        value={formData.dentalCare.examinationDate || ''}
+                        onChange={(e) =>
+                            setFormData((prev) => ({
+                                ...prev,
+                                dentalCare: {
+                                    ...prev.dentalCare,
+                                    examinationDate: e.target.value,
+                                },
+                            }))
+                        }
+                    />
+                </td>
+            </tr>
+            <tr>
+                <td>Treatment</td>
+                <td>
+                    <textarea
+                        value={formData.dentalCare.treatment || ''}
+                        onChange={(e) =>
+                            setFormData((prev) => ({
+                                ...prev,
+                                dentalCare: {
+                                    ...prev.dentalCare,
+                                    treatment: e.target.value,
+                                },
+                            }))
+                        }
+                    />
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </div>
      
 <div>
