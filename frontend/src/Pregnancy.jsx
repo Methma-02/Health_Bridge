@@ -126,58 +126,6 @@ function Pregnancy() {
 
             if (response.ok) {
                 alert('Data saved successfully!');
-                setFormData({
-                    regNo: '',
-                    regDate: '',
-                    regPlace: '',
-                    regFam: '',
-                    regArea: '',
-                    midwife: '',
-                    name: '',
-                    age: '',
-                    husbandName: '',
-                    husbandAge: '',
-                    address: '',
-                    contact: '',
-                    eduMother: '',
-                    eduFather: '',
-                    motherJob: '',
-                    distance: '',
-                    husbandJob: '',
-                    marriageAge: '',
-                    relative: '',
-                    vaccine: '',
-                    prenatal: '',
-                    folic: '',
-                    fertility: '',
-                    pregnancyNo: '',
-                    childNo: '',
-                    youngest: '',
-                    menstruation: '',
-                    hopedate: '',
-                    hopetime: '',
-                    fetal: '',
-                    noOfWeeks: '',
-                    famPlan: '',
-                    minOrMax: '',
-                    morePreg: '',
-                    bloodPressure: '',
-                    vaginalBleeding: '',
-                    fetusStatus: '',
-                    casualPosition: '',
-                    unknownDeliveryDate: '',
-                    other: '',
-                    bmi: '', 
-                    diabetes: '', 
-                    malaria: '', 
-                    heartProblems: '', 
-                    kidneyProblems: '', 
-                    otherProblems: '',
-                    familyDiabetes: '', 
-                    familyBloodPressure: '', 
-                    hematologicalConditions: '', 
-                    otherConditions: '',
-                });
             } else {
                 alert('Failed to save data.');
             }
@@ -246,7 +194,7 @@ function Pregnancy() {
         <div className='container'>
             <h1>Pregnancy Record Part-B</h1> <br /><br />
 
-            <form onSubmit={handleSubmit}>
+            <form>
                 {/* Render Registration Fields */}
                 {renderInputFields(registrationFields)}
 
@@ -317,10 +265,11 @@ function Pregnancy() {
                 </div>
 
                 {/* Submit Button */}
-                <button type="submit">Submit</button>
+                <button type="submit" onClick={handleSubmit}>Submit</button>
             </form>
             <Tables/>
             <Table2/>
+            <Pregnancy2/>
         </div>
     );
 }
