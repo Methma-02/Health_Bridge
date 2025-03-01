@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './App.css';
 import Tables from './TablesR1';
 import Table2 from "./TableR2";
+import Pregnancy2 from "./Pregnancy2";
 
 const registrationFields = [
     { id: 'regNo', label: 'Registration No.:', type: 'text' },
@@ -370,6 +371,7 @@ function Pregnancy() {
             </form>
             <Tables/>
             <Table2/>
+            <Pregnancy2/>
         </div>
     );
 }
