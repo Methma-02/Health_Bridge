@@ -398,7 +398,13 @@ const pregnancyForm1Schema = new mongoose.Schema({
         immunizationData: {
             dates: [String], // Array of strings for dates
             batchNumbers: [String], // Array of strings for batch numbers
-        }
+        },
+
+        dentalCare: {
+            referredDate: String,
+            examinationDate: String,
+            treatment: String,
+        },
         
 }, { collection: 'Pregnancy_Form1_Record' });
 
