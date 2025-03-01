@@ -426,18 +426,18 @@ const Tables = () => {
         </td>
 
     <tr>
-        <td>If (R) date of referral</td> <td><input type='date'></input></td>
+        <td>If (R) date of referral</td> 
+        {createTwoCellRow('referall')}
     </tr>
 
     <tr>
-        <td>Blood taken date for HIV Screening</td> <td>
-            <input type='date'/>
-        </td>
+        <td>Blood taken date for HIV Screening</td>
+        {createTwoCellRow('hiv')}
     </tr>
 
     <tr>
         <td>date result informed to mother</td> 
-        <td><input type='date'></input></td>
+        {createTwoCellRow('informedDate')}
     </tr>
 </div>
 
