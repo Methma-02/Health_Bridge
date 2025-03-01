@@ -1,25 +1,54 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useForm2Context } from './contexts/Form2Context'; 
 
 const Tables = () => {
-    const [data, setData] = useState([
-        { id: 1, result: '', details: '', placeOfBirth: '', bornWeight: '', complications: '', age: '' },
-    ]);
+    const { formData, setFormData } = useForm2Context();
+    
+    // Initialize pregnancyHistory if it doesn't exist in context
+    if (!formData.pregnancyHistory) {
+        setFormData({
+            ...formData,
+            pregnancyHistory: [
+                { id: 1, result: '', details: '', placeOfBirth: '', bornWeight: '', complications: '', age: '' }
+            ]
+        });
+    }
 
     const handleInputChange = (e, id, field) => {
-        const updatedData = data.map((row) =>
+        const updatedHistory = formData.pregnancyHistory.map((row) =>
             row.id === id ? { ...row, [field]: e.target.value } : row
         );
-        setData(updatedData);
+        
+        setFormData({
+            ...formData,
+            pregnancyHistory: updatedHistory
+        });
     };
 
     const addRow = () => {
-        const newRow = { id: data.length + 1, result: '', details: '', placeOfBirth: '', bornWeight: '', complications: '', age: '' };
-        setData([...data, newRow]);
+        const newRow = { 
+            id: formData.pregnancyHistory.length + 1, 
+            result: '', 
+            details: '', 
+            placeOfBirth: '', 
+            bornWeight: '', 
+            complications: '', 
+            age: '' 
+        };
+        
+        setFormData({
+            ...formData,
+            pregnancyHistory: [...formData.pregnancyHistory, newRow]
+        });
     };
 
     const deleteRow = (id) => {
-        const updatedData = data.filter((row) => row.id !== id);
-        setData(updatedData);
+        const updatedHistory = formData.pregnancyHistory.filter((row) => row.id !== id);
+        
+        setFormData({
+            ...formData,
+            pregnancyHistory: updatedHistory
+        });
     };
 
     return (
@@ -40,7 +69,7 @@ const Tables = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {data.map((row) => (
+                    {formData.pregnancyHistory && formData.pregnancyHistory.map((row) => (
                         <tr key={row.id}>
                             <td>{row.id}</td>
                             <td>
@@ -52,7 +81,6 @@ const Tables = () => {
                             </td>
                             <td>
                                 <textarea
-                                    type="text"
                                     value={row.details}
                                     onChange={(e) => handleInputChange(e, row.id, 'details')}
                                 />
@@ -73,7 +101,6 @@ const Tables = () => {
                             </td>
                             <td>
                                 <textarea
-                                    type="text"
                                     value={row.complications}
                                     onChange={(e) => handleInputChange(e, row.id, 'complications')}
                                 />

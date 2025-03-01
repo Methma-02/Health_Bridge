@@ -56,13 +56,18 @@ export const Form2Provider = ({ children }) => {
     familyBloodPressure: '', 
     hematologicalConditions: '', 
     otherConditions: '',
-  })
+    // New pregnancy history array for the table component
+    pregnancyHistory: [
+      { id: 1, result: '', details: '', placeOfBirth: '', bornWeight: '', complications: '', age: '' }
+    ],
 
-  
- useEffect(() => {
-            console.log("in context")
-           console.log(formData);
-   }, [formData]);
+    prenatalFieldNote: null
+  });
+
+  useEffect(() => {
+    console.log("in context");
+    console.log(formData);
+  }, [formData]);
 
   return (
     <Form2Context.Provider value={{ formData, setFormData }}>
@@ -76,6 +81,4 @@ export const useForm2Context = () => {
   return useContext(Form2Context);
 };
 
-
-
-
+export default Form2Context;
