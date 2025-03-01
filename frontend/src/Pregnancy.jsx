@@ -3,6 +3,7 @@ import './App.css';
 import Tables from './TablesR1';
 import Table2 from "./TableR2";
 import Pregnancy2 from "./Pregnancy2";
+import { useForm2Context } from './contexts/Form2Context';
 
 const registrationFields = [
     { id: 'regNo', label: 'Registration No.:', type: 'text' },
@@ -82,58 +83,7 @@ const familyMedicalHistoryFields = [
 ];
 
 function Pregnancy() {
-    const [formData, setFormData] = useState({
-        regNo: '',
-        regDate: '',
-        regPlace: '',
-        regFam: '',
-        regArea: '',
-        midwife: '',
-        name: '',
-        age: '',
-        husbandName: '',
-        husbandAge: '',
-        address: '',
-        contact: '',
-        eduMother: '',
-        eduFather: '',
-        motherJob: '',
-        distance: '',
-        husbandJob: '',
-        marriageAge: '',
-        relative: '',
-        vaccine: '',
-        prenatal: '',
-        folic: '',
-        fertility: '',
-        pregnancyNo: '',
-        childNo: '',
-        youngest: '',
-        menstruation: '',
-        hopedate: '',
-        hopetime: '',
-        fetal: '',
-        noOfWeeks: '',
-        famPlan: '',
-        minOrMax: '',
-        morePreg: '',
-        bloodPressure: '',
-        vaginalBleeding: '',
-        fetusStatus: '',
-        casualPosition: '',
-        unknownDeliveryDate: '',
-        other: '',
-        bmi: '', 
-        diabetes: '', 
-        malaria: '', 
-        heartProblems: '', 
-        kidneyProblems: '', 
-        otherProblems: '',
-        familyDiabetes: '', 
-        familyBloodPressure: '', 
-        hematologicalConditions: '', 
-        otherConditions: '',
-    });
+    const {formData, setFormData} = useForm2Context();
 
     useEffect(() => {
         console.log(formData);
@@ -371,7 +321,6 @@ function Pregnancy() {
             </form>
             <Tables/>
             <Table2/>
-            <Pregnancy2/>
         </div>
     );
 }

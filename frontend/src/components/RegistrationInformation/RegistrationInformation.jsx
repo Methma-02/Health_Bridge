@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useFormContext
- } from '../../contexts/FormContext';
+import { useFormContext} from '../../contexts/FormContext';
+
 const PregnancyRecordForm = () => {
   const { formData, setFormData } = useFormContext();
   useEffect(() => {
