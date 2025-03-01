@@ -1,102 +1,32 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './App.css';
+import { useForm2Context } from './contexts/Form2Context';
 
 const ClinicForm = () => {
-  const [formData, setFormData] = useState({
-    dateOfVisit: '',
-    weeksIntoPregnancy: '',
-    weight: '',
-    sugar: '',
-    urine: '',
-    albumin: '',
-    security: '',
-    swelling: '',
-    bloodPressure: '',
-    fetalHeight: '',
-    location: '',
-    fetalMovement: '',
-    heartSounds: '',
-    ironFolate: '',
-    vitaminC: '',
-    calciumTreatment: '',
-    malletha: '',
-    thripocha: '',
-    testedBy: '',
-    height: '',
-    bmi: '',
-    breastExamination: '',
-    heartExamination: '',
-    lungs: '',
-    dentalDisaster: '',
-    scrofula: '',
-    wormTreatment: '',
-    vrdlDates: '',
-    vrdlResultDate: '',
-    vrdlResult: '',
-    referralDate: '',
-    bloodClot: '',
-    hemoglobin: '',
-    bloodSugar: '',
-    outpouringDate: '',
-    batchNo: '',
-    participatingClinics: '',
-    mohClinic: false,
-    specialClinic: false,
-    privateClinic: false,
-    otherClinic: false,
-    reasonForOtherClinic: '',
-    place: '',
-    actionsTakenByMother: '',
-    actionsTakenByFamilyHealthOfficer: '',
-    birthPlace: '',
-    birthDate: '',
-    birthResult: '',
-    institutionName: '',
-    doneBy: '',
-    dischargeDate: '',
-    obstetricDetails: '',
-    obstetricComplications: '',
-    scratchesWound: false,
-    remainingApura: false,
-    prolongedLabour: false,
-    postpartumBleeding: false,
-    circumcisionDone: false,
-    otherComplications: false,
-    maternalDeathsDate: '',
-    maternalDeathsReason: '',
-    maternalDeathsInvestigated: false,
-    postnatalCareMotherTemperature: '',
-    postnatalCareMotherSecurity: '',
-    contractions: '',
-    users: '',
-    coralBlood: '',
-    paulSmellingDischarge: '',
-    discontinued: false,
-    mentalChanges: '',
-    upperAbdominalPain: '',
-    diarrhea: '',
-    vomiting: '',
-    difficultyBreathing: '',
-    visualImpairment: '',
-    painInTheGrain: '',
-    childAbnormalities: '',
-    fever: '',
-    color: '',
-    publicInfections: '',
-    theWhite: '',
-    breastfeedingObserved: '',
-    mariloresMedicines: '',
-    childsMedicine: '',
-    peasantClinicDayAttendance: '',
-    newbornScr: '',
-    neonatalDeathsBelowDays: '',
-    neonatalDeathsDays28: '',
-    inspected: '',
-    causeOfDeath: '',
-    postpartumClinicAttendance: '',
-    acceptedFamilyOrganizationSystem: '',
-    ifNotAcceptedReturn: ''
-  });
+  const { formData, setFormData } = useForm2Context();
+
+  const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        try {
+            const response = await fetch('http://localhost:5000/api/pregnancy', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            });
+
+            if (response.ok) {
+                alert('Data saved successfully!');
+            } else {
+                alert('Failed to save data.');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('An error occurred while saving data.');
+        }
+    };
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -104,12 +34,6 @@ const ClinicForm = () => {
       ...formData,
       [name]: type === 'checkbox' ? checked : value
     });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Handle form submission
-    console.log(formData);
   };
 
   return (
