@@ -20,7 +20,6 @@ mongoose.connect(MONGO_URI, {
 .then(() => console.log('Connected to MongoDB Atlas'))
 .catch((err) => console.error('Error connecting to MongoDB:', err));
 
-// Mongoose Schema and Model for Form 2
 const pregnancySchema = new mongoose.Schema({
     regNo: { type: String, unique: true }, // Ensure regNo is unique
     regDate: String,
@@ -71,7 +70,28 @@ const pregnancySchema = new mongoose.Schema({
     familyDiabetes: String, 
     familyBloodPressure: String, 
     hematologicalConditions: String,
-    otherConditions: String, 
+    otherConditions: String,
+    // Add the pregnancyHistory array field
+    pregnancyHistory: [
+        {
+            id: Number,
+            result: String,
+            details: String,
+            placeOfBirth: String,
+            bornWeight: String,
+            complications: String,
+            age: String
+        }
+    ],
+
+    // Prenatal field note for the second table
+    prenatalFieldNote: [
+        {
+            id: Number,
+            header: String,
+            values: [String]
+        }
+    ]
 }, { collection: 'Pregnancy_Record' });
 
 const PregnancyModel = mongoose.model('Pregnancy', pregnancySchema);
