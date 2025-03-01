@@ -1,6 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useForm2Context } from './contexts/Form2Context'; 
 
 const Table2 = () => {
+    const { formData, setFormData } = useForm2Context();
+    
     // Define the headers vertically
     const headers = [
         'Date',
@@ -33,18 +36,25 @@ const Table2 = () => {
         'Dates to visit clinic',
     ];
 
-    // Initialize state for the table data
-    const [data, setData] = useState(
-        headers.map((header, index) => ({
+    // Initialize prenatalFieldNote if it doesn't exist in context
+    if (!formData.prenatalFieldNote) {
+        const initialPrenatalData = headers.map((header, index) => ({
             id: index + 1,
             header: header,
             values: Array(10).fill(''), // Initialize 10 empty input fields for each row
-        }))
-    );
+        }));
+        
+        setFormData({
+            ...formData,
+            prenatalFieldNote: initialPrenatalData
+        });
+    }
 
     // Handle input change
     const handleInputChange = (e, rowId, colIndex) => {
-        const updatedData = data.map((row) =>
+        if (!formData.prenatalFieldNote) return;
+        
+        const updatedPrenatalData = formData.prenatalFieldNote.map((row) =>
             row.id === rowId
                 ? {
                       ...row,
@@ -54,7 +64,11 @@ const Table2 = () => {
                   }
                 : row
         );
-        setData(updatedData);
+        
+        setFormData({
+            ...formData,
+            prenatalFieldNote: updatedPrenatalData
+        });
     };
 
     return (
@@ -71,7 +85,7 @@ const Table2 = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {data.map((row) => (
+                    {formData.prenatalFieldNote && formData.prenatalFieldNote.map((row) => (
                         <tr key={row.id}>
                             <td>{row.header}</td>
                             {row.values.map((value, colIndex) => (
