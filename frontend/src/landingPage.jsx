@@ -5,6 +5,7 @@ import { FaFacebook, FaInstagram, FaLinkedin } from "react-icons/fa";
 import { gsap } from "gsap";
 import Particles from "@tsparticles/react";
 import { loadFull } from "tsparticles";
+import LoginPage from './loginPage'; // Import the LoginPage component
 
 // Import images
 import landingPage2 from "./images/landingPage2.png";
@@ -17,6 +18,7 @@ const LandingPage = () => {
   const headerRef = useRef(null);
   const contentRef = useRef(null);
   const [hoverButton, setHoverButton] = useState(null);
+  const [showLoginModal, setShowLoginModal] = useState(false); // State to control modal visibility
 
   const particlesInit = async (main) => {
     await loadFull(main);
@@ -97,6 +99,8 @@ const LandingPage = () => {
         </svg>
       )
     }
+
+
   ];
 
   const testimonials = [
@@ -220,62 +224,58 @@ const LandingPage = () => {
       </div>
 
       {/* Header */}
-<header ref={headerRef} className="w-full fixed top-0 z-50 bg-white bg-opacity-90 backdrop-blur-sm shadow-sm">
-  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div className="flex justify-between items-center h-16">
-      {/* Logo and Name */}
-      <div className="flex items-center">
-        <div className="flex-shrink-0 flex items-center">
-          <img src={logo} alt="Health Bridge Logo" className="h-8 w-auto mr-2" />
-          <span className="text-2xl font-bold text-[#4f46e5]">Health Bridge</span>
-        </div>
+      <header ref={headerRef} className="w-full fixed top-0 z-50 bg-white bg-opacity-90 backdrop-blur-sm shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            {/* Logo and Name */}
+            <div className="flex items-center">
+              <div className="flex-shrink-0 flex items-center">
+                <img src={logo} alt="Health Bridge Logo" className="h-8 w-auto mr-2" />
+                <span className="text-2xl font-bold text-[#4f46e5]">Health Bridge</span>
+              </div>
 
-        
-        {/* Navigation links */}
-        <div className="hidden md:ml-10 md:flex md:space-x-8">
-          <a href="#features" className="border-transparent text-[#666] hover:text-[#333] hover:border-[#4f46e5] inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors duration-300">
-            Features
-          </a>
-          <a href="#benefits" className="border-transparent text-[#666] hover:text-[#333] hover:border-[#4f46e5] inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors duration-300">
-            Benefits
-          </a>
-          <a href="#testimonials" className="border-transparent text-[#666] hover:text-[#333] hover:border-[#4f46e5] inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors duration-300">
-            Testimonials
-          </a>
-          <a href="#faq" className="border-transparent text-[#666] hover:text-[#333] hover:border-[#4f46e5] inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors duration-300">
-            FAQ
-          </a>
+              {/* Navigation links */}
+              <div className="hidden md:ml-10 md:flex md:space-x-8">
+                <a href="#features" className="border-transparent text-[#666] hover:text-[#333] hover:border-[#4f46e5] inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors duration-300">
+                  Features
+                </a>
+                <a href="#benefits" className="border-transparent text-[#666] hover:text-[#333] hover:border-[#4f46e5] inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors duration-300">
+                  Benefits
+                </a>
+                <a href="#testimonials" className="border-transparent text-[#666] hover:text-[#333] hover:border-[#4f46e5] inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors duration-300">
+                  Testimonials
+                </a>
+                <a href="#faq" className="border-transparent text-[#666] hover:text-[#333] hover:border-[#4f46e5] inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors duration-300">
+                  FAQ
+                </a>
+              </div>
+            </div>
+            {/* Auth buttons */}
+            <div className="flex items-center space-x-4">
+              <motion.button
+                onClick={() => setShowLoginModal(true)} // Open login modal
+                className="text-[#4f46e5] border border-[#4f46e5] px-4 py-2 rounded-md text-sm font-medium hover:bg-[#eef2ff] transition-colors duration-300"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                Login
+              </motion.button>
+              <motion.button
+                onClick={() => handleNavigation("/register")}
+                className="bg-gradient-to-r from-[#4f46e5] to-[#818cf8] hover:from-[#4338ca] hover:to-[#4f46e5] text-white px-4 py-2 rounded-md text-sm font-medium transition-colors duration-300"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                Register
+              </motion.button>
+            </div>
+          </div>
         </div>
-      </div>
-      {/* Auth buttons */}
-      <div className="flex items-center space-x-4">
-        <motion.button
-          onClick={() => handleNavigation("/login")}
-          className="text-[#4f46e5] border border-[#4f46e5] px-4 py-2 rounded-md text-sm font-medium hover:bg-[#eef2ff] transition-colors duration-300"
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.98 }}
-        >
-          Login
-        </motion.button>
-        <motion.button
-          onClick={() => handleNavigation("/register")}
-          className="bg-gradient-to-r from-[#4f46e5] to-[#818cf8] hover:from-[#4338ca] hover:to-[#4f46e5] text-white px-4 py-2 rounded-md text-sm font-medium transition-colors duration-300"
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.98 }}
-        >
-          Register
-        </motion.button>
-      </div>
-    </div>
-  </div>
-</header>
+      </header>
 
       {/* Main content area */}
       <main className="relative pt-16">
         {/* Hero section */}
-        
-
-
         <section className="relative min-h-screen flex flex-col justify-center">
           {/* Video Background */}
           <div className="absolute inset-0 w-full h-full overflow-hidden z-0">
@@ -401,8 +401,8 @@ const LandingPage = () => {
           </div>
         </section>
 
-           {/* Features section */}
-                <section id="features" className="py-20 bg-[#f8fafc]">
+        {/* Features section */}
+        <section id="features" className="py-20 bg-[#f8fafc]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center">
               <h2 className="text-base text-[#6d28d9] font-semibold tracking-wide uppercase">Features</h2>
@@ -424,7 +424,7 @@ const LandingPage = () => {
                     transition={{ delay: 0.1 * index, duration: 0.8 }}
                   >
                     <div>
-                      <div className="absolute flex items-center justify-center h-12 w-12 rounded-md bg-gradient-to-r from-[#6d28d9] to-[#8b5cf6] text-white">
+                    <div className="absolute flex items-center justify-center h-12 w-12 rounded-md bg-gradient-to-r from-[#6d28d9] to-[#8b5cf6] text-white">
                         {feature.icon}
                       </div>
                       <div className="ml-16">
@@ -437,6 +437,8 @@ const LandingPage = () => {
               </div>
             </div>
           </div>
+
+
         </section>
 
         {/* Benefits section with stats */}
@@ -465,7 +467,7 @@ const LandingPage = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.1 * index, duration: 0.8 }}
                   >
-                    <div className="px-4 py-8 sm:p-8 text-center">
+                     <div className="px-4 py-8 sm:p-8 text-center">
                       <div className="text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-[#4338ca] to-[#4f46e5]">{item.stat}</div>
                       <div className="mt-3 text-lg font-medium text-[#666]">{item.description}</div>
                     </div>
@@ -505,7 +507,7 @@ const LandingPage = () => {
                 </ul>
               </div>
               <div className="mt-12 lg:mt-0 lg:w-1/2 flex justify-center">
-                <motion.div 
+              <motion.div 
                   className="w-full max-w-md bg-white p-2 rounded-2xl shadow-xl overflow-hidden relative"
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -529,6 +531,7 @@ const LandingPage = () => {
           </div>
         </section>
 
+
         {/* Testimonials */}
         <section id="testimonials" className="py-20 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -550,7 +553,6 @@ const LandingPage = () => {
                   >
                     {/* Large quote mark */}
                     <div className="absolute top-4 left-4 text-[#eef2ff] text-6xl leading-none">"</div>
-                    
                     <p className="text-lg text-[#666] italic relative z-10 pt-4">{testimonial.quote}</p>
                     <div className="mt-6 flex items-center">
                       <div className="flex-shrink-0">
@@ -568,6 +570,8 @@ const LandingPage = () => {
               </div>
             </div>
           </div>
+
+
         </section>
 
         {/* Limited-time offer */}
@@ -575,7 +579,7 @@ const LandingPage = () => {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div
               className="bg-cover bg-center rounded-2xl shadow-xl overflow-hidden"
-              style={{ backgroundImage: `url(${landingPage2})` }}
+              style={{ backgroundImage: 'url(${landingPage2})' }}
             >
               <div className="px-6 py-12 sm:px-12 lg:py-16 lg:pr-0 xl:py-20 xl:px-20">
                 <div className="lg:flex lg:items-center lg:justify-between">
@@ -601,14 +605,15 @@ const LandingPage = () => {
                     </div>
                   </div>
                 </div>
-              </div>
+                </div>
             </div>
           </div>
+
+
         </section>
 
-
         {/* FAQ Section */}
-<section id="faq" className="py-20 bg-white relative">
+        <section id="faq" className="py-20 bg-white relative">
   {/* Background Image */}
   <div className="absolute inset-0 z-0 opacity-10">
     <img src={landingPage} alt="Background" className="w-full h-full object-cover" />
@@ -635,7 +640,7 @@ const LandingPage = () => {
           answer: "With a single tap, the app sends your location and medical details to nearby healthcare providers and emergency services."
         },
         {
-          question: "Can I access my records offline?",
+           question: "Can I access my records offline?",
           answer: "Yes, Health Bridge allows you to download and access your health records offline for convenience."
         },
         {
@@ -661,7 +666,9 @@ const LandingPage = () => {
       ))}
     </div>
   </div>
-</section>
+
+
+        </section>
 
         {/* Footer */}
         <footer className="bg-gradient-to-r from-[#6d28d9] to-[#3b82f6] text-white">
@@ -685,9 +692,8 @@ const LandingPage = () => {
           <li><a href="#faq" className="text-sm text-[#f8fafc] hover:text-white">FAQ</a></li>
         </ul>
       </div>
-
-      {/* Contact Info */}
-      <div>
+        {/* Contact Info */}
+        <div>
         <h3 className="text-lg font-semibold mb-4">Contact Us</h3>
         <ul className="space-y-2">
           <li className="text-sm text-[#f8fafc]">Email: support@healthbridge.com</li>
@@ -712,7 +718,6 @@ const LandingPage = () => {
         </div>
       </div>
     </div>
-
     {/* Copyright */}
     <div className="mt-8 border-t border-[#f8fafc] pt-8 text-center">
       <p className="text-sm text-[#f8fafc]">
@@ -720,8 +725,20 @@ const LandingPage = () => {
       </p>
     </div>
   </div>
-</footer>
+
+
+
+        </footer>
       </main>
+
+      {/* Login Modal */}
+      {showLoginModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="relative z-10 max-w-md w-full">
+            <LoginPage onClose={() => setShowLoginModal(false)} />
+          </div>
+        </div>
+      )}
     </div>
   );
 };
