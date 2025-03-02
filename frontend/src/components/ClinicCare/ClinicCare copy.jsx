@@ -1,74 +1,54 @@
 /* eslint-disable */
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef , useEffect} from 'react';
 import SignatureCanvas from 'react-signature-canvas';
-import './ClinicCare.css';
+import './ClinicCare.css'; 
 import { useFormContext } from '../../contexts/FormContext';
 
 const ClinicCare = () => {
-  const { formData, setFormData } = useFormContext();
-  const clinicalObservationRefs = useRef([]);
-  const usScanRefs = useRef([]);
-
-  // Adjust ref arrays to match current row counts
-  clinicalObservationRefs.current = formData.clinicalObservationTable.map(
-    (_, i) => clinicalObservationRefs.current[i] || React.createRef()
-  );
-  usScanRefs.current = formData.usScanTable.map(
-    (_, i) => usScanRefs.current[i] || React.createRef()
-  );
-
+  const {formData, setFormData} = useFormContext();
   useEffect(() => {
-    // Load saved signatures for clinical observations
-    formData.clinicalObservationTable.forEach((row, index) => {
-      const ref = clinicalObservationRefs.current[index];
-      if (row.signature && ref?.current) {
-        ref.current.fromDataURL(row.signature);
-      }
-    });
+          console.log(formData);
+  }, [formData]); 
 
-    // Load saved signatures for US scans
-    formData.usScanTable.forEach((row, index) => {
-      const ref = usScanRefs.current[index];
-      if (row.signature && ref?.current) {
-        ref.current.fromDataURL(row.signature);
-      }
-    });
-  }, [formData.clinicalObservationTable, formData.usScanTable]);
+  // Create separate refs for each row
+  const signatureRefs = {
+    clinicalObservation: formData.clinicalObservationTable.map(() => useRef(null)),
+    usScan: formData.usScanTable.map(() => useRef(null))
+  };
 
   const handleInputChange = (section, rowIndex, field, value) => {
+    console.log(section)
+    console.log(rowIndex)
+    console.log(field)
+    console.log(value)
     setFormData(prevData => {
       const updatedSection = [...prevData[section]];
-      updatedSection[rowIndex] = { ...updatedSection[rowIndex], [field]: value };
+      updatedSection[rowIndex] = {
+        ...updatedSection[rowIndex],
+        [field]: value
+      };
       return { ...prevData, [section]: updatedSection };
     });
   };
 
-  const handleSignatureClear = (section, rowIndex) => {
-    let refs;
-    if (section === 'clinicalObservationTable') {
-      refs = clinicalObservationRefs.current;
-    } else if (section === 'usScanTable') {
-      refs = usScanRefs.current;
-    } else return;
-
-    const ref = refs[rowIndex];
-    if (ref?.current) {
-      ref.current.clear();
-      handleInputChange(section, rowIndex, 'signature', '');
+  const handleSignatureClear = (refKey, rowIndex) => {
+    if (signatureRefs[refKey][rowIndex].current) {
+      signatureRefs[refKey][rowIndex].current.clear();
     }
   };
 
   return (
     <div className="p-4 space-y-4">
+
       {/* Clinic No / Barcode */}
       <div className="border p-4 mb-2">
         <h2 className="text-lg font-semibold mb-2">Clinic No / Barcode</h2>
-        <input
+        <input 
           className="border p-2 w-full"
           placeholder="Enter Clinic No / Barcode"
           value={formData.clinicNumber}
-          onChange={(e) => setFormData(prev => ({ ...prev, clinicNumber: e.target.value }))}
+          onChange={(e) => setFormData(prev => ({ ...prev, clinicNumber: e.target.value }))} 
         />
       </div>
 
@@ -87,7 +67,7 @@ const ClinicCare = () => {
           <tbody>
             {formData.clinicalObservationTable.map((row, index) => (
               <tr key={index}>
-                 <td><input type="date" className="border p-2 w-full" value={row.date} onChange={(e) => handleInputChange('clinicalObservationTable', index, 'date', e.target.value)} /></td>
+                <td><input type="date" className="border p-2 w-full" value={row.date} onChange={(e) => handleInputChange('clinicalObservationTable', index, 'date', e.target.value)} /></td>
                 <td><input className="border p-2 w-full" value={row.poa} onChange={(e) => handleInputChange('clinicalObservationTable', index, 'poa', e.target.value)} /></td>
                 <td><input className="border p-2 w-full" value={row.weight} onChange={(e) => handleInputChange('clinicalObservationTable', index, 'weight', e.target.value)} /></td>
                 <td><input className="border p-2 w-full" value={row.urine} onChange={(e) => handleInputChange('clinicalObservationTable', index, 'urine', e.target.value)} /></td>
@@ -108,22 +88,12 @@ const ClinicCare = () => {
                   </div>
                 </td>
                 <td>
-                  <SignatureCanvas
-                    ref={clinicalObservationRefs.current[index]}
-                    onEnd={() => handleInputChange(
-                      'clinicalObservationTable',
-                      index,
-                      'signature',
-                      clinicalObservationRefs.current[index].current.toDataURL()
-                    )}
+                  <SignatureCanvas 
+                    ref={signatureRefs.clinicalObservation[index]}
+                    onEnd={() => handleInputChange('clinicalObservationTable', index, 'signature', signatureRefs.clinicalObservation[index].current.toDataURL())}
                     canvasProps={{ className: 'border rounded-md w-full h-32' }}
                   />
-                  <button
-                    className="border p-2 mt-2"
-                    onClick={() => handleSignatureClear('clinicalObservationTable', index)}
-                  >
-                    Clear
-                  </button>
+                  <button className="border p-2 mt-2" onClick={() => handleSignatureClear('clinicalObservation', index)}>Clear</button>
                 </td>
                 <td><input className="border p-2 w-full" value={row.designation} onChange={(e) => handleInputChange('clinicalObservationTable', index, 'designation', e.target.value)} /></td>
                 <td><input type="date" className="border p-2 w-full" value={row.nextVisitDate} onChange={(e) => handleInputChange('clinicalObservationTable', index, 'nextVisitDate', e.target.value)} /></td>
@@ -162,22 +132,12 @@ const ClinicCare = () => {
                 <td><input className="border p-2 w-full" value={row.averagePoa} onChange={(e) => handleInputChange('usScanTable', index, 'averagePoa', e.target.value)} /></td>
                 <td><input className="border p-2 w-full" value={row.otherFindings} onChange={(e) => handleInputChange('usScanTable', index, 'otherFindings', e.target.value)} /></td>
                 <td>
-                  <SignatureCanvas
-                    ref={usScanRefs.current[index]}
-                    onEnd={() => handleInputChange(
-                      'usScanTable',
-                      index,
-                      'signature',
-                      usScanRefs.current[index].current.toDataURL()
-                    )}
+                  <SignatureCanvas 
+                    ref={signatureRefs.usScan[index]}
+                    onEnd={() => handleInputChange('usScanTable', index, 'signature', signatureRefs.usScan[index].current.toDataURL())}
                     canvasProps={{ className: 'border rounded-md w-full h-32' }}
                   />
-                  <button
-                    className="border p-2 mt-2"
-                    onClick={() => handleSignatureClear('usScanTable', index)}
-                  >
-                    Clear
-                  </button>
+                  <button className="border p-2 mt-2" onClick={() => handleSignatureClear('usScan', index)}>Clear</button>
                 </td>
                 <td><input className="border p-2 w-full" value={row.designation} onChange={(e) => handleInputChange('usScanTable', index, 'designation', e.target.value)} /></td>
               </tr>
@@ -186,8 +146,8 @@ const ClinicCare = () => {
         </table>
       </div>
 
-        {/* Heart and Lungs */}
-        <div className="grid grid-cols-2 gap-4">
+      {/* Heart and Lungs */}
+      <div className="grid grid-cols-2 gap-4">
         <div className="border p-4">
           <h2 className="text-lg font-semibold mb-2">Heart</h2>
           <textarea
