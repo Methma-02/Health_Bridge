@@ -10,6 +10,7 @@ import { loadFull } from "tsparticles";
 import landingPage2 from "./images/landingPage2.png";
 import logo from "./images/logo.png";
 import landingPageVideo from "./videos/logingPage.mp4";
+import landingPage from "./images/landingPage3.png";
 
 const LandingPage = () => {
   const navigate = useNavigate();
@@ -399,6 +400,7 @@ const LandingPage = () => {
             </div>
           </div>
         </section>
+        
 
         {/* Benefits section with stats */}
         <section id="benefits" className="py-20 bg-[#f9f9f9]">
@@ -567,56 +569,62 @@ const LandingPage = () => {
           </div>
         </section>
 
-        {/* FAQ Section */}
-        <section id="faq" className="py-20 bg-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center">
-              <h2 className="text-base text-[#4f46e5] font-semibold tracking-wide uppercase">FAQ</h2>
-              <p className="mt-2 text-3xl font-extrabold text-[#333] sm:text-4xl">Frequently Asked Questions</p>
-              <p className="mt-4 max-w-2xl text-xl text-[#666] mx-auto">
-                Everything you need to know about Health Bridge.
-              </p>
-            </div>
 
-            <div className="mt-12 max-w-3xl mx-auto space-y-6">
-              {/* FAQ Items */}
-              {[
-                {
-                  question: "Is Health Bridge secure?",
-                  answer: "Yes, Health Bridge uses state-of-the-art encryption and follows strict data privacy protocols to ensure your information is safe."
-                },
-                {
-                  question: "How does the emergency alert system work?",
-                  answer: "With a single tap, the app sends your location and medical details to nearby healthcare providers and emergency services."
-                },
-                {
-                  question: "Can I access my records offline?",
-                  answer: "Yes, Health Bridge allows you to download and access your health records offline for convenience."
-                },
-                {
-                  question: "How do donations work?",
-                  answer: "You can donate directly through the app, and we ensure that 100% of your contribution goes to mothers in need."
-                },
-                {
-                  question: "Is Health Bridge free to use?",
-                  answer: "Yes, Health Bridge is completely free for all users. We believe in making healthcare accessible to everyone."
-                }
-              ].map((faq, index) => (
-                <motion.div
-                  key={index}
-                  className="bg-[#f9f9f9] p-6 rounded-lg border border-[#eef2ff]"
-                  whileHover={{ y: -5, boxShadow: "0 10px 25px rgba(79, 70, 229, 0.1)" }}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.1 * index, duration: 0.8 }}
-                >
-                  <h3 className="text-lg font-medium text-[#333]">{faq.question}</h3>
-                  <p className="mt-2 text-base text-[#666]">{faq.answer}</p>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
+        {/* FAQ Section */}
+<section id="faq" className="py-20 bg-white relative">
+  {/* Background Image */}
+  <div className="absolute inset-0 z-0 opacity-10">
+    <img src={landingPage} alt="Background" className="w-full h-full object-cover" />
+  </div>
+  
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <div className="text-center">
+      <h2 className="text-base text-[#4f46e5] font-semibold tracking-wide uppercase">FAQ</h2>
+      <p className="mt-2 text-3xl font-extrabold text-[#333] sm:text-4xl">Frequently Asked Questions</p>
+      <p className="mt-4 max-w-2xl text-xl text-[#666] mx-auto">
+        Everything you need to know about Health Bridge.
+      </p>
+    </div>
+
+    <div className="mt-12 max-w-3xl mx-auto space-y-6">
+      {/* FAQ Items */}
+      {[
+        {
+          question: "Is Health Bridge secure?",
+          answer: "Yes, Health Bridge uses state-of-the-art encryption and follows strict data privacy protocols to ensure your information is safe."
+        },
+        {
+          question: "How does the emergency alert system work?",
+          answer: "With a single tap, the app sends your location and medical details to nearby healthcare providers and emergency services."
+        },
+        {
+          question: "Can I access my records offline?",
+          answer: "Yes, Health Bridge allows you to download and access your health records offline for convenience."
+        },
+        {
+          question: "How do donations work?",
+          answer: "You can donate directly through the app, and we ensure that 100% of your contribution goes to mothers in need."
+        },
+        {
+          question: "Is Health Bridge free to use?",
+          answer: "Yes, Health Bridge is completely free for all users. We believe in making healthcare accessible to everyone."
+        }
+      ].map((faq, index) => (
+        <motion.div
+          key={index}
+          className="bg-[#f9f9f9] p-6 rounded-lg border border-[#eef2ff]"
+          whileHover={{ y: -5, boxShadow: "0 10px 25px rgba(79, 70, 229, 0.1)" }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 * index, duration: 0.8 }}
+        >
+          <h3 className="text-lg font-medium text-[#333]">{faq.question}</h3>
+          <p className="mt-2 text-base text-[#666]">{faq.answer}</p>
+        </motion.div>
+      ))}
+    </div>
+  </div>
+</section>
 
         {/* Footer */}
         <footer className="bg-gradient-to-r from-[#6d28d9] to-[#3b82f6] text-white">
