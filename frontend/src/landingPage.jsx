@@ -7,9 +7,9 @@ import Particles from "@tsparticles/react";
 import { loadFull } from "tsparticles";
 
 // Import images
-import landingPage1 from "./images/landingPage1.png";
 import landingPage2 from "./images/landingPage2.png";
 import logo from "./images/logo.png";
+import landingPageVideo from "./videos/logingPage.mp4";
 
 const LandingPage = () => {
   const navigate = useNavigate();
@@ -228,6 +228,8 @@ const LandingPage = () => {
           <img src={logo} alt="Health Bridge Logo" className="h-8 w-auto mr-2" />
           <span className="text-2xl font-bold text-[#4f46e5]">Health Bridge</span>
         </div>
+
+        
         {/* Navigation links */}
         <div className="hidden md:ml-10 md:flex md:space-x-8">
           <a href="#features" className="border-transparent text-[#666] hover:text-[#333] hover:border-[#4f46e5] inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors duration-300">
@@ -270,11 +272,27 @@ const LandingPage = () => {
       {/* Main content area */}
       <main className="relative pt-16">
         {/* Hero section */}
+        
+
+
         <section className="relative min-h-screen flex flex-col justify-center">
-          <div
-            className="absolute inset-0 bg-cover bg-center"
-            style={{ backgroundImage: `url(${landingPage1})` }}
-          ></div>
+          {/* Video Background */}
+          <div className="absolute inset-0 w-full h-full overflow-hidden z-0">
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="w-full h-full object-cover"
+            >
+              <source src={landingPageVideo} type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+            {/* Overlay to darken the video */}
+            <div className="absolute inset-0 bg-black/50"></div>
+          </div>
+
+          {/* Content */}
           <div ref={contentRef} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 relative z-10">
             <div className="lg:flex lg:items-center lg:justify-between">
               {/* Text content */}
@@ -381,44 +399,6 @@ const LandingPage = () => {
             </div>
           </div>
         </section>
-
-        {/* Features section */}
-        <section id="features" className="py-20 bg-[#f8fafc]">
-  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div className="text-center">
-      <h2 className="text-base text-[#6d28d9] font-semibold tracking-wide uppercase">Features</h2>
-      <p className="mt-2 text-3xl font-extrabold text-[#1e293b] sm:text-4xl">The Future of Healthcare</p>
-      <p className="mt-4 max-w-2xl text-xl text-[#475569] mx-auto">
-        Revolutionary tools designed to transform maternal and infant care.
-      </p>
-    </div>
-
-    <div className="mt-16">
-      <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:gap-x-12 lg:gap-y-16">
-        {features.map((feature, index) => (
-          <motion.div 
-            key={index}
-            className="relative bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition-shadow duration-300 border border-[#f8fafc] hover:border-[#6d28d9]"
-            whileHover={{ y: -5 }}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 * index, duration: 0.8 }}
-          >
-            <div>
-              <div className="absolute flex items-center justify-center h-12 w-12 rounded-md bg-gradient-to-r from-[#6d28d9] to-[#8b5cf6] text-white">
-                {feature.icon}
-              </div>
-              <div className="ml-16">
-                <h3 className="text-lg font-medium text-[#1e293b]">{feature.title}</h3>
-                <p className="mt-2 text-base text-[#475569]">{feature.description}</p>
-              </div>
-            </div>
-          </motion.div>
-        ))}
-      </div>
-    </div>
-  </div>
-</section>
 
         {/* Benefits section with stats */}
         <section id="benefits" className="py-20 bg-[#f9f9f9]">
