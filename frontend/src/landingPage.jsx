@@ -1,10 +1,15 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { motion } from "framer-motion";
-import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from "react-icons/fa";
+import { FaFacebook, FaInstagram, FaLinkedin } from "react-icons/fa";
 import { gsap } from "gsap";
 import Particles from "@tsparticles/react";
 import { loadFull } from "tsparticles";
+
+// Import images
+import landingPage1 from "./images/landingPage1.png";
+import landingPage2 from "./images/landingPage2.png";
+import logo from "./images/logo.png";
 
 const LandingPage = () => {
   const navigate = useNavigate();
@@ -214,58 +219,63 @@ const LandingPage = () => {
       </div>
 
       {/* Header */}
-      <header ref={headerRef} className="w-full fixed top-0 z-50 bg-white bg-opacity-90 backdrop-blur-sm shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            {/* Logo */}
-            <div className="flex items-center">
-              <div className="flex-shrink-0">
-                <span className="text-2xl font-bold text-[#4f46e5]">Health Bridge</span>
-              </div>
-              {/* Navigation links */}
-              <div className="hidden md:ml-10 md:flex md:space-x-8">
-                <a href="#features" className="border-transparent text-[#666] hover:text-[#333] hover:border-[#4f46e5] inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors duration-300">
-                  Features
-                </a>
-                <a href="#benefits" className="border-transparent text-[#666] hover:text-[#333] hover:border-[#4f46e5] inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors duration-300">
-                  Benefits
-                </a>
-                <a href="#testimonials" className="border-transparent text-[#666] hover:text-[#333] hover:border-[#4f46e5] inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors duration-300">
-                  Testimonials
-                </a>
-                <a href="#faq" className="border-transparent text-[#666] hover:text-[#333] hover:border-[#4f46e5] inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors duration-300">
-                  FAQ
-                </a>
-              </div>
-            </div>
-            {/* Auth buttons */}
-            <div className="flex items-center space-x-4">
-              <motion.button
-                onClick={() => handleNavigation("/login")}
-                className="text-[#4f46e5] border border-[#4f46e5] px-4 py-2 rounded-md text-sm font-medium hover:bg-[#eef2ff] transition-colors duration-300"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                Login
-              </motion.button>
-              <motion.button
-                onClick={() => handleNavigation("/register")}
-                className="bg-gradient-to-r from-[#4f46e5] to-[#818cf8] hover:from-[#4338ca] hover:to-[#4f46e5] text-white px-4 py-2 rounded-md text-sm font-medium transition-colors duration-300"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                Register
-              </motion.button>
-            </div>
-          </div>
+<header ref={headerRef} className="w-full fixed top-0 z-50 bg-white bg-opacity-90 backdrop-blur-sm shadow-sm">
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="flex justify-between items-center h-16">
+      {/* Logo and Name */}
+      <div className="flex items-center">
+        <div className="flex-shrink-0 flex items-center">
+          <img src={logo} alt="Health Bridge Logo" className="h-8 w-auto mr-2" />
+          <span className="text-2xl font-bold text-[#4f46e5]">Health Bridge</span>
         </div>
-      </header>
+        {/* Navigation links */}
+        <div className="hidden md:ml-10 md:flex md:space-x-8">
+          <a href="#features" className="border-transparent text-[#666] hover:text-[#333] hover:border-[#4f46e5] inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors duration-300">
+            Features
+          </a>
+          <a href="#benefits" className="border-transparent text-[#666] hover:text-[#333] hover:border-[#4f46e5] inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors duration-300">
+            Benefits
+          </a>
+          <a href="#testimonials" className="border-transparent text-[#666] hover:text-[#333] hover:border-[#4f46e5] inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors duration-300">
+            Testimonials
+          </a>
+          <a href="#faq" className="border-transparent text-[#666] hover:text-[#333] hover:border-[#4f46e5] inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors duration-300">
+            FAQ
+          </a>
+        </div>
+      </div>
+      {/* Auth buttons */}
+      <div className="flex items-center space-x-4">
+        <motion.button
+          onClick={() => handleNavigation("/login")}
+          className="text-[#4f46e5] border border-[#4f46e5] px-4 py-2 rounded-md text-sm font-medium hover:bg-[#eef2ff] transition-colors duration-300"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.98 }}
+        >
+          Login
+        </motion.button>
+        <motion.button
+          onClick={() => handleNavigation("/register")}
+          className="bg-gradient-to-r from-[#4f46e5] to-[#818cf8] hover:from-[#4338ca] hover:to-[#4f46e5] text-white px-4 py-2 rounded-md text-sm font-medium transition-colors duration-300"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.98 }}
+        >
+          Register
+        </motion.button>
+      </div>
+    </div>
+  </div>
+</header>
 
       {/* Main content area */}
       <main className="relative pt-16">
         {/* Hero section */}
         <section className="relative min-h-screen flex flex-col justify-center">
-          <div ref={contentRef} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+          <div
+            className="absolute inset-0 bg-cover bg-center"
+            style={{ backgroundImage: `url(${landingPage1})` }}
+          ></div>
+          <div ref={contentRef} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 relative z-10">
             <div className="lg:flex lg:items-center lg:justify-between">
               {/* Text content */}
               <div className="lg:w-1/2 lg:pr-12">
@@ -299,6 +309,10 @@ const LandingPage = () => {
                       Try It Now – It's Free!
                     </motion.button>
                     <motion.button
+                      onClick={() => {
+                        const featuresSection = document.getElementById("features");
+                        featuresSection.scrollIntoView({ behavior: "smooth" });
+                      }}
                       onMouseEnter={() => setHoverButton("learnMore")}
                       onMouseLeave={() => setHoverButton(null)}
                       className="inline-flex items-center justify-center px-6 py-3 border border-white text-base font-medium rounded-lg text-white bg-transparent hover:bg-white/10 transition-all duration-300"
@@ -312,19 +326,35 @@ const LandingPage = () => {
                   </div>
                 </motion.div>
 
-                {/* Trust indicators */}
+                {/* Social Media Links */}
                 <motion.div 
-                  className="mt-12 flex flex-wrap items-center space-x-8"
+                  className="mt-12 flex space-x-10"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.4, duration: 0.8 }}
+                  transition={{ delay: 1.5, duration: 0.8 }}
                 >
-                  <p className="text-sm font-medium text-[#eef2ff]">Supported by healthcare leaders:</p>
-                  <div className="flex space-x-6 mt-4 sm:mt-0">
-                    <div className="h-8 w-auto text-white/80">MedCenter</div>
-                    <div className="h-8 w-auto text-white/80">HealthPlus</div>
-                    <div className="h-8 w-auto text-white/80">CarePoint</div>
-                  </div>
+                  {[
+                    { Icon: FaLinkedin, color: "#4f46e5", hoverColor: "#818cf8", url: "https://www.linkedin.com/company/healthbridgeoffical/?viewAsMember=true" },
+                    { Icon: FaInstagram, color: "#f97316", hoverColor: "#fb923c", url: "https://www.instagram.com/healthbridge2025?igsh=a2hzNm44bXJ3dzN4" },
+                    { Icon: FaFacebook, color: "#4f46e5", hoverColor: "#818cf8", url: "https://www.facebook.com/share/15fPLQWJUw/" }
+                  ].map((social, index) => (
+                    <motion.a
+                      key={index}
+                      href={social.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-3xl transition-all duration-300 p-3 rounded-full"
+                      style={{ color: social.color }}
+                      whileHover={{ 
+                        color: social.hoverColor,
+                        backgroundColor: "rgba(255, 255, 255, 0.9)",
+                        boxShadow: "0 4px 12px rgba(0, 0, 0, 0.08)"
+                      }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      <social.Icon />
+                    </motion.a>
+                  ))}
                 </motion.div>
               </div>
 
@@ -353,42 +383,42 @@ const LandingPage = () => {
         </section>
 
         {/* Features section */}
-        <section id="features" className="py-20 bg-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center">
-              <h2 className="text-base text-[#4f46e5] font-semibold tracking-wide uppercase">Features</h2>
-              <p className="mt-2 text-3xl font-extrabold text-[#333] sm:text-4xl">The Future of Healthcare</p>
-              <p className="mt-4 max-w-2xl text-xl text-[#666] mx-auto">
-                Revolutionary tools designed to transform maternal and infant care.
-              </p>
-            </div>
+        <section id="features" className="py-20 bg-[#f8fafc]">
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="text-center">
+      <h2 className="text-base text-[#6d28d9] font-semibold tracking-wide uppercase">Features</h2>
+      <p className="mt-2 text-3xl font-extrabold text-[#1e293b] sm:text-4xl">The Future of Healthcare</p>
+      <p className="mt-4 max-w-2xl text-xl text-[#475569] mx-auto">
+        Revolutionary tools designed to transform maternal and infant care.
+      </p>
+    </div>
 
-            <div className="mt-16">
-              <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:gap-x-12 lg:gap-y-16">
-                {features.map((feature, index) => (
-                  <motion.div 
-                    key={index}
-                    className="relative bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 border border-[#eef2ff]"
-                    whileHover={{ y: -5 }}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.1 * index, duration: 0.8 }}
-                  >
-                    <div>
-                      <div className="absolute flex items-center justify-center h-12 w-12 rounded-md bg-[#4f46e5] text-white">
-                        {feature.icon}
-                      </div>
-                      <div className="ml-16">
-                        <h3 className="text-lg font-medium text-[#333]">{feature.title}</h3>
-                        <p className="mt-2 text-base text-[#666]">{feature.description}</p>
-                      </div>
-                    </div>
-                  </motion.div>
-                ))}
+    <div className="mt-16">
+      <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:gap-x-12 lg:gap-y-16">
+        {features.map((feature, index) => (
+          <motion.div 
+            key={index}
+            className="relative bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition-shadow duration-300 border border-[#f8fafc] hover:border-[#6d28d9]"
+            whileHover={{ y: -5 }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 * index, duration: 0.8 }}
+          >
+            <div>
+              <div className="absolute flex items-center justify-center h-12 w-12 rounded-md bg-gradient-to-r from-[#6d28d9] to-[#8b5cf6] text-white">
+                {feature.icon}
+              </div>
+              <div className="ml-16">
+                <h3 className="text-lg font-medium text-[#1e293b]">{feature.title}</h3>
+                <p className="mt-2 text-base text-[#475569]">{feature.description}</p>
               </div>
             </div>
-          </div>
-        </section>
+          </motion.div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
 
         {/* Benefits section with stats */}
         <section id="benefits" className="py-20 bg-[#f9f9f9]">
@@ -524,7 +554,10 @@ const LandingPage = () => {
         {/* Limited-time offer */}
         <section className="py-12 bg-[#eef2ff]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="bg-gradient-to-r from-[#4338ca] to-[#4f46e5] rounded-2xl shadow-xl overflow-hidden">
+            <div
+              className="bg-cover bg-center rounded-2xl shadow-xl overflow-hidden"
+              style={{ backgroundImage: `url(${landingPage2})` }}
+            >
               <div className="px-6 py-12 sm:px-12 lg:py-16 lg:pr-0 xl:py-20 xl:px-20">
                 <div className="lg:flex lg:items-center lg:justify-between">
                   <div className="lg:flex-1">
@@ -578,11 +611,11 @@ const LandingPage = () => {
                 },
                 {
                   question: "Can I access my records offline?",
-                  answer: "No, Health Bridge does not allows you to download and access your health records offline yet.Stay tuned for the changes in near future"
+                  answer: "Yes, Health Bridge allows you to download and access your health records offline for convenience."
                 },
                 {
                   question: "How do donations work?",
-                  answer: "You can donate directly through the webstite, and the mothers in need get to request the items they need directly from the donor."
+                  answer: "You can donate directly through the app, and we ensure that 100% of your contribution goes to mothers in need."
                 },
                 {
                   question: "Is Health Bridge free to use?",
@@ -606,66 +639,63 @@ const LandingPage = () => {
         </section>
 
         {/* Footer */}
-        <footer className="bg-[#4338ca] text-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-              {/* About Section */}
-              <div>
-                <h3 className="text-lg font-semibold mb-4">About Health Bridge</h3>
-                <p className="text-sm text-[#eef2ff]">
-                  Health Bridge is a revolutionary platform designed to transform maternal and infant care through innovative technology.
-                </p>
-              </div>
+        <footer className="bg-gradient-to-r from-[#6d28d9] to-[#3b82f6] text-white">
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+      {/* About Section */}
+      <div>
+        <h3 className="text-lg font-semibold mb-4">About Health Bridge</h3>
+        <p className="text-sm text-[#f8fafc]">
+          Health Bridge is a revolutionary platform designed to transform maternal and infant care through innovative technology.
+        </p>
+      </div>
 
-              {/* Quick Links */}
-              <div>
-                <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
-                <ul className="space-y-2">
-                  <li><a href="#features" className="text-sm text-[#eef2ff] hover:text-white">Features</a></li>
-                  <li><a href="#benefits" className="text-sm text-[#eef2ff] hover:text-white">Benefits</a></li>
-                  <li><a href="#testimonials" className="text-sm text-[#eef2ff] hover:text-white">Testimonials</a></li>
-                  <li><a href="#faq" className="text-sm text-[#eef2ff] hover:text-white">FAQ</a></li>
-                </ul>
-              </div>
+      {/* Quick Links */}
+      <div>
+        <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
+        <ul className="space-y-2">
+          <li><a href="#features" className="text-sm text-[#f8fafc] hover:text-white">Features</a></li>
+          <li><a href="#benefits" className="text-sm text-[#f8fafc] hover:text-white">Benefits</a></li>
+          <li><a href="#testimonials" className="text-sm text-[#f8fafc] hover:text-white">Testimonials</a></li>
+          <li><a href="#faq" className="text-sm text-[#f8fafc] hover:text-white">FAQ</a></li>
+        </ul>
+      </div>
 
-              {/* Contact Info */}
-              <div>
-                <h3 className="text-lg font-semibold mb-4">Contact Us</h3>
-                <ul className="space-y-2">
-                  <li className="text-sm text-[#eef2ff]">Email: support@healthbridge.com</li>
-                  <li className="text-sm text-[#eef2ff]">Phone: +94 11 123 4567</li>
-                  <li className="text-sm text-[#eef2ff]">Address: Colombo, Sri Lanka</li>
-                </ul>
-              </div>
+      {/* Contact Info */}
+      <div>
+        <h3 className="text-lg font-semibold mb-4">Contact Us</h3>
+        <ul className="space-y-2">
+          <li className="text-sm text-[#f8fafc]">Email: support@healthbridge.com</li>
+          <li className="text-sm text-[#f8fafc]">Phone: +94 11 123 4567</li>
+          <li className="text-sm text-[#f8fafc]">Address: Colombo, Sri Lanka</li>
+        </ul>
+      </div>
 
-              {/* Social Media Links */}
-              <div>
-                <h3 className="text-lg font-semibold mb-4">Follow Us</h3>
-                <div className="flex space-x-4">
-                  <a href="#" className="text-[#eef2ff] hover:text-white">
-                    <FaFacebook className="h-6 w-6" />
-                  </a>
-                  <a href="#" className="text-[#eef2ff] hover:text-white">
-                    <FaTwitter className="h-6 w-6" />
-                  </a>
-                  <a href="#" className="text-[#eef2ff] hover:text-white">
-                    <FaInstagram className="h-6 w-6" />
-                  </a>
-                  <a href="#" className="text-[#eef2ff] hover:text-white">
-                    <FaLinkedin className="h-6 w-6" />
-                  </a>
-                </div>
-              </div>
-            </div>
+      {/* Social Media Links */}
+      <div>
+        <h3 className="text-lg font-semibold mb-4">Follow Us</h3>
+        <div className="flex space-x-4">
+          <a href="https://www.linkedin.com/company/healthbridgeoffical/?viewAsMember=true" target="_blank" rel="noopener noreferrer" className="text-[#f8fafc] hover:text-white">
+            <FaLinkedin className="h-6 w-6" />
+          </a>
+          <a href="https://www.instagram.com/healthbridge2025?igsh=a2hzNm44bXJ3dzN4" target="_blank" rel="noopener noreferrer" className="text-[#f8fafc] hover:text-white">
+            <FaInstagram className="h-6 w-6" />
+          </a>
+          <a href="https://www.facebook.com/share/15fPLQWJUw/" target="_blank" rel="noopener noreferrer" className="text-[#f8fafc] hover:text-white">
+            <FaFacebook className="h-6 w-6" />
+          </a>
+        </div>
+      </div>
+    </div>
 
-            {/* Copyright */}
-            <div className="mt-8 border-t border-[#4f46e5] pt-8 text-center">
-              <p className="text-sm text-[#eef2ff]">
-                &copy; {new Date().getFullYear()} Health Bridge. All rights reserved.
-              </p>
-            </div>
-          </div>
-        </footer>
+    {/* Copyright */}
+    <div className="mt-8 border-t border-[#f8fafc] pt-8 text-center">
+      <p className="text-sm text-[#f8fafc]">
+        &copy; {new Date().getFullYear()} Health Bridge. All rights reserved.
+      </p>
+    </div>
+  </div>
+</footer>
       </main>
     </div>
   );
