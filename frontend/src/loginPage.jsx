@@ -1,220 +1,444 @@
-import React, { useEffect, useRef, useState } from "react";
-import { FaFacebook, FaInstagram, FaLinkedin } from "react-icons/fa";
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion } from "framer-motion";
-import { gsap } from "gsap";
+import { useAuth } from './authContext';
+import * as api from './api';
+import { GoogleLogin } from '@react-oauth/google';
+import { GoogleOAuthProvider } from '@react-oauth/google';
+import { motion, AnimatePresence } from 'framer-motion';
 
-// Video Background component that can be reused across pages
-const VideoBackground = () => {
-  return (
-    <div className="fixed inset-0 w-full h-full z-0">
-      <video
-        className="absolute w-full h-full object-cover"
-        autoPlay
-        loop
-        muted
-        playsInline
-      >
-        <source src="/videos/login.mov" type="video/quicktime" />
-        {/* Fallback for browsers that don't support .mov */}
-        Your browser does not support the video tag.
-      </video>
-      {/* Overlay to ensure content is readable */}
-      <div className="absolute inset-0 bg-white bg-opacity-70"></div>
-    </div>
-  );
-};
-
-const LandingPage = () => {
+const LoginPage = () => {
   const navigate = useNavigate();
-  const titleRef = useRef(null);
-  const containerRef = useRef(null);
-  const [hoverButton, setHoverButton] = useState(null);
-
-  // Handle navigation with transition
-  const handleNavigation = (route) => {
-    // Add page transition
-    gsap.to(containerRef.current, {
-      opacity: 0,
-      y: -30,
-      duration: 0.5,
-      onComplete: () => navigate(route)
-    });
-  };
+  const { login } = useAuth();
+  const [loginData, setLoginData] = useState({
+    email: '',
+    password: ''
+  });
+  const [errors, setErrors] = useState({});
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const formRef = useRef(null);
 
   useEffect(() => {
-    // Clean title animation
-    gsap.fromTo(
-      titleRef.current,
-      { y: 30, opacity: 0 },
-      { y: 0, opacity: 1, duration: 1, ease: "power3.out" }
-    );
-
-    // Staggered animations for content
-    const elements = containerRef.current.children;
-    gsap.fromTo(
-      elements,
-      { opacity: 0, y: 30 },
-      { 
-        opacity: 1, 
-        y: 0, 
-        duration: 0.7, 
-        stagger: 0.15,
-        ease: "power2.out"
-      }
-    );
+    // Card animation only - removed bubble animations
+    const formElement = formRef.current;
+    if (formElement) {
+      formElement.style.opacity = 0;
+      formElement.style.transform = 'translateY(50px)';
+      
+      setTimeout(() => {
+        formElement.style.opacity = 1;
+        formElement.style.transform = 'translateY(0)';
+        formElement.style.transition = 'opacity 1s ease, transform 1s ease';
+      }, 100);
+    }
 
     return () => {
-      gsap.killTweensOf(titleRef.current);
-      gsap.killTweensOf(elements);
+      if (formElement) {
+        formElement.style.transition = '';
+      }
     };
   }, []);
 
+  // Enhanced password validation
+  const validatePassword = (password) => {
+    const errors = [];
+    
+    if (!password) {
+      errors.push("Password is required");
+      return { isValid: false, errors };
+    }
+  
+    const requirements = [
+      {
+        test: password.length < 8,
+        message: "Password must be at least 8 characters long"
+      },
+      {
+        test: !/[A-Z]/.test(password),
+        message: "Password must contain at least one uppercase letter"
+      },
+      {
+        test: !/[a-z]/.test(password),
+        message: "Password must contain at least one lowercase letter"
+      },
+      {
+        test: !/[0-9]/.test(password),
+        message: "Password must contain at least one number"
+      },
+      {
+        test: !/[!@#$%^&*(),.?":{}|<>]/.test(password),
+        message: "Password must contain at least one special character"
+      }
+    ];
+  
+    requirements.forEach(({ test, message }) => {
+      if (test) {
+        errors.push(message);
+      }
+    });
+  
+    return {
+      isValid: errors.length === 0,
+      errors
+    };
+  };
+
+  // Handle input changes with validation
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    
+    setLoginData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+
+    // Clear errors for the field being changed
+    setErrors(prev => ({
+      ...prev,
+      [name]: undefined
+    }));
+
+    // Validate password on change
+    if (name === 'password') {
+      const validation = validatePassword(value);
+      if (!validation.isValid) {
+        setErrors(prev => ({
+          ...prev,
+          password: validation.errors
+        }));
+      }
+    }
+  };
+
+  // Handle Google login success
+  const handleGoogleSuccess = async (credentialResponse) => {
+    try {
+      setIsLoading(true);
+      const { token } = await api.googleLogin(credentialResponse.credential);
+      login(token);
+      navigate('/dashboard');
+    } catch (error) {
+      setErrors(prev => ({
+        ...prev,
+        submit: 'Google login failed. Please try again.'
+      }));
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Handle regular login
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    const loginErrors = {};
+
+    // Email validation
+    if (!loginData.email.trim() || !/\S+@\S+\.\S+/.test(loginData.email)) {
+      loginErrors.email = "Valid email is required";
+    }
+
+    // Password validation
+    const passwordValidation = validatePassword(loginData.password);
+    if (!passwordValidation.isValid) {
+      loginErrors.password = passwordValidation.errors;
+    }
+
+    if (Object.keys(loginErrors).length > 0) {
+      setErrors(loginErrors);
+      setIsLoading(false);
+      return;
+    }
+
+    try {
+      // API call to login
+      const { token } = await api.login(loginData);
+      login(token);
+      navigate('/dashboard');
+    } catch (error) {
+      setErrors(prev => ({
+        ...prev,
+        submit: error.response?.data?.message || 'Login failed. Please try again.'
+      }));
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Handle forgot password
+  const handleForgotPassword = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    const resetErrors = {};
+
+    if (!loginData.email.trim() || !/\S+@\S+\.\S+/.test(loginData.email)) {
+      resetErrors.email = "Valid email is required for password reset";
+      setErrors(resetErrors);
+      setIsLoading(false);
+      return;
+    }
+
+    try {
+      await api.requestPasswordReset(loginData.email);
+      // Show success message
+      alert('Password reset instructions have been sent to your email.');
+      setShowForgotPassword(false);
+    } catch (error) {
+      setErrors(prev => ({
+        ...prev,
+        submit: 'Failed to send reset instructions. Please try again.'
+      }));
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
-    <div className="relative min-h-screen overflow-hidden text-[#333]">
-      {/* Video background */}
-      <VideoBackground />
-      
-      {/* Content container */}
-      <div className="relative min-h-screen flex flex-col justify-center items-center px-6 z-10">
-        <div ref={containerRef} className="max-w-4xl text-center">
-          {/* Clean modern logo/title */}
-          <div ref={titleRef} className="mb-12">
-            <h1 className="text-6xl font-extrabold mb-2 text-[#4f46e5]">
-              Health Bridge
-            </h1>
-            <div className="w-24 h-1 bg-[#10b981] mx-auto rounded-full"></div>
-          </div>
-          
-          {/* Professional subtitle */}
-          <motion.p 
-            className="text-2xl font-semibold text-[#111] mb-8"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3, duration: 0.8 }}
-          >
-            Bridging the Gap in 
-            <span className="text-[#10b981] ml-2">
-              Maternal & Child Healthcare
-            </span>
-          </motion.p>
-          
-          {/* Clean description card */}
-          <motion.div 
-            className="p-8 mb-12 rounded-xl bg-white shadow-md border border-[#eef2ff] bg-opacity-80"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.6, duration: 0.8 }}
-          >
-            <p className="text-lg text-[#666] leading-relaxed">
-              At <span className="font-bold text-[#4f46e5]">Health Bridge</span>, we believe every mother and child deserves seamless, secure, and accessible healthcare.  
-              Our platform <b className="text-[#10b981]">digitizes pregnancy health records and child development tracking</b>, ensuring that mothers, healthcare providers, and medical officers stay connected for better health outcomes.
-            </p>
-          </motion.div>
-          
-          {/* Key features with clean design */}
-          <motion.div 
-            className="flex flex-wrap justify-center gap-6 mb-12"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.9, duration: 0.8 }}
-          >
-            {[
-              { title: "Secure", icon: "🔒", desc: "End-to-end encryption" },
-              { title: "Accessible", icon: "🌐", desc: "Available 24/7" },
-              { title: "Connected", icon: "🔄", desc: "Real-time updates" }
-            ].map((feature, index) => (
-              <motion.div
-                key={index}
-                className="w-48 p-6 flex flex-col items-center justify-center rounded-xl bg-white shadow-sm border border-[#eef2ff] hover:shadow-md transition-shadow duration-300 bg-opacity-90"
-                whileHover={{ y: -5 }}
-                transition={{ type: "spring", stiffness: 300 }}
-              >
-                <span className="text-3xl mb-3">{feature.icon}</span>
-                <h3 className="text-lg font-semibold text-[#333] mb-1">{feature.title}</h3>
-                <p className="text-sm text-[#666]">{feature.desc}</p>
-              </motion.div>
-            ))}
-          </motion.div>
-          
-          {/* Clean CTA buttons */}
-          <motion.div 
-            className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-6 mb-16"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.2, duration: 0.8 }}
-          >
-            <motion.button
-              onClick={() => handleNavigation("/login")}
-              onMouseEnter={() => setHoverButton("login")}
-              onMouseLeave={() => setHoverButton(null)}
-              className="px-10 py-4 text-lg font-medium text-white rounded-lg shadow-sm transition-all duration-300"
-              style={{ 
-                background: "linear-gradient(135deg, #4f46e5, #818cf8)",
-                transform: hoverButton === "login" ? "translateY(-3px)" : "translateY(0)",
-                boxShadow: hoverButton === "login" 
-                  ? "0 10px 20px rgba(79, 70, 229, 0.2)" 
-                  : "0 4px 6px rgba(79, 70, 229, 0.1)"
-              }}
-              whileTap={{ scale: 0.98 }}
-            >
-              Login
-            </motion.button>
-            
-            <motion.button
-              onClick={() => handleNavigation("/register")}
-              onMouseEnter={() => setHoverButton("register")}
-              onMouseLeave={() => setHoverButton(null)}
-              className="px-10 py-4 text-lg font-medium rounded-lg border-2 transition-all duration-300"
-              style={{ 
-                borderColor: "#10b981",
-                color: "#10b981",
-                backgroundColor: hoverButton === "register" ? "rgba(16, 185, 129, 0.05)" : "transparent",
-                transform: hoverButton === "register" ? "translateY(-3px)" : "translateY(0)",
-                boxShadow: hoverButton === "register" 
-                  ? "0 10px 20px rgba(16, 185, 129, 0.1)" 
-                  : "0 4px 6px rgba(16, 185, 129, 0)"
-              }}
-              whileTap={{ scale: 0.98 }}
-            >
-              Register
-            </motion.button>
-          </motion.div>
-        </div>
-        
-        {/* Social Media Links with clean design */}
-        <motion.div 
-          className="flex space-x-10"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.5, duration: 0.8 }}
-        >
-          {[
-            { Icon: FaLinkedin, color: "#4f46e5", hoverColor: "#818cf8", url: "https://www.linkedin.com/company/healthbridgeoffical/?viewAsMember=true" },
-            { Icon: FaInstagram, color: "#f97316", hoverColor: "#fb923c", url: "https://www.instagram.com/healthbridge2025?igsh=a2hzNm44bXJ3dzN4" },
-            { Icon: FaFacebook, color: "#4f46e5", hoverColor: "#818cf8", url: "https://www.facebook.com/share/15fPLQWJUw/" }
-          ].map((social, index) => (
-            <motion.a
-              key={index}
-              href={social.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-3xl transition-all duration-300 p-3 rounded-full bg-white bg-opacity-70"
-              style={{ color: social.color }}
-              whileHover={{ 
-                color: social.hoverColor,
-                backgroundColor: "rgba(255, 255, 255, 0.9)",
-                boxShadow: "0 4px 12px rgba(0, 0, 0, 0.08)"
-              }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <social.Icon />
-            </motion.a>
+    <div className="relative min-h-screen bg-gradient-to-b from-[#4338ca] via-[#4f46e5] to-[#eef2ff] flex items-center justify-center px-4 py-8 overflow-hidden">
+      {/* Network graph-like pattern in background - kept this but removed the bubbles */}
+      <div className="absolute inset-0 z-0 opacity-10">
+        <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+              <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.3)" strokeWidth="0.5" />
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#grid)" />
+          {Array.from({ length: 20 }).map((_, i) => (
+            <circle 
+              key={i} 
+              cx={Math.random() * 100 + "%"} 
+              cy={Math.random() * 100 + "%"} 
+              r="1" 
+              fill="white" 
+            />
           ))}
-        </motion.div>
+          {Array.from({ length: 15 }).map((_, i) => (
+            <line 
+              key={i}
+              x1={Math.random() * 100 + "%"} 
+              y1={Math.random() * 100 + "%"}
+              x2={Math.random() * 100 + "%"} 
+              y2={Math.random() * 100 + "%"}
+              stroke="rgba(255,255,255,0.2)"
+              strokeWidth="0.5"
+            />
+          ))}
+        </svg>
+      </div>
+
+      {/* Main content */}
+      <div ref={formRef} className="relative z-10 max-w-md w-full">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={showForgotPassword ? 'forgot' : 'login'}
+            initial={{ opacity: 0, x: showForgotPassword ? -300 : 300 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: showForgotPassword ? 300 : -300 }}
+            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            className="bg-white bg-opacity-90 backdrop-blur-sm p-8 rounded-lg shadow-[0_0_20px_rgba(79,70,229,0.3)]"
+          >
+            {/* Header with primary color */}
+            <div className="text-center relative mb-8">
+              <h2 className="text-3xl font-bold text-[#333]">
+                {showForgotPassword ? 'Reset Password' : 'Login'}
+              </h2>
+              <div className="absolute -bottom-3 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-gradient-to-r from-[#4f46e5] to-[#818cf8] rounded-full"></div>
+            </div>
+
+            {errors.submit && (
+              <motion.div 
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mb-6 p-3 bg-red-100 border border-red-300 text-red-600 rounded-lg"
+              >
+                {errors.submit}
+              </motion.div>
+            )}
+
+            <form 
+              onSubmit={showForgotPassword ? handleForgotPassword : handleLogin} 
+              className="space-y-5"
+            >
+              <div>
+                <label className="block text-sm font-medium text-[#333] mb-1">
+                  Email
+                </label>
+                <motion.div 
+                  whileHover={{ scale: 1.01 }}
+                  className="relative group"
+                >
+                  <input
+                    type="email"
+                    name="email"
+                    value={loginData.email}
+                    onChange={handleChange}
+                    className="w-full px-4 py-3 bg-[#f9f9f9] border border-[#eef2ff] focus:border-[#4f46e5] text-[#333] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4f46e5]/50 transition-all duration-300"
+                    required
+                    disabled={isLoading}
+                    placeholder="your.email@example.com"
+                  />
+                </motion.div>
+                {errors.email && (
+                  <motion.p 
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="mt-1 text-red-500 text-sm"
+                  >
+                    {errors.email}
+                  </motion.p>
+                )}
+              </div>
+
+              {!showForgotPassword && (
+                <div>
+                  <label className="block text-sm font-medium text-[#333] mb-1">
+                    Password
+                  </label>
+                  <motion.div 
+                    whileHover={{ scale: 1.01 }}
+                    className="relative group"
+                  >
+                    <input
+                      type="password"
+                      name="password"
+                      value={loginData.password}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 bg-[#f9f9f9] border border-[#eef2ff] focus:border-[#4f46e5] text-[#333] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4f46e5]/50 transition-all duration-300"
+                      required
+                      disabled={isLoading}
+                      placeholder="••••••••••••"
+                    />
+                  </motion.div>
+                  {errors.password && Array.isArray(errors.password) ? (
+                    <motion.div 
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: "auto" }}
+                      className="mt-2 p-3 rounded-lg bg-[#eef2ff] border border-[#818cf8]/30"
+                    >
+                      {errors.password.map((error, index) => (
+                        <p key={index} className="text-red-500 text-sm flex items-center mb-1 last:mb-0">
+                          <span className="mr-2 text-xs">❌</span> {error}
+                        </p>
+                      ))}
+                    </motion.div>
+                  ) : errors.password && (
+                    <motion.p 
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="mt-1 text-red-500 text-sm"
+                    >
+                      {errors.password}
+                    </motion.p>
+                  )}
+                </div>
+              )}
+
+              <motion.button
+                type="submit"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className="w-full py-3 rounded-lg relative overflow-hidden group disabled:opacity-70"
+                disabled={isLoading}
+              >
+                <span className="absolute inset-0 bg-gradient-to-r from-[#4f46e5] to-[#818cf8] group-hover:from-[#4338ca] group-hover:to-[#4f46e5] transition-all duration-300"></span>
+                <span className="relative text-white font-medium">
+                  {isLoading ? (
+                    <span className="flex items-center justify-center">
+                      <svg className="animate-spin -ml-1 mr-2 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      {showForgotPassword ? 'Sending...' : 'Logging in...'}
+                    </span>
+                  ) : (
+                    showForgotPassword ? 'Reset Password' : 'Login'
+                  )}
+                </span>
+              </motion.button>
+            </form>
+
+            {!showForgotPassword && (
+              <>
+                <div className="mt-6 relative">
+                  <div className="absolute inset-0 flex items-center">
+                    <div className="w-full border-t border-[#eef2ff]" />
+                  </div>
+                  <div className="relative flex justify-center text-sm">
+                    <span className="px-3 bg-white text-[#666]">Or continue with</span>
+                  </div>
+                </div>
+
+                <div className="mt-6">
+                  <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
+                    <motion.div 
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      <GoogleLogin
+                        onSuccess={handleGoogleSuccess}
+                        onError={() => {
+                          setErrors(prev => ({
+                            ...prev,
+                            submit: 'Google login failed. Please try again.'
+                          }));
+                        }}
+                        useOneTap={false}
+                        theme="filled_blue"
+                        size="large"
+                        width="100%"
+                        text="continue_with"
+                        shape="rectangular"
+                      />
+                    </motion.div>
+                  </GoogleOAuthProvider>
+                </div>
+
+                <div className="mt-6 text-center">
+                  <motion.button
+                    onClick={() => setShowForgotPassword(true)}
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.97 }}
+                    className="text-sm text-[#4f46e5] hover:text-[#4338ca] transition-colors duration-300"
+                    disabled={isLoading}
+                  >
+                    Forgot Password?
+                  </motion.button>
+                </div>
+
+                <div className="mt-6 text-center">
+                  <p className="text-[#666] text-sm">
+                    Don't have an account?{' '}
+                    <motion.button 
+                      onClick={() => navigate('/register')}
+                      whileHover={{ scale: 1.03 }}
+                      whileTap={{ scale: 0.97 }}
+                      className="text-[#4f46e5] hover:text-[#4338ca] transition-colors duration-300 font-medium"
+                      disabled={isLoading}
+                    >
+                      Register
+                    </motion.button>
+                  </p>
+                </div>
+              </>
+            )}
+
+            {showForgotPassword && (
+              <motion.button
+                onClick={() => setShowForgotPassword(false)}
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+                className="mt-6 w-full text-center text-sm text-[#4f46e5] hover:text-[#4338ca] transition-colors duration-300"
+                disabled={isLoading}
+              >
+                Back to Login
+              </motion.button>
+            )}
+          </motion.div>
+        </AnimatePresence>
       </div>
     </div>
   );
 };
 
-export default LandingPage;
+export default LoginPage;
