@@ -1,12 +1,22 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './RequestModal.css';
 
-const RequestModal = ({ donation, onSubmit, onClose, defaultItemImg }) => {
+const RequestModal = ({ donation, onSubmit, onClose, defaultItemImg, userName }) => {
   const [requestData, setRequestData] = useState({
     name: '',
     contactNumber: '',
     message: ''
   });
+
+  // Auto-fill the user's name when the component mounts
+  useEffect(() => {
+    if (userName) {
+      setRequestData(prev => ({
+        ...prev,
+        name: userName
+      }));
+    }
+  }, [userName]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
