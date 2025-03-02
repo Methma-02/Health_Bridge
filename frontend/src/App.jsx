@@ -11,15 +11,9 @@ import Referal from "./pages/referal";
 function App(){
   return(
     <>
-    
     <HeightGainChart/>
-    <WeightGainChart/>
-    {/* <ImmunizationForm/>
-    <SensoryScreening/>
-    <DevelopmentMilestones/>
-    <ChildHealthRecords/>
-    <StudentHealthRecords/>
-    <Referal/> */}
+   <WeightGainChart/>
+  
     </>
   )
 }
