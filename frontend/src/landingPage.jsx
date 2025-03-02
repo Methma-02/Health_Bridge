@@ -529,11 +529,11 @@ const LandingPage = () => {
                 <div className="lg:flex lg:items-center lg:justify-between">
                   <div className="lg:flex-1">
                     <h2 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
-                      <span className="block">Limited-Time Offer</span>
+                      <span className="block">Welcome to Health Bridge!</span>
                       <span className="block text-indigo-100">Join today & get free access to all services!</span>
                     </h2>
                     <p className="mt-3 max-w-3xl text-lg leading-6 text-indigo-100">
-                      Early adopters receive premium features at no cost. Don't miss this opportunity to transform your healthcare experience.
+                      Don't miss this opportunity to transform your healthcare experience.
                     </p>
                     <div className="mt-8 flex">
                       <div className="inline-flex rounded-md shadow">
@@ -578,11 +578,11 @@ const LandingPage = () => {
                 },
                 {
                   question: "Can I access my records offline?",
-                  answer: "Yes, Health Bridge allows you to download and access your health records offline for convenience."
+                  answer: "No, Health Bridge does not allows you to download and access your health records offline yet.Stay tuned for the changes in near future"
                 },
                 {
                   question: "How do donations work?",
-                  answer: "You can donate directly through the app, and we ensure that 100% of your contribution goes to mothers in need."
+                  answer: "You can donate directly through the webstite, and the mothers in need get to request the items they need directly from the donor."
                 },
                 {
                   question: "Is Health Bridge free to use?",
