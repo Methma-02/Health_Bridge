@@ -13,12 +13,14 @@ import logo from "./images/logo.png";
 import landingPageVideo from "./videos/logingPage.mp4";
 import landingPage from "./images/landingPage3.png";
 
+
 const LandingPage = () => {
   const navigate = useNavigate();
   const headerRef = useRef(null);
   const contentRef = useRef(null);
   const [hoverButton, setHoverButton] = useState(null);
   const [showLoginModal, setShowLoginModal] = useState(false); // State to control modal visibility
+  const [showRegistrationModal, setShowRegistrationModal] = useState(false);
 
   const particlesInit = async (main) => {
     await loadFull(main);
@@ -56,6 +58,7 @@ const LandingPage = () => {
       }
     );
 
+   
     return () => {
       gsap.killTweensOf(headerRef.current);
       gsap.killTweensOf(elements);
@@ -579,14 +582,16 @@ const LandingPage = () => {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div
               className="bg-cover bg-center rounded-2xl shadow-xl overflow-hidden"
-              style={{ backgroundImage: 'url(${landingPage2})' }}
+              style={{ backgroundImage: `url(${landingPage2})` }} // ✅ Corrected Syntax
             >
               <div className="px-6 py-12 sm:px-12 lg:py-16 lg:pr-0 xl:py-20 xl:px-20">
                 <div className="lg:flex lg:items-center lg:justify-between">
                   <div className="lg:flex-1">
                     <h2 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
                       <span className="block">Welcome to Health Bridge!</span>
-                      <span className="block text-indigo-100">Join today & get free access to all services!</span>
+                      <span className="block text-indigo-100">
+                        Join today & get free access to all services!
+                      </span>
                     </h2>
                     <p className="mt-3 max-w-3xl text-lg leading-6 text-indigo-100">
                       Don't miss this opportunity to transform your healthcare experience.
@@ -605,12 +610,12 @@ const LandingPage = () => {
                     </div>
                   </div>
                 </div>
-                </div>
+              </div>
             </div>
           </div>
-
-
         </section>
+
+
 
         {/* FAQ Section */}
         <section id="faq" className="py-20 bg-white relative">
@@ -733,13 +738,12 @@ const LandingPage = () => {
 
       {/* Login Modal */}
       {showLoginModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="relative z-10 max-w-md w-full">
-            <LoginPage onClose={() => setShowLoginModal(false)} />
-          </div>
-        </div>
-      )}
-    </div>
+    <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
+      
+        <LoginPage onClose={() => setShowLoginModal(false)} />
+      </div>
+  )}
+</div>
   );
 };
 
