@@ -9,6 +9,7 @@ const ClinicCare = () => {
   const { formData, setFormData } = useFormContext();
   const clinicalObservationRefs = useRef([]);
   const usScanRefs = useRef([]);
+  const isInitialMount = useRef(true); // Track initial load
 
   // Adjust ref arrays to match current row counts
   clinicalObservationRefs.current = formData.clinicalObservationTable.map(
@@ -19,23 +20,28 @@ const ClinicCare = () => {
   );
 
   useEffect(() => {
-    // Load saved signatures for clinical observations
-    formData.clinicalObservationTable.forEach((row, index) => {
-      const ref = clinicalObservationRefs.current[index];
-      if (row.signature && ref?.current) {
-        ref.current.fromDataURL(row.signature);
-      }
-    });
+    if (isInitialMount.current) {
+      // Load saved signatures only on initial mount
+      formData.clinicalObservationTable.forEach((row, index) => {
+        const ref = clinicalObservationRefs.current[index];
+        if (row.signature && ref?.current) {
+          ref.current.clear(); // Clear first to prevent overlap
+          ref.current.fromDataURL(row.signature);
+        }
+      });
 
-    // Load saved signatures for US scans
-    formData.usScanTable.forEach((row, index) => {
-      const ref = usScanRefs.current[index];
-      if (row.signature && ref?.current) {
-        ref.current.fromDataURL(row.signature);
-      }
-    });
+      formData.usScanTable.forEach((row, index) => {
+        const ref = usScanRefs.current[index];
+        if (row.signature && ref?.current) {
+          ref.current.clear();
+          ref.current.fromDataURL(row.signature);
+        }
+      });
+
+      isInitialMount.current = false; // Mark initial load as done
+    }
   }, [formData.clinicalObservationTable, formData.usScanTable]);
-
+  
   const handleInputChange = (section, rowIndex, field, value) => {
     setFormData(prevData => {
       const updatedSection = [...prevData[section]];

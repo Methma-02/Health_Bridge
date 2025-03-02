@@ -2,13 +2,23 @@ import React, { useRef, useEffect } from "react";
 import SignatureCanvas from "react-signature-canvas";
 import { useFormContext } from '../../contexts/FormContext';
 
-const PregnancyRecodForm = () => {
+const PregnancyRecordForm = () => {
   const { formData, setFormData } = useFormContext();
+  const signaturePadRef = useRef(null);
+
+  // Load signature when form data changes
   useEffect(() => {
-              console.log(formData);
-    }, [formData]); 
-  
-  const signaturePadRef = useRef();
+    if (signaturePadRef.current && formData.officerSignature) {
+      // Clear existing signature first
+      signaturePadRef.current.clear();
+      
+      // Need to wait for the clear operation to complete
+      setTimeout(() => {
+        // Now load the signature from the dataURL
+        signaturePadRef.current.fromDataURL(formData.officerSignature);
+      }, 0);
+    }
+  }, [formData.officerSignature]);
 
   // Home Visit Dates Functions
   const addHomeVisitDate = () => {
@@ -55,38 +65,46 @@ const PregnancyRecodForm = () => {
   const clearSignature = () => {
     if (signaturePadRef.current) {
       signaturePadRef.current.clear();
-      setFormData((prev) => ({ ...prev, officerSignature: "" }));
+      setFormData((prev) => ({ 
+        ...prev, 
+        officerSignature: "",
+        officerDesignation: "" 
+      }));
     }
+  };
+
+  const handleSignatureEnd = () => {
+    const signature = signaturePadRef.current.toDataURL();
+    setFormData((prev) => ({ ...prev, officerSignature: signature }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (signaturePadRef.current && !signaturePadRef.current.isEmpty()) {
+      const signatureDataURL = signaturePadRef.current.toDataURL();
+      setFormData((prev) => ({ ...prev, officerSignature: signatureDataURL }));
+    }
 
-    const signatureDataURL = signaturePadRef.current ? signaturePadRef.current.toDataURL() : '';
-    setFormData((prev) => ({ ...prev, officerSignature: signatureDataURL }));
-
-    console.log(formData);
-
-    // Add submission logic
     try {
-      // Send a POST request to the backend API
       const response = await fetch('http://localhost:5000/api/pregnancy-form1', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData), // Send the form data as JSON
+        body: JSON.stringify({
+          ...formData,
+          // Convert date strings to Date objects if needed
+          homeVisitDates: formData.homeVisitDates.map(date => new Date(date)),
+          micronutrientsIssueDates: formData.micronutrientsIssueDates.map(date => new Date(date))
+        }),
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to submit form');
-      }
-
+      if (!response.ok) throw new Error('Failed to submit form');
+      
       const result = await response.json();
       console.log('Form submitted successfully:', result);
       alert('Form submitted successfully!');
-      // Clear the form fields after successful submission
-     
+      
     } catch (error) {
       console.error('Error submitting form:', error);
       alert('Failed to submit form. Please try again.');
@@ -100,7 +118,10 @@ const PregnancyRecodForm = () => {
         <h2>Identified Post Partum Morbidities & Actions Taken</h2>
         <textarea 
           value={formData.postPartumMorbidities}
-          onChange={(e) => setFormData((prev) => ({ ...prev, postPartumMorbidities: e.target.value }))}
+          onChange={(e) => setFormData((prev) => ({ 
+            ...prev, 
+            postPartumMorbidities: e.target.value 
+          }))}
           style={{ width: '100%', minHeight: '100px' }}
         />
       </div>
@@ -111,17 +132,19 @@ const PregnancyRecodForm = () => {
         <input 
           type="text"
           value={formData.zScore}
-          onChange={(e) => setFormData((prev) => ({ ...prev, zScore: e.target.value }))}
+          onChange={(e) => setFormData((prev) => ({ 
+            ...prev, 
+            zScore: e.target.value 
+          }))}
           style={{ width: '100%' }}
         />
       </div>
-
-      {/* Home Visit Date */}
-      <div>
+            {/* Home Visit Date */}
+            <div>
         <h2>Date of Home Visit by PHM</h2>
         {formData.homeVisitDates.map((date, index) => (
           <div key={index} style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
-            <input 
+      <input 
               type="date"
               value={date}
               onChange={(e) => updateHomeVisitDate(index, e.target.value)}
@@ -451,15 +474,17 @@ const PregnancyRecodForm = () => {
         <div>
           <label>Signature of the Officer Examined:</label>
           <div style={{ border: '1px solid #ccc', marginTop: '10px' }}>
-            <SignatureCanvas
-              ref={signaturePadRef}
-              canvasProps={{
-                width: 500,
-                height: 200,
-                className: 'signature-canvas',
-                style: { width: '100%', height: '200px' }
-              }}
-            />
+          <SignatureCanvas
+  // Remove this line: key={formData.officerSignature}
+  ref={signaturePadRef}
+  onEnd={handleSignatureEnd}
+  canvasProps={{
+    width: 500,
+    height: 200,
+    className: 'signature-canvas',
+    style: { width: '100%', height: '200px' }
+  }}
+/>
           </div>
           <button 
             type="button" 
@@ -470,23 +495,24 @@ const PregnancyRecodForm = () => {
           </button>
         </div>
 
-        <br></br>
-
         <div>
           <label>Designation:</label>
           <input 
             type="text"
             value={formData.officerDesignation}
-            onChange={(e) => setFormData((prev) => ({ ...prev, officerDesignation: e.target.value }))}
+            onChange={(e) => setFormData((prev) => ({ 
+              ...prev, 
+              officerDesignation: e.target.value 
+            }))}
           />
         </div>
       </div>
 
-      <button type="submit" style={{ marginTop: '20px' }} onClick={handleSubmit} >
+      <button type="submit" style={{ marginTop: '20px' }}>
         Submit
       </button>
     </form>
   );
 };
 
-export default PregnancyRecodForm;
+export default PregnancyRecordForm;
