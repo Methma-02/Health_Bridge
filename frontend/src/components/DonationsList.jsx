@@ -1,19 +1,20 @@
 import './DonationsList.css';
 
-const DonationsList = ({ donations, requestedDonations, onRequestItem, defaultItemImg }) => {
+const DonationsList = ({ donations, requestedDonations, onRequestItem, defaultItemImg, mohDivision, userName }) => {
   return (
     <div className="donations-list-container">
-      <h2>Available Donations in Your Region</h2>
+      <h2>Available Donations in {mohDivision}</h2>
       
       {donations.length === 0 ? (
         <div className="no-donations-message">
-          <p>There are no donations available in your region at the moment.</p>
+          <p>There are no donations available in {mohDivision} at the moment.</p>
           <p>Be the first to donate and help a mother in need!</p>
         </div>
       ) : (
         <div className="donations-grid">
           {donations.map(donation => {
             const isRequested = requestedDonations.includes(donation.id);
+            const isOwnDonation = donation.postedBy === userName;
             
             return (
               <div key={donation.id} className="donation-card">
@@ -29,6 +30,7 @@ const DonationsList = ({ donations, requestedDonations, onRequestItem, defaultIt
                     </div>
                   )}
                   <span className="condition-badge">{donation.condition}</span>
+                  {isOwnDonation && <span className="own-donation-badge">Your Donation</span>}
                 </div>
                 
                 <div className="donation-details">
@@ -48,7 +50,14 @@ const DonationsList = ({ donations, requestedDonations, onRequestItem, defaultIt
                     <span>{donation.pickupLocation}</span>
                   </div>
                   
-                  {isRequested ? (
+                  {isOwnDonation ? (
+                    <button 
+                      className="request-button own-donation"
+                      disabled
+                    >
+                      Your Donation
+                    </button>
+                  ) : isRequested ? (
                     <button 
                       className="request-button requested"
                       disabled
