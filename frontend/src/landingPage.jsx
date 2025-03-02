@@ -6,13 +6,13 @@ import { gsap } from "gsap";
 import Particles from "@tsparticles/react";
 import { loadFull } from "tsparticles";
 import LoginPage from './loginPage'; // Import the LoginPage component
+import RegistrationPage from './registrationPage'; // Import the RegistrationPage component
 
 // Import images
 import landingPage2 from "./images/landingPage2.png";
 import logo from "./images/logo.png";
 import landingPageVideo from "./videos/logingPage.mp4";
 import landingPage from "./images/landingPage3.png";
-
 
 const LandingPage = () => {
   const navigate = useNavigate();
@@ -58,7 +58,6 @@ const LandingPage = () => {
       }
     );
 
-   
     return () => {
       gsap.killTweensOf(headerRef.current);
       gsap.killTweensOf(elements);
@@ -102,8 +101,6 @@ const LandingPage = () => {
         </svg>
       )
     }
-
-
   ];
 
   const testimonials = [
@@ -126,6 +123,11 @@ const LandingPage = () => {
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-gradient-to-b from-[#4338ca] via-[#4f46e5] to-[#eef2ff] text-white">
+      {/* Blur overlay when modal is open */}
+      {(showLoginModal || showRegistrationModal) && (
+        <div className="fixed inset-0 z-40 bg-black bg-opacity-50 backdrop-blur-sm"></div>
+      )}
+
       {/* Particles background */}
       <Particles
         id="tsparticles"
@@ -264,7 +266,7 @@ const LandingPage = () => {
                 Login
               </motion.button>
               <motion.button
-                onClick={() => handleNavigation("/register")}
+                onClick={() => setShowRegistrationModal(true)} // Open registration modal
                 className="bg-gradient-to-r from-[#4f46e5] to-[#818cf8] hover:from-[#4338ca] hover:to-[#4f46e5] text-white px-4 py-2 rounded-md text-sm font-medium transition-colors duration-300"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.98 }}
@@ -440,8 +442,6 @@ const LandingPage = () => {
               </div>
             </div>
           </div>
-
-
         </section>
 
         {/* Benefits section with stats */}
@@ -534,7 +534,6 @@ const LandingPage = () => {
           </div>
         </section>
 
-
         {/* Testimonials */}
         <section id="testimonials" className="py-20 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -573,8 +572,6 @@ const LandingPage = () => {
               </div>
             </div>
           </div>
-
-
         </section>
 
         {/* Limited-time offer */}
@@ -582,7 +579,7 @@ const LandingPage = () => {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div
               className="bg-cover bg-center rounded-2xl shadow-xl overflow-hidden"
-              style={{ backgroundImage: `url(${landingPage2})` }} // ✅ Corrected Syntax
+              style={{ backgroundImage: `url(${landingPage2})` }}
             >
               <div className="px-6 py-12 sm:px-12 lg:py-16 lg:pr-0 xl:py-20 xl:px-20">
                 <div className="lg:flex lg:items-center lg:justify-between">
@@ -615,135 +612,132 @@ const LandingPage = () => {
           </div>
         </section>
 
-
-
         {/* FAQ Section */}
         <section id="faq" className="py-20 bg-white relative">
-  {/* Background Image */}
-  <div className="absolute inset-0 z-0 opacity-10">
-    <img src={landingPage} alt="Background" className="w-full h-full object-cover" />
-  </div>
-  
-  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-    <div className="text-center">
-      <h2 className="text-base text-[#4f46e5] font-semibold tracking-wide uppercase">FAQ</h2>
-      <p className="mt-2 text-3xl font-extrabold text-[#333] sm:text-4xl">Frequently Asked Questions</p>
-      <p className="mt-4 max-w-2xl text-xl text-[#666] mx-auto">
-        Everything you need to know about Health Bridge.
-      </p>
-    </div>
+          {/* Background Image */}
+          <div className="absolute inset-0 z-0 opacity-10">
+            <img src={landingPage} alt="Background" className="w-full h-full object-cover" />
+          </div>
+          
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div className="text-center">
+              <h2 className="text-base text-[#4f46e5] font-semibold tracking-wide uppercase">FAQ</h2>
+              <p className="mt-2 text-3xl font-extrabold text-[#333] sm:text-4xl">Frequently Asked Questions</p>
+              <p className="mt-4 max-w-2xl text-xl text-[#666] mx-auto">
+                Everything you need to know about Health Bridge.
+              </p>
+            </div>
 
-    <div className="mt-12 max-w-3xl mx-auto space-y-6">
-      {/* FAQ Items */}
-      {[
-        {
-          question: "Is Health Bridge secure?",
-          answer: "Yes, Health Bridge uses state-of-the-art encryption and follows strict data privacy protocols to ensure your information is safe."
-        },
-        {
-          question: "How does the emergency alert system work?",
-          answer: "With a single tap, the app sends your location and medical details to nearby healthcare providers and emergency services."
-        },
-        {
-           question: "Can I access my records offline?",
-          answer: "Yes, Health Bridge allows you to download and access your health records offline for convenience."
-        },
-        {
-          question: "How do donations work?",
-          answer: "You can donate directly through the app, and we ensure that 100% of your contribution goes to mothers in need."
-        },
-        {
-          question: "Is Health Bridge free to use?",
-          answer: "Yes, Health Bridge is completely free for all users. We believe in making healthcare accessible to everyone."
-        }
-      ].map((faq, index) => (
-        <motion.div
-          key={index}
-          className="bg-[#f9f9f9] p-6 rounded-lg border border-[#eef2ff]"
-          whileHover={{ y: -5, boxShadow: "0 10px 25px rgba(79, 70, 229, 0.1)" }}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 * index, duration: 0.8 }}
-        >
-          <h3 className="text-lg font-medium text-[#333]">{faq.question}</h3>
-          <p className="mt-2 text-base text-[#666]">{faq.answer}</p>
-        </motion.div>
-      ))}
-    </div>
-  </div>
-
-
+            <div className="mt-12 max-w-3xl mx-auto space-y-6">
+              {/* FAQ Items */}
+              {[
+                {
+                  question: "Is Health Bridge secure?",
+                  answer: "Yes, Health Bridge uses state-of-the-art encryption and follows strict data privacy protocols to ensure your information is safe."
+                },
+                {
+                  question: "How does the emergency alert system work?",
+                  answer: "With a single tap, the app sends your location and medical details to nearby healthcare providers and emergency services."
+                },
+                {
+                   question: "Can I access my records offline?",
+                  answer: "Yes, Health Bridge allows you to download and access your health records offline for convenience."
+                },
+                {
+                  question: "How do donations work?",
+                  answer: "You can donate directly through the app, and we ensure that 100% of your contribution goes to mothers in need."
+                },
+                {
+                  question: "Is Health Bridge free to use?",
+                  answer: "Yes, Health Bridge is completely free for all users. We believe in making healthcare accessible to everyone."
+                }
+              ].map((faq, index) => (
+                <motion.div
+                  key={index}
+                  className="bg-[#f9f9f9] p-6 rounded-lg border border-[#eef2ff]"
+                  whileHover={{ y: -5, boxShadow: "0 10px 25px rgba(79, 70, 229, 0.1)" }}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 * index, duration: 0.8 }}
+                >
+                  <h3 className="text-lg font-medium text-[#333]">{faq.question}</h3>
+                  <p className="mt-2 text-base text-[#666]">{faq.answer}</p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
         </section>
 
         {/* Footer */}
         <footer className="bg-gradient-to-r from-[#6d28d9] to-[#3b82f6] text-white">
-  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-    <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-      {/* About Section */}
-      <div>
-        <h3 className="text-lg font-semibold mb-4">About Health Bridge</h3>
-        <p className="text-sm text-[#f8fafc]">
-          Health Bridge is a revolutionary platform designed to transform maternal and infant care through innovative technology.
-        </p>
-      </div>
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+              {/* About Section */}
+              <div>
+                <h3 className="text-lg font-semibold mb-4">About Health Bridge</h3>
+                <p className="text-sm text-[#f8fafc]">
+                  Health Bridge is a revolutionary platform designed to transform maternal and infant care through innovative technology.
+                </p>
+              </div>
 
-      {/* Quick Links */}
-      <div>
-        <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
-        <ul className="space-y-2">
-          <li><a href="#features" className="text-sm text-[#f8fafc] hover:text-white">Features</a></li>
-          <li><a href="#benefits" className="text-sm text-[#f8fafc] hover:text-white">Benefits</a></li>
-          <li><a href="#testimonials" className="text-sm text-[#f8fafc] hover:text-white">Testimonials</a></li>
-          <li><a href="#faq" className="text-sm text-[#f8fafc] hover:text-white">FAQ</a></li>
-        </ul>
-      </div>
-        {/* Contact Info */}
-        <div>
-        <h3 className="text-lg font-semibold mb-4">Contact Us</h3>
-        <ul className="space-y-2">
-          <li className="text-sm text-[#f8fafc]">Email: support@healthbridge.com</li>
-          <li className="text-sm text-[#f8fafc]">Phone: +94 11 123 4567</li>
-          <li className="text-sm text-[#f8fafc]">Address: Colombo, Sri Lanka</li>
-        </ul>
-      </div>
+              {/* Quick Links */}
+              <div>
+                <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
+                <ul className="space-y-2">
+                  <li><a href="#features" className="text-sm text-[#f8fafc] hover:text-white">Features</a></li>
+                  <li><a href="#benefits" className="text-sm text-[#f8fafc] hover:text-white">Benefits</a></li>
+                  <li><a href="#testimonials" className="text-sm text-[#f8fafc] hover:text-white">Testimonials</a></li>
+                  <li><a href="#faq" className="text-sm text-[#f8fafc] hover:text-white">FAQ</a></li>
+                </ul>
+              </div>
+              {/* Contact Info */}
+              <div>
+                <h3 className="text-lg font-semibold mb-4">Contact Us</h3>
+                <ul className="space-y-2">
+                  <li className="text-sm text-[#f8fafc]">Email: support@healthbridge.com</li>
+                  <li className="text-sm text-[#f8fafc]">Phone: +94 11 123 4567</li>
+                  <li className="text-sm text-[#f8fafc]">Address: Colombo, Sri Lanka</li>
+                </ul>
+              </div>
 
-      {/* Social Media Links */}
-      <div>
-        <h3 className="text-lg font-semibold mb-4">Follow Us</h3>
-        <div className="flex space-x-4">
-          <a href="https://www.linkedin.com/company/healthbridgeoffical/?viewAsMember=true" target="_blank" rel="noopener noreferrer" className="text-[#f8fafc] hover:text-white">
-            <FaLinkedin className="h-6 w-6" />
-          </a>
-          <a href="https://www.instagram.com/healthbridge2025?igsh=a2hzNm44bXJ3dzN4" target="_blank" rel="noopener noreferrer" className="text-[#f8fafc] hover:text-white">
-            <FaInstagram className="h-6 w-6" />
-          </a>
-          <a href="https://www.facebook.com/share/15fPLQWJUw/" target="_blank" rel="noopener noreferrer" className="text-[#f8fafc] hover:text-white">
-            <FaFacebook className="h-6 w-6" />
-          </a>
-        </div>
-      </div>
-    </div>
-    {/* Copyright */}
-    <div className="mt-8 border-t border-[#f8fafc] pt-8 text-center">
-      <p className="text-sm text-[#f8fafc]">
-        &copy; {new Date().getFullYear()} Health Bridge. All rights reserved.
-      </p>
-    </div>
-  </div>
-
-
-
+              {/* Social Media Links */}
+              <div>
+                <h3 className="text-lg font-semibold mb-4">Follow Us</h3>
+                <div className="flex space-x-4">
+                  <a href="https://www.linkedin.com/company/healthbridgeoffical/?viewAsMember=true" target="_blank" rel="noopener noreferrer" className="text-[#f8fafc] hover:text-white">
+                    <FaLinkedin className="h-6 w-6" />
+                  </a>
+                  <a href="https://www.instagram.com/healthbridge2025?igsh=a2hzNm44bXJ3dzN4" target="_blank" rel="noopener noreferrer" className="text-[#f8fafc] hover:text-white">
+                    <FaInstagram className="h-6 w-6" />
+                  </a>
+                  <a href="https://www.facebook.com/share/15fPLQWJUw/" target="_blank" rel="noopener noreferrer" className="text-[#f8fafc] hover:text-white">
+                    <FaFacebook className="h-6 w-6" />
+                  </a>
+                </div>
+              </div>
+            </div>
+            {/* Copyright */}
+            <div className="mt-8 border-t border-[#f8fafc] pt-8 text-center">
+              <p className="text-sm text-[#f8fafc]">
+                &copy; {new Date().getFullYear()} Health Bridge. All rights reserved.
+              </p>
+            </div>
+          </div>
         </footer>
       </main>
 
+      {/* Registration Modal */}
+      {showRegistrationModal && (
+        <RegistrationPage onClose={() => setShowRegistrationModal(false)} />
+      )}
+
       {/* Login Modal */}
       {showLoginModal && (
-    <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
-      
-        <LoginPage onClose={() => setShowLoginModal(false)} />
-      </div>
-  )}
-</div>
+        <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
+          <LoginPage onClose={() => setShowLoginModal(false)} />
+        </div>
+      )}
+    </div>
   );
 };
 
