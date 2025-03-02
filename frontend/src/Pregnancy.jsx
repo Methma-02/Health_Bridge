@@ -165,27 +165,29 @@ function Pregnancy() {
     const renderRadioButtons = (questions) => {
         return questions.map((question) => (
             <div key={question.id}>
-                <label htmlFor={question.id}>{question.label}</label> <br />
-                <label>
-                    <input
-                        type="radio"
-                        id="yes"
-                        name={question.name}
-                        value="Yes"
-                        onChange={handleChange}
-                    />
-                    Yes
-                </label>
-                <label>
-                    <input
-                        type="radio"
-                        id="no"
-                        name={question.name}
-                        value="No"
-                        onChange={handleChange}
-                    />
-                    No
-                </label>
+                <label>{question.label}</label>
+                <div>
+                    <label>
+                        <input
+                            type="radio"
+                            name={question.name}
+                            value="Yes"
+                            checked={formData[question.name] === "Yes"}
+                            onChange={(e) => handleChange(e)}
+                        />
+                        Yes
+                    </label>
+                    <label>
+                        <input
+                            type="radio"
+                            name={question.name}
+                            value="No"
+                            checked={formData[question.name] === "No"}
+                            onChange={(e) => handleChange(e)}
+                        />
+                        No
+                    </label>
+                </div>
             </div>
         ));
     };
