@@ -58,8 +58,32 @@ export const googleLogin = async (credential) => {
 };
 
 export const requestPasswordReset = async (email) => {
-  const response = await api.post('/auth/reset-password', { email });
+  const response = await api.post('/auth/forgot-password', { email });
   return response.data;
+};
+
+
+export const resetPassword = async (token, password) => {
+  try {
+    const response = await fetch('/api/reset-password', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ token, password }),
+    });
+    
+    const data = await response.json();
+    
+    if (!response.ok) {
+      throw new Error(data.message || 'Failed to reset password');
+    }
+    
+    return data;
+  } catch (error) {
+    console.error('Reset password error:', error);
+    throw error;
+  }
 };
 
 export default api;
