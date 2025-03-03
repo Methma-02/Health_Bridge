@@ -123,5 +123,17 @@ app.get("/symptoms", authMiddleware, async (req, res) => {
   res.json(decryptedSymptoms);
 });
 
+// 🔹 DELETE A SYMPTOM BY ID
+app.delete("/symptoms/:id", authMiddleware, async (req, res) => {
+  const { id } = req.params;
+  const symptom = await Symptom.findOne({ _id: id, userId: req.user.userId });
+
+  if (!symptom) return res.status(404).json({ msg: "Symptom not found" });
+
+  await Symptom.findByIdAndDelete(id);
+  res.json({ msg: "✅ Symptom deleted successfully" });
+});
+
+
 // Start Server
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
