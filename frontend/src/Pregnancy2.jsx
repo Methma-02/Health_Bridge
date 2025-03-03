@@ -1,5 +1,4 @@
 import React from 'react';
-import './App.css';
 import { useForm2Context } from './contexts/Form2Context';
 
 const ClinicForm = () => {
