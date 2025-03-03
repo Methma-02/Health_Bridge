@@ -7,7 +7,7 @@ const { OAuth2Client } = require('google-auth-library');
 const logger = require('../utils/logger');
 const crypto = require('crypto');
 const mongoose = require('mongoose');
-
+const nodemailer = require('nodemailer');
 
 const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
@@ -204,17 +204,57 @@ class AuthController {
 
       await user.save();
 
-      // In a real application, you would send an email here
-      // For now, just return the token
-      res.json({
-        message: 'Password reset initiated',
-        resetToken // In production, this would be sent via email
+      // Create reset URL
+    const resetUrl = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
+
+    // Email content
+    const message = `
+      <h1>Password Reset Request</h1>
+      <p>You requested a password reset. Please click the link below to reset your password:</p>
+      <a href="${resetUrl}" clicktracking="off">Reset Password</a>
+      <p>This link is valid for 30 minutes only.</p>
+      <p>If you didn't request this, please ignore this email.</p>
+    `;
+
+    try {
+      // Create transporter
+      const transporter = nodemailer.createTransport({
+        host: process.env.EMAIL_HOST,
+        port: process.env.EMAIL_PORT,
+        secure: process.env.EMAIL_SECURE === 'true',
+        auth: {
+          user: process.env.EMAIL_USER,
+          pass: process.env.EMAIL_PASSWORD,
+        },
       });
-    } catch (error) {
-      logger.error('Forgot password error:', error);
-      res.status(400).json({ error: error.message });
+
+      // Send email
+      await transporter.sendMail({
+        from: `"Your App Name" <${process.env.EMAIL_FROM}>`,
+        to: user.email,
+        subject: 'Password Reset Request',
+        html: message,
+      });
+
+      res.json({
+        message: 'Password reset instructions have been sent to your email',
+      });
+    } catch (emailError) {
+      logger.error('Email sending error:', emailError);
+      user.resetPasswordToken = undefined;
+      user.resetPasswordExpire = undefined;
+      await user.save();
+      
+      return res.status(500).json({ 
+        error: 'Email could not be sent',
+        details: process.env.NODE_ENV === 'development' ? emailError.message : undefined
+      });
     }
+  } catch (error) {
+    logger.error('Forgot password error:', error);
+    res.status(400).json({ error: error.message });
   }
+}
 
   static async resetPassword(req, res) {
     try {
