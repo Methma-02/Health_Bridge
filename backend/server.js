@@ -115,6 +115,7 @@ app.get("/symptoms", authMiddleware, async (req, res) => {
   const symptoms = await Symptom.find({ userId: req.user.userId });
 
   const decryptedSymptoms = symptoms.map((entry) => ({
+    _id: entry._id,
     date: entry.date,
     symptoms: JSON.parse(CryptoJS.AES.decrypt(entry.encryptedSymptoms, ENCRYPTION_SECRET).toString(CryptoJS.enc.Utf8)),
   }));
