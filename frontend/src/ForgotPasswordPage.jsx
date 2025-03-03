@@ -8,8 +8,6 @@ const ForgotPasswordPage = () => {
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
-  const [isSuccess, setIsSuccess] = useState(false);
-  const [debugInfo, setDebugInfo] = useState(null);
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -20,7 +18,6 @@ const ForgotPasswordPage = () => {
     e.preventDefault();
     setIsLoading(true);
     setError('');
-    setDebugInfo(null);
 
     // Basic email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -31,22 +28,17 @@ const ForgotPasswordPage = () => {
     }
 
     try {
+      // Verify if the email exists
       const response = await api.forgotPassword(email);
-      setIsSuccess(true);
-      // For debugging - you can remove this in production
-      setDebugInfo({
-        message: 'API request successful',
-        data: response
-      });
+      if (response.exists) {
+        // Navigate to reset password page with the email as a parameter
+        navigate(`/reset-password/${encodeURIComponent(email)}`);
+      } else {
+        setError('Email not found');
+      }
     } catch (err) {
       console.error('Password reset error:', err);
       setError(err.message || 'An error occurred. Please try again or contact support.');
-      // For debugging - you can remove this in production
-      setDebugInfo({
-        error: true,
-        message: err.message,
-        details: err
-      });
     } finally {
       setIsLoading(false);
     }
@@ -102,111 +94,76 @@ const ForgotPasswordPage = () => {
             <div className="absolute -bottom-3 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-gradient-to-r from-[#4f46e5] to-[#818cf8] rounded-full"></div>
           </div>
 
-          {isSuccess ? (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="p-4 bg-green-100 border border-green-300 text-green-700 rounded-lg mb-4"
+          <p className="text-[#333] mb-6">
+            Enter your email address to reset your password.
+          </p>
+
+          {error && (
+            <motion.div 
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mb-6 p-3 bg-red-100 border border-red-300 text-red-600 rounded-lg"
             >
-              <h3 className="font-bold mb-2">Password Reset Email Sent!</h3>
-              <p>A password reset link has been sent to <strong>{email}</strong>.</p>
-              <p className="mt-2">Please check your inbox and spam folder. The email should arrive within a few minutes.</p>
-              
-              <div className="mt-4 p-3 bg-blue-50 border border-blue-200 text-blue-800 rounded-lg text-sm">
-                <p><strong>Note:</strong> If you don't receive the email:</p>
-                <ul className="list-disc ml-5 mt-1">
-                  <li>Check your spam folder</li>
-                  <li>Verify you entered the correct email address</li>
-                  <li>Try again in a few minutes</li>
-                </ul>
-              </div>
+              {error}
             </motion.div>
-          ) : (
-            <>
-              <p className="text-[#333] mb-6">
-                Enter your email address and we'll send you a link to reset your password.
-              </p>
-
-              {error && (
-                <motion.div 
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="mb-6 p-3 bg-red-100 border border-red-300 text-red-600 rounded-lg"
-                >
-                  {error}
-                </motion.div>
-              )}
-
-              <form onSubmit={handleSubmit} className="space-y-5">
-                <div>
-                  <label className="block text-sm font-medium text-[#333] mb-1">
-                    Email Address
-                  </label>
-                  <motion.div 
-                    whileHover={{ scale: 1.01 }}
-                    className="relative group"
-                  >
-                    <input
-                      type="email"
-                      value={email}
-                      onChange={handleEmailChange}
-                      className="w-full px-4 py-3 bg-[#f9f9f9] border border-[#eef2ff] focus:border-[#4f46e5] text-[#333] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4f46e5]/50 transition-all duration-300"
-                      required
-                      disabled={isLoading}
-                      placeholder="your.email@example.com"
-                    />
-                  </motion.div>
-                </div>
-
-                <motion.button
-                  type="submit"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="w-full py-3 rounded-lg relative overflow-hidden group disabled:opacity-70"
-                  disabled={isLoading}
-                >
-                  <span className="absolute inset-0 bg-gradient-to-r from-[#4f46e5] to-[#818cf8] group-hover:from-[#4338ca] group-hover:to-[#4f46e5] transition-all duration-300"></span>
-                  <span className="relative text-white font-medium">
-                    {isLoading ? (
-                      <span className="flex items-center justify-center">
-                        <svg className="animate-spin -ml-1 mr-2 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                        </svg>
-                        Sending Reset Link...
-                      </span>
-                    ) : (
-                      'Send Reset Link'
-                    )}
-                  </span>
-                </motion.button>
-              </form>
-
-              <div className="mt-6 text-center">
-                <motion.button
-                  onClick={() => navigate('/login')}
-                  whileHover={{ scale: 1.03 }}
-                  whileTap={{ scale: 0.97 }}
-                  className="text-sm text-[#4f46e5] hover:text-[#4338ca] transition-colors duration-300"
-                  disabled={isLoading}
-                >
-                  Back to Login
-                </motion.button>
-              </div>
-            </>
           )}
-          
-          {/* Debug info - remove in production */}
-          {debugInfo && import.meta.env.DEV && (
-            <div className="mt-4 p-3 bg-gray-100 border border-gray-300 text-gray-800 rounded-lg text-xs">
-              <details>
-                <summary className="cursor-pointer font-medium">Debug Information</summary>
-                <pre className="mt-2 overflow-auto max-h-40">
-                  {JSON.stringify(debugInfo, null, 2)}
-                </pre>
-              </details>
+
+          <form onSubmit={handleSubmit} className="space-y-5">
+            <div>
+              <label className="block text-sm font-medium text-[#333] mb-1">
+                Email Address
+              </label>
+              <motion.div 
+                whileHover={{ scale: 1.01 }}
+                className="relative group"
+              >
+                <input
+                  type="email"
+                  value={email}
+                  onChange={handleEmailChange}
+                  className="w-full px-4 py-3 bg-[#f9f9f9] border border-[#eef2ff] focus:border-[#4f46e5] text-[#333] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4f46e5]/50 transition-all duration-300"
+                  required
+                  disabled={isLoading}
+                  placeholder="your.email@example.com"
+                />
+              </motion.div>
             </div>
-          )}
+
+            <motion.button
+              type="submit"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className="w-full py-3 rounded-lg relative overflow-hidden group disabled:opacity-70"
+              disabled={isLoading}
+            >
+              <span className="absolute inset-0 bg-gradient-to-r from-[#4f46e5] to-[#818cf8] group-hover:from-[#4338ca] group-hover:to-[#4f46e5] transition-all duration-300"></span>
+              <span className="relative text-white font-medium">
+                {isLoading ? (
+                  <span className="flex items-center justify-center">
+                    <svg className="animate-spin -ml-1 mr-2 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Verifying...
+                  </span>
+                ) : (
+                  'Reset Password'
+                )}
+              </span>
+            </motion.button>
+          </form>
+
+          <div className="mt-6 text-center">
+            <motion.button
+              onClick={() => navigate('/login')}
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
+              className="text-sm text-[#4f46e5] hover:text-[#4338ca] transition-colors duration-300"
+              disabled={isLoading}
+            >
+              Back to Login
+            </motion.button>
+          </div>
         </motion.div>
       </div>
     </div>
