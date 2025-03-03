@@ -70,16 +70,11 @@ export const googleLogin = async (credential) => {
     };
   }
 };
-
 export const forgotPassword = async (email) => {
   try {
-    // Log to help with debugging
-    console.log('Sending forgot password request for email:', email);
     const response = await api.post('/auth/forgot-password', { email });
-    console.log('Forgot password response:', response.data);
     return response.data;
   } catch (error) {
-    console.error('Forgot password error:', error);
     throw {
       message: error.response?.data?.message || error.message || 'Password reset request failed',
       status: error.response?.status,
@@ -88,14 +83,11 @@ export const forgotPassword = async (email) => {
   }
 };
 
-export const resetPassword = async (token, password) => {
+export const resetPassword = async (email, password) => {
   try {
-    console.log('Sending reset password request with token');
-    const response = await api.post('/auth/reset-password', { token, password });
-    console.log('Reset password response:', response.data);
+    const response = await api.post('/auth/reset-password', { email, password });
     return response.data;
   } catch (error) {
-    console.error('Reset password error:', error);
     throw {
       message: error.response?.data?.message || error.message || 'Password reset failed',
       status: error.response?.status,
@@ -103,6 +95,7 @@ export const resetPassword = async (token, password) => {
     };
   }
 };
+
 
 // Verify a reset password token before showing the reset form
 export const verifyResetToken = async (token) => {
