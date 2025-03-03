@@ -1,4 +1,3 @@
-// api.js
 import axios from 'axios';
 
 const api = axios.create({
@@ -35,7 +34,7 @@ api.interceptors.response.use(
 
 export const register = async (userData) => {
   try {
-    const response = await api.post('/auth/register', userData); // Updated endpoint to match router
+    const response = await api.post('/auth/register', userData);
     return response.data;
   } catch (error) {
     throw {
@@ -47,42 +46,75 @@ export const register = async (userData) => {
 };
 
 export const login = async (credentials) => {
-  const response = await api.post('/auth/login', credentials);
-  return response.data;
+  try {
+    const response = await api.post('/auth/login', credentials);
+    return response.data;
+  } catch (error) {
+    throw {
+      message: error.response?.data?.message || error.message || 'Login failed',
+      status: error.response?.status,
+      data: error.response?.data
+    };
+  }
 };
-
 
 export const googleLogin = async (credential) => {
-  const response = await api.post('/auth/google', { credential });
-  return response.data;
+  try {
+    const response = await api.post('/auth/google', { credential });
+    return response.data;
+  } catch (error) {
+    throw {
+      message: error.response?.data?.message || error.message || 'Google login failed',
+      status: error.response?.status,
+      data: error.response?.data
+    };
+  }
 };
 
-export const requestPasswordReset = async (email) => {
-  const response = await api.post('/auth/forgot-password', { email });
-  return response.data;
+export const forgotPassword = async (email) => {
+  try {
+    // Log to help with debugging
+    console.log('Sending forgot password request for email:', email);
+    const response = await api.post('/auth/forgot-password', { email });
+    console.log('Forgot password response:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Forgot password error:', error);
+    throw {
+      message: error.response?.data?.message || error.message || 'Password reset request failed',
+      status: error.response?.status,
+      data: error.response?.data
+    };
+  }
 };
-
 
 export const resetPassword = async (token, password) => {
   try {
-    const response = await fetch('/api/reset-password', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ token, password }),
-    });
-    
-    const data = await response.json();
-    
-    if (!response.ok) {
-      throw new Error(data.message || 'Failed to reset password');
-    }
-    
-    return data;
+    console.log('Sending reset password request with token');
+    const response = await api.post('/auth/reset-password', { token, password });
+    console.log('Reset password response:', response.data);
+    return response.data;
   } catch (error) {
     console.error('Reset password error:', error);
-    throw error;
+    throw {
+      message: error.response?.data?.message || error.message || 'Password reset failed',
+      status: error.response?.status,
+      data: error.response?.data
+    };
+  }
+};
+
+// Verify a reset password token before showing the reset form
+export const verifyResetToken = async (token) => {
+  try {
+    const response = await api.get(`/auth/verify-reset-token/${token}`);
+    return response.data;
+  } catch (error) {
+    throw {
+      message: error.response?.data?.message || error.message || 'Invalid or expired token',
+      status: error.response?.status,
+      data: error.response?.data
+    };
   }
 };
 
