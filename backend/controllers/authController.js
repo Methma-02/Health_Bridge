@@ -24,12 +24,13 @@ class AuthController {
 
       // Generate registration ID
       const registrationId = generateRegistrationId(role);
+      const hashedPassword = await bcrypt.hash(password, 10);
 
       // Create user
       const user = new User({
         ...userData,
         email,
-        password,
+        password:hashedPassword,
         role,
         registrationId
       });
@@ -186,59 +187,83 @@ class AuthController {
   static async forgotPassword(req, res) {
     try {
       const { email } = req.body;
-      const user = await User.findOne({ email });
-
-      if (!user) {
-        // Return 200 even if user not found for security
-        return res.json({ message: 'If the email exists, a reset link will be sent' });
+      
+      if (!email) {
+        return res.status(400).json({ error: 'Email is required' });
       }
-
-      // Generate reset token
-      const resetToken = crypto.randomBytes(32).toString('hex');
-      user.resetPasswordToken = crypto.createHash('sha256').update(resetToken).digest('hex');
-      user.resetPasswordExpire = Date.now() + 30 * 60 * 1000; // 30 minutes
-
-      await user.save();
-      console.log('Reset token saved:', user.resetPasswordToken);
-
-      // Create reset URL
-      const resetUrl = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
-
-      // Email content
-      const message = `
-        <h1>Password Reset Request</h1>
-        <p>You requested a password reset. Please click the link below to reset your password:</p>
-        <a href="${resetUrl}" clicktracking="off">Reset Password</a>
-        <p>This link is valid for 30 minutes only.</p>
-        <p>If you didn't request this, please ignore this email.</p>
-      `;
-
-      // Create transporter
-      const transporter = nodemailer.createTransport({
-        host: process.env.EMAIL_HOST,
-        port: process.env.EMAIL_PORT,
-        secure: process.env.EMAIL_SECURE === 'true',
-        auth: {
-          user: process.env.EMAIL_USER,
-          pass: process.env.EMAIL_PASSWORD,
-        },
-      });
-
-      // Send email
-      await transporter.sendMail({
-        from: `"Your App Name" <${process.env.EMAIL_FROM}>`,
-        to: user.email,
-        subject: 'Password Reset Request',
-        html: message,
-      });
-
-      res.json({
-        message: 'Password reset instructions have been sent to your email',
-      });
+      
+      // Validate email format
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        return res.status(400).json({ error: 'Invalid email format' });
+      }
+      
+      const user = await User.findOne({ email });
+    
+      if (!user) {
+        return res.status(404).json({ error: 'Email not found' });
+      }
+    
+      res.json({ exists: true });
     } catch (error) {
       logger.error('Forgot password error:', error);
-      console.error('Full error:', error); // Log the full error for debugging
       res.status(400).json({ error: error.message });
+    }
+  }
+  
+  static async resetPassword(req, res) {
+    try {
+      const { email, password } = req.body;
+  
+      const user = await User.findOne({ email });
+  
+      if (!user) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+  
+      // Set new password
+      user.password = await bcrypt.hash(password, 10); // Hash the password
+      await user.save();
+  
+      // Create audit log
+      await AuditLog.create({
+        userId: user._id,
+        action: 'PASSWORD_RESET_COMPLETE',
+        details: { email: user.email },
+        ipAddress: req.ip,
+        userAgent: req.get('user-agent')
+      });
+  
+      res.json({ message: 'Password reset successful' });
+    } catch (error) {
+      logger.error('Reset password error:', error);
+      res.status(400).json({ error: error.message });
+    }
+  }
+
+  static async verifyResetToken(req, res) {
+    try {
+      const { token } = req.params;
+      
+      // Get hashed token
+      const resetPasswordToken = crypto
+        .createHash('sha256')
+        .update(token)
+        .digest('hex');
+  
+      const user = await User.findOne({
+        resetPasswordToken,
+        resetPasswordExpire: { $gt: Date.now() }
+      });
+  
+      if (!user) {
+        return res.status(400).json({ valid: false, message: 'Invalid or expired reset token' });
+      }
+  
+      res.json({ valid: true });
+    } catch (error) {
+      logger.error('Verify reset token error:', error);
+      res.status(400).json({ valid: false, error: error.message });
     }
   }
 
