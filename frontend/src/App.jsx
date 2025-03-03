@@ -20,6 +20,7 @@ function App() {
             <Route path="/forgot-password" element={<ForgotPasswordPage />} />
             <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
             <Route path="*" element={<Navigate to="/" replace />} />
+            <Route path="/reset-password/:email" element={<ResetPasswordPage />} />
           </Routes>
         </BrowserRouter>
       </GoogleOAuthProvider>
