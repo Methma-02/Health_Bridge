@@ -1,4 +1,3 @@
-// controllers/authController.js
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const AuditLog = require('../models/AuditLog');
@@ -8,6 +7,7 @@ const logger = require('../utils/logger');
 const crypto = require('crypto');
 const mongoose = require('mongoose');
 const nodemailer = require('nodemailer');
+const bcrypt = require('bcrypt'); // Add this for password hashing
 
 const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
@@ -15,10 +15,6 @@ class AuthController {
   static async register(req, res) {
     try {
       const { email, password, role, ...userData } = req.body;
-
-      if (mongoose.connection.readyState !== 1) {
-        await connectDB(); // Ensure DB is connected before querying
-      }
 
       // Check if user already exists
       const existingUser = await User.findOne({ email });
@@ -203,20 +199,20 @@ class AuthController {
       user.resetPasswordExpire = Date.now() + 30 * 60 * 1000; // 30 minutes
 
       await user.save();
+      console.log('Reset token saved:', user.resetPasswordToken);
 
       // Create reset URL
-    const resetUrl = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
+      const resetUrl = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
 
-    // Email content
-    const message = `
-      <h1>Password Reset Request</h1>
-      <p>You requested a password reset. Please click the link below to reset your password:</p>
-      <a href="${resetUrl}" clicktracking="off">Reset Password</a>
-      <p>This link is valid for 30 minutes only.</p>
-      <p>If you didn't request this, please ignore this email.</p>
-    `;
+      // Email content
+      const message = `
+        <h1>Password Reset Request</h1>
+        <p>You requested a password reset. Please click the link below to reset your password:</p>
+        <a href="${resetUrl}" clicktracking="off">Reset Password</a>
+        <p>This link is valid for 30 minutes only.</p>
+        <p>If you didn't request this, please ignore this email.</p>
+      `;
 
-    try {
       // Create transporter
       const transporter = nodemailer.createTransport({
         host: process.env.EMAIL_HOST,
@@ -239,22 +235,12 @@ class AuthController {
       res.json({
         message: 'Password reset instructions have been sent to your email',
       });
-    } catch (emailError) {
-      logger.error('Email sending error:', emailError);
-      user.resetPasswordToken = undefined;
-      user.resetPasswordExpire = undefined;
-      await user.save();
-      
-      return res.status(500).json({ 
-        error: 'Email could not be sent',
-        details: process.env.NODE_ENV === 'development' ? emailError.message : undefined
-      });
+    } catch (error) {
+      logger.error('Forgot password error:', error);
+      console.error('Full error:', error); // Log the full error for debugging
+      res.status(400).json({ error: error.message });
     }
-  } catch (error) {
-    logger.error('Forgot password error:', error);
-    res.status(400).json({ error: error.message });
   }
-}
 
   static async resetPassword(req, res) {
     try {
@@ -276,7 +262,7 @@ class AuthController {
       }
 
       // Set new password
-      user.password = password;
+      user.password = await bcrypt.hash(password, 10); // Hash the password
       user.resetPasswordToken = undefined;
       user.resetPasswordExpire = undefined;
 
