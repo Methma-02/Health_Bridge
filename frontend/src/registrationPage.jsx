@@ -2,9 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from './authContext';
 import * as api from './api';
-import { motion, AnimatePresence } from 'framer-motion';
 
-const RegistrationPage = ({ onClose }) => {
+const RegistrationPage = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
   const [formData, setFormData] = useState({
@@ -242,276 +241,250 @@ const RegistrationPage = ({ onClose }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
-      {/* Dimmed background */}
-      <div 
-        className="absolute inset-0 bg-black/50 backdrop-blur-sm"
-        onClick={onClose} // Close when clicking outside
-      ></div>
-
-      {/* Modal content */}
-      <motion.div
-        initial={{ opacity: 0, y: 20, scale: 0.95 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
-        exit={{ opacity: 0, y: -20, scale: 0.95 }}
-        transition={{ type: "spring", stiffness: 300, damping: 30 }}
-        className="relative z-10 max-w-md w-full bg-white rounded-xl shadow-[0_10px_25px_rgba(0,0,0,0.2)]"
-      >
-        {/* Close Button */}
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 transition-colors duration-300"
-          aria-label="Close registration modal"
-        >
-          <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+    <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-blue-100 flex items-center justify-center px-4 py-12">
+      <div className="max-w-md w-full bg-white shadow-xl rounded-xl p-8 border border-gray-200">
+        <div className="flex justify-center mb-6">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 text-indigo-600" viewBox="0 0 20 20" fill="currentColor">
+            <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
           </svg>
-        </button>
-
-        <div className="p-8">
-          {/* Header */}
-          <div className="text-center relative mb-8">
-            <h2 className="text-3xl font-bold text-[#333]">
-              Create an Account
-            </h2>
-            <div className="absolute -bottom-3 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-gradient-to-r from-[#4f46e5] to-[#818cf8] rounded-full"></div>
+        </div>
+        <h2 className="text-3xl font-extrabold text-center text-gray-900 mb-2">Create an Account</h2>
+        <p className="text-center text-gray-600 mb-6">Join our healthcare platform today</p>
+        
+        {errors.submit && (
+          <div className="mb-6 p-4 bg-red-50 border-l-4 border-red-400 text-red-700 rounded-md flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+            </svg>
+            {errors.submit}
+          </div>
+        )}
+        
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Role Selection */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Select Role <span className="text-red-500">*</span>
+            </label>
+            <select
+              name="role"
+              value={formData.role}
+              onChange={handleChange}
+              className={getInputStyle('role')}
+              required
+            >
+              <option value="">Select your role</option>
+              <option value="mother">Mother</option>
+              <option value="physician">Physician</option>
+              <option value="nurse">Nurse</option>
+              <option value="midwife">Midwife</option>
+              <option value="phm">Public Health Midwife</option>
+            </select>
+            {errors.role && <p className="mt-1 text-red-600 text-sm">{errors.role}</p>}
           </div>
 
-          {errors.submit && (
-            <div className="mb-6 p-4 bg-red-50 border-l-4 border-red-400 text-red-700 rounded-md flex items-center">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-              </svg>
-              {errors.submit}
+          {/* Personal Information Section */}
+          <div className="bg-gray-50 p-4 rounded-md border border-gray-200">
+            <h3 className="text-md font-medium text-gray-700 mb-3">Personal Information</h3>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Full Name <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  name="fullName"
+                  value={formData.fullName}
+                  onChange={handleChange}
+                  className={getInputStyle('fullName')}
+                  placeholder="Enter your full name"
+                  required
+                />
+                {errors.fullName && <p className="mt-1 text-red-600 text-sm">{errors.fullName}</p>}
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Email <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  className={getInputStyle('email')}
+                  placeholder="your.email@example.com"
+                  required
+                />
+                {errors.email && <p className="mt-1 text-red-600 text-sm">{errors.email}</p>}
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Phone Number <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="tel"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  className={getInputStyle('phone')}
+                  placeholder="10-digit phone number"
+                  required
+                />
+                {errors.phone && <p className="mt-1 text-red-600 text-sm">{errors.phone}</p>}
+              </div>
+            </div>
+          </div>
+
+          {/* Password Section */}
+          <div className="bg-gray-50 p-4 rounded-md border border-gray-200">
+            <h3 className="text-md font-medium text-gray-700 mb-3">Create Password</h3>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Password <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  className={getInputStyle('password')}
+                  required
+                />
+                {formData.password && (
+                  <div className="mt-2">
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-xs text-gray-500">Password Strength:</span>
+                      <span className="text-xs font-medium">{getStrengthLabel()}</span>
+                    </div>
+                    <div className="w-full h-2 bg-gray-200 rounded-full">
+                      <div 
+                        className={`h-full rounded-full ${getStrengthColor()}`} 
+                        style={{ width: `${(passwordStrength / 5) * 100}%` }}
+                      ></div>
+                    </div>
+                  </div>
+                )}
+                {errors.password && errors.password.map((error, index) => (
+                  <p key={index} className="mt-1 text-red-600 text-sm">{error}</p>
+                ))}
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Confirm Password <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="password"
+                  name="confirmPassword"
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
+                  className={getInputStyle('confirmPassword')}
+                  required
+                />
+                {errors.confirmPassword && <p className="mt-1 text-red-600 text-sm">{errors.confirmPassword}</p>}
+              </div>
+            </div>
+          </div>
+
+          {/* Conditional Fields */}
+          {(formData.role === 'mother' || formData.role === 'phm' || 
+            ['physician', 'nurse', 'midwife'].includes(formData.role)) && (
+            <div className="bg-gray-50 p-4 rounded-md border border-gray-200">
+              <h3 className="text-md font-medium text-gray-700 mb-3">Additional Information</h3>
+              <div className="space-y-4">
+                {(formData.role === 'mother' || formData.role === 'phm') && (
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">
+                      MOH Division <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      name="mohDivision"
+                      value={formData.mohDivision}
+                      onChange={handleChange}
+                      className={getInputStyle('mohDivision')}
+                      placeholder="Enter your MOH division"
+                      required
+                    />
+                    {errors.mohDivision && <p className="mt-1 text-red-600 text-sm">{errors.mohDivision}</p>}
+                  </div>
+                )}
+
+                {['physician', 'nurse', 'midwife'].includes(formData.role) && (
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">
+                      Work Place <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      name="workPlace"
+                      value={formData.workPlace}
+                      onChange={handleChange}
+                      className={getInputStyle('workPlace')}
+                      placeholder="Enter your work place"
+                      required
+                    />
+                    {errors.workPlace && <p className="mt-1 text-red-600 text-sm">{errors.workPlace}</p>}
+                  </div>
+                )}
+
+                {['physician', 'nurse', 'midwife', 'phm'].includes(formData.role) && (
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">
+                      Government Registration Number <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      name="governmentRegNumber"
+                      value={formData.governmentRegNumber}
+                      onChange={handleChange}
+                      className={getInputStyle('governmentRegNumber')}
+                      placeholder="Enter your registration number"
+                      required
+                    />
+                    {errors.governmentRegNumber && <p className="mt-1 text-red-600 text-sm">{errors.governmentRegNumber}</p>}
+                  </div>
+                )}
+              </div>
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Role Selection */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Select Role <span className="text-red-500">*</span>
-              </label>
-              <select
-                name="role"
-                value={formData.role}
-                onChange={handleChange}
-                className={getInputStyle('role')}
-                required
-              >
-                <option value="">Select your role</option>
-                <option value="mother">Mother</option>
-                <option value="physician">Physician</option>
-                <option value="nurse">Nurse</option>
-                <option value="midwife">Midwife</option>
-                <option value="phm">Public Health Midwife</option>
-              </select>
-              {errors.role && <p className="mt-1 text-red-600 text-sm">{errors.role}</p>}
-            </div>
-
-            {/* Personal Information Section */}
-            <div className="bg-gray-50 p-4 rounded-md border border-gray-200">
-              <h3 className="text-md font-medium text-gray-700 mb-3">Personal Information</h3>
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    Full Name <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    name="fullName"
-                    value={formData.fullName}
-                    onChange={handleChange}
-                    className={getInputStyle('fullName')}
-                    placeholder="Enter your full name"
-                    required
-                  />
-                  {errors.fullName && <p className="mt-1 text-red-600 text-sm">{errors.fullName}</p>}
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    Email <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    className={getInputStyle('email')}
-                    placeholder="your.email@example.com"
-                    required
-                  />
-                  {errors.email && <p className="mt-1 text-red-600 text-sm">{errors.email}</p>}
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    Phone Number <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="tel"
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleChange}
-                    className={getInputStyle('phone')}
-                    placeholder="10-digit phone number"
-                    required
-                  />
-                  {errors.phone && <p className="mt-1 text-red-600 text-sm">{errors.phone}</p>}
-                </div>
-              </div>
-            </div>
-
-            {/* Password Section */}
-            <div className="bg-gray-50 p-4 rounded-md border border-gray-200">
-              <h3 className="text-md font-medium text-gray-700 mb-3">Create Password</h3>
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    Password <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="password"
-                    name="password"
-                    value={formData.password}
-                    onChange={handleChange}
-                    className={getInputStyle('password')}
-                    required
-                  />
-                  {formData.password && (
-                    <div className="mt-2">
-                      <div className="flex items-center justify-between mb-1">
-                        <span className="text-xs text-gray-500">Password Strength:</span>
-                        <span className="text-xs font-medium">{getStrengthLabel()}</span>
-                      </div>
-                      <div className="w-full h-2 bg-gray-200 rounded-full">
-                        <div 
-                          className={`h-full rounded-full ${getStrengthColor()}`} 
-                          style={{ width: `${(passwordStrength / 5) * 100}%` }}
-                        ></div>
-                      </div>
-                    </div>
-                  )}
-                  {errors.password && errors.password.map((error, index) => (
-                    <p key={index} className="mt-1 text-red-600 text-sm">{error}</p>
-                  ))}
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    Confirm Password <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="password"
-                    name="confirmPassword"
-                    value={formData.confirmPassword}
-                    onChange={handleChange}
-                    className={getInputStyle('confirmPassword')}
-                    required
-                  />
-                  {errors.confirmPassword && <p className="mt-1 text-red-600 text-sm">{errors.confirmPassword}</p>}
-                </div>
-              </div>
-            </div>
-
-            {/* Conditional Fields */}
-            {(formData.role === 'mother' || formData.role === 'phm' || 
-              ['physician', 'nurse', 'midwife'].includes(formData.role)) && (
-              <div className="bg-gray-50 p-4 rounded-md border border-gray-200">
-                <h3 className="text-md font-medium text-gray-700 mb-3">Additional Information</h3>
-                <div className="space-y-4">
-                  {(formData.role === 'mother' || formData.role === 'phm') && (
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700">
-                        MOH Division <span className="text-red-500">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        name="mohDivision"
-                        value={formData.mohDivision}
-                        onChange={handleChange}
-                        className={getInputStyle('mohDivision')}
-                        placeholder="Enter your MOH division"
-                        required
-                      />
-                      {errors.mohDivision && <p className="mt-1 text-red-600 text-sm">{errors.mohDivision}</p>}
-                    </div>
-                  )}
-
-                  {['physician', 'nurse', 'midwife'].includes(formData.role) && (
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700">
-                        Work Place <span className="text-red-500">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        name="workPlace"
-                        value={formData.workPlace}
-                        onChange={handleChange}
-                        className={getInputStyle('workPlace')}
-                        placeholder="Enter your work place"
-                        required
-                      />
-                      {errors.workPlace && <p className="mt-1 text-red-600 text-sm">{errors.workPlace}</p>}
-                    </div>
-                  )}
-
-                  {['physician', 'nurse', 'midwife', 'phm'].includes(formData.role) && (
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700">
-                        Government Registration Number <span className="text-red-500">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        name="governmentRegNumber"
-                        value={formData.governmentRegNumber}
-                        onChange={handleChange}
-                        className={getInputStyle('governmentRegNumber')}
-                        placeholder="Enter your registration number"
-                        required
-                      />
-                      {errors.governmentRegNumber && <p className="mt-1 text-red-600 text-sm">{errors.governmentRegNumber}</p>}
-                    </div>
-                  )}
-                </div>
-              </div>
+          {/* Submit Button */}
+          <button
+            type="submit"
+            className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white 
+                      bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 
+                      transition-colors disabled:bg-indigo-400"
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? (
+              <>
+                <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                Creating Account...
+              </>
+            ) : (
+              'Create Account'
             )}
+          </button>
+        </form>
 
-            {/* Submit Button */}
-            <button
-              type="submit"
-              className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white 
-                        bg-[#4f46e5] hover:bg-[#818cf8] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#4f46e5] 
-                        transition-colors disabled:bg-[#818cf8]"
-              disabled={isSubmitting}
-            >
-              {isSubmitting ? (
-                <>
-                  <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                  </svg>
-                  Creating Account...
-                </>
-              ) : (
-                'Create Account'
-              )}
-            </button>
-          </form>
-
-          {/* Login Link */}
-          <p className="mt-6 text-center text-sm text-gray-600">
-            Already have an account?{' '}
-            <button 
-              onClick={() => navigate('/login')}
-              className="text-[#4f46e5] hover:text-[#818cf8] font-medium transition-colors"
-            >
-              Log in
-            </button>
-          </p>
-        </div>
-      </motion.div>
+        {/* Login Link */}
+        <p className="mt-6 text-center text-sm text-gray-600">
+          Already have an account?{' '}
+          <button 
+            onClick={() => navigate('/login')}
+            className="text-indigo-600 hover:text-indigo-500 font-medium transition-colors"
+          >
+            Log in
+          </button>
+        </p>
+      </div>
     </div>
   );
 };
