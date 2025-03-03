@@ -16,6 +16,20 @@ const ENCRYPTION_SECRET = process.env.ENCRYPTION_SECRET;
 app.use(express.json());
 app.use(cors());
 
+// 🔹 Authentication Middleware
+const authMiddleware = (req, res, next) => {
+  const token = req.header("Authorization");
+  if (!token) return res.status(401).json({ msg: "Access denied. No token provided." });
+
+  try {
+    const decoded = jwt.verify(token.replace("Bearer ", ""), JWT_SECRET);
+    req.user = decoded;
+    next();
+  } catch (error) {
+    res.status(401).json({ msg: "Invalid token" });
+  }
+};
+
 // Connect to MongoDB
 mongoose
   .connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
