@@ -5,6 +5,8 @@ import LoginPage from './loginPage';
 import RegistrationPage from './registrationPage';
 import { AuthProvider } from './authContext';
 import { GoogleOAuthProvider } from '@react-oauth/google';
+import ResetPasswordPage from './ResetPasswordPage';
+import ForgotPasswordPage from './ForgotPasswordPage';
 
 function App() {
   return (
@@ -15,6 +17,8 @@ function App() {
             <Route path="/" element={<LandingPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegistrationPage />} />
+            <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+            <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </BrowserRouter>
