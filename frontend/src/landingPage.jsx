@@ -11,6 +11,7 @@ import landingPage2 from "./images/landingPage2.png";
 import logo from "./images/logo.png";
 import landingPageVideo from "./videos/logingPage.mp4";
 import landingPage from "./images/landingPage3.png";
+import homePage from "./images/homePage.png";
 
 const LandingPage = () => {
   const navigate = useNavigate();
@@ -575,7 +576,7 @@ const LandingPage = () => {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div
               className="bg-cover bg-center rounded-2xl shadow-xl overflow-hidden"
-              style={{ backgroundImage: 'url(${landingPage2})' }}
+              style={{ backgroundImage: `url(${landingPage2})` }}
             >
               <div className="px-6 py-12 sm:px-12 lg:py-16 lg:pr-0 xl:py-20 xl:px-20">
                 <div className="lg:flex lg:items-center lg:justify-between">
