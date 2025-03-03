@@ -32,7 +32,7 @@ const authMiddleware = (req, res, next) => {
 
 // Connect to MongoDB
 mongoose
-  .connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .connect(MONGO_URI)
   .then(() => console.log("MongoDB Connected"))
   .catch((err) => console.error("MongoDB Connection Error:", err));
 
@@ -54,50 +54,37 @@ const symptomSchema = new mongoose.Schema({
 
 const Symptom = mongoose.model("Symptom", symptomSchema);
 
-// REGISTER API
+// 🔹 REGISTER USER
 app.post("/register", async (req, res) => {
   const { email, password, role } = req.body;
-
   if (!email || !password || !role) return res.status(400).json({ msg: "All fields required" });
 
-  const salt = await bcrypt.genSalt(10);
-  const hashedPassword = await bcrypt.hash(password, salt);
+  const existingUser = await User.findOne({ email });
+  if (existingUser) return res.status(400).json({ msg: "User already exists" });
 
+  const hashedPassword = await bcrypt.hash(password, 10);
   const newUser = new User({ email, password: hashedPassword, role });
   await newUser.save();
 
-  res.json({ msg: "User registered successfully" });
+  const token = jwt.sign({ userId: newUser._id, role }, JWT_SECRET, { expiresIn: "7d" });
+  res.json({ msg: "User registered successfully", token });
 });
 
-// LOGIN API
+// 🔹 LOGIN USER
 app.post("/login", async (req, res) => {
   const { email, password } = req.body;
-
   const user = await User.findOne({ email });
   if (!user) return res.status(400).json({ msg: "User not found" });
 
   const isMatch = await bcrypt.compare(password, user.password);
   if (!isMatch) return res.status(400).json({ msg: "Invalid credentials" });
 
-  const token = jwt.sign({ userId: user._id, role: user.role }, JWT_SECRET, { expiresIn: "1h" });
+  const token = jwt.sign({ userId: user._id, role: user.role }, JWT_SECRET, { expiresIn: "7d" });
+
   res.json({ token });
 });
 
-// AUTH MIDDLEWARE
-const authMiddleware = (req, res, next) => {
-  const token = req.header("Authorization");
-  if (!token) return res.status(401).json({ msg: "Access Denied" });
-
-  try {
-    const verified = jwt.verify(token, JWT_SECRET);
-    req.user = verified;
-    next();
-  } catch (err) {
-    res.status(401).json({ msg: "Invalid Token" });
-  }
-};
-
-// ADD SYMPTOM (Encrypted)
+// 🔹 ADD SYMPTOM (Encrypted)
 app.post("/symptoms", authMiddleware, async (req, res) => {
   const { date, symptoms } = req.body;
   if (!date || !symptoms) return res.status(400).json({ msg: "Date and Symptoms are required" });
@@ -107,10 +94,10 @@ app.post("/symptoms", authMiddleware, async (req, res) => {
   const newSymptom = new Symptom({ userId: req.user.userId, date, encryptedSymptoms });
   await newSymptom.save();
 
-  res.json({ msg: "Symptoms saved successfully" });
+  res.json({ msg: "✅ Symptoms saved successfully" });
 });
 
-// GET SYMPTOMS (Decrypted)
+// 🔹 GET ALL SYMPTOMS (Decrypted)
 app.get("/symptoms", authMiddleware, async (req, res) => {
   const symptoms = await Symptom.find({ userId: req.user.userId });
 
@@ -134,6 +121,5 @@ app.delete("/symptoms/:id", authMiddleware, async (req, res) => {
   res.json({ msg: "✅ Symptom deleted successfully" });
 });
 
-
 // Start Server
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
