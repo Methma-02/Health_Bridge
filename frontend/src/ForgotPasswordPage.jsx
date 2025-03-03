@@ -9,6 +9,7 @@ const ForgotPasswordPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [isSuccess, setIsSuccess] = useState(false);
+  const [debugInfo, setDebugInfo] = useState(null);
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -19,18 +20,33 @@ const ForgotPasswordPage = () => {
     e.preventDefault();
     setIsLoading(true);
     setError('');
+    setDebugInfo(null);
 
-    if (!email) {
-      setError('Email is required');
+    // Basic email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email || !emailRegex.test(email)) {
+      setError('Please enter a valid email address');
       setIsLoading(false);
       return;
     }
 
     try {
-      await api.forgotPassword(email);
+      const response = await api.forgotPassword(email);
       setIsSuccess(true);
+      // For debugging - you can remove this in production
+      setDebugInfo({
+        message: 'API request successful',
+        data: response
+      });
     } catch (err) {
-      setError(err.message || 'An error occurred. Please try again.');
+      console.error('Password reset error:', err);
+      setError(err.message || 'An error occurred. Please try again or contact support.');
+      // For debugging - you can remove this in production
+      setDebugInfo({
+        error: true,
+        message: err.message,
+        details: err
+      });
     } finally {
       setIsLoading(false);
     }
@@ -38,7 +54,7 @@ const ForgotPasswordPage = () => {
 
   return (
     <div className="relative min-h-screen bg-gradient-to-b from-[#4338ca] via-[#4f46e5] to-[#eef2ff] flex items-center justify-center px-4 py-8 overflow-hidden">
-      {/* Network graph-like pattern in background */}
+      {/* Network graph pattern (unchanged) */}
       <div className="absolute inset-0 z-0 opacity-10">
         <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
           <defs>
@@ -92,7 +108,18 @@ const ForgotPasswordPage = () => {
               animate={{ opacity: 1 }}
               className="p-4 bg-green-100 border border-green-300 text-green-700 rounded-lg mb-4"
             >
-              <p>Password reset link has been sent to your email. Please check your inbox.</p>
+              <h3 className="font-bold mb-2">Password Reset Email Sent!</h3>
+              <p>A password reset link has been sent to <strong>{email}</strong>.</p>
+              <p className="mt-2">Please check your inbox and spam folder. The email should arrive within a few minutes.</p>
+              
+              <div className="mt-4 p-3 bg-blue-50 border border-blue-200 text-blue-800 rounded-lg text-sm">
+                <p><strong>Note:</strong> If you don't receive the email:</p>
+                <ul className="list-disc ml-5 mt-1">
+                  <li>Check your spam folder</li>
+                  <li>Verify you entered the correct email address</li>
+                  <li>Try again in a few minutes</li>
+                </ul>
+              </div>
             </motion.div>
           ) : (
             <>
@@ -167,6 +194,18 @@ const ForgotPasswordPage = () => {
                 </motion.button>
               </div>
             </>
+          )}
+          
+          {/* Debug info - remove in production */}
+          {debugInfo && import.meta.env.DEV && (
+            <div className="mt-4 p-3 bg-gray-100 border border-gray-300 text-gray-800 rounded-lg text-xs">
+              <details>
+                <summary className="cursor-pointer font-medium">Debug Information</summary>
+                <pre className="mt-2 overflow-auto max-h-40">
+                  {JSON.stringify(debugInfo, null, 2)}
+                </pre>
+              </details>
+            </div>
           )}
         </motion.div>
       </div>
