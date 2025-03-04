@@ -10,8 +10,16 @@ import Referal from "./pages/referal";
 
 function App(){
   return(
+  
     <>
-    
+  <BabyDetails/>
+  <SensoryScreening/>
+  <DevelopmentMilestones/>
+  <ChildHealthRecords/>
+  <StudentHealthRecords/>
+  <Referal/>  
+  <WeightGainChart/>
+  <HeightGainChart/>
    <ImmunizationForm/>
   
     </>
