@@ -73,7 +73,7 @@ body {
 }
 
 .react-calendar__tile.highlighted-date:hover {
-  background-color: #f582a1;
+  background-color: var(--primary-light);
 }
 
 /* Symptoms List */
