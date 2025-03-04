@@ -1,4 +1,39 @@
 /* Global Styles */
+/* Global Styles */
+:root {
+  --primary-color: #4f46e5;
+  --primary-dark: #4338ca;
+  --primary-light: #818cf8;
+  
+  --secondary-color: #10b981;
+  --secondary-dark: #059669;
+  --secondary-light: #34d399;
+  --secondary-bg: #eef2ff;
+
+  --accent-color: #f97316;
+  
+  --text-color: #333;
+  --text-light: #666;
+  --text-dark: #111;
+  --text-light-mode: #f0f0f0;
+  --text-dark-mode: #d0d0d0;
+  
+  --bg-light: #f9f9f9;
+  --bg-dark: #121212;
+  --bg-dark-alt: #1e1e1e;
+  
+  --gradient-primary: linear-gradient(135deg, #4f46e5, #818cf8);
+  --gradient-secondary: linear-gradient(135deg, #10b981, #34d399);
+  
+  --shadow-light: rgba(0, 0, 0, 0.1);
+  --shadow-medium: rgba(0, 0, 0, 0.15);
+  --shadow-dark: rgba(0, 0, 0, 0.2);
+  --shadow-glow-primary: 0 0 20px rgba(79, 70, 229, 0.3);
+  --shadow-glow-secondary: 0 0 20px rgba(16, 185, 129, 0.3);
+  --shadow-transparent-white: rgba(255, 255, 255, 0.1);
+  --shadow-transparent-black: rgba(0, 0, 0, 0.1);
+}
+
 body {
   font-family: 'Arial', sans-serif;
   background-color: #ffb0fe;
