@@ -79,7 +79,7 @@ body {
 /* Symptoms List */
 .date-title {
   font-size: 18px;
-  color: #4f88b3;
+  color: var(--primary-color);
   font-weight: 500;
 }
 
@@ -94,7 +94,7 @@ body {
 
 /* Hover Effect for Symptoms */
 .symptom-item:hover {
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: var(--shadow-light);
   transform: scale(1.02);
   cursor: pointer;
 }
