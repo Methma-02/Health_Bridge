@@ -53,7 +53,7 @@ body {
 
 .header-text {
   text-align: center;
-  color: #4f88b3;
+  color: var(--primary-color);
   font-weight: 600;
   margin-bottom: 20px;
 }
