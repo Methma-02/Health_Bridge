@@ -691,8 +691,8 @@ const LandingPage = () => {
       <div>
         <h3 className="text-lg font-semibold mb-4">Contact Us</h3>
         <ul className="space-y-2">
-          <li className="text-sm text-[#f8fafc]">Email: support@healthbridge.com</li>
-          <li className="text-sm text-[#f8fafc]">Phone: +94 11 123 4567</li>
+          <li className="text-sm text-[#f8fafc]">Email: healthbridge.official25@gmail.com</li>
+          <li className="text-sm text-[#f8fafc]">Phone: +94 74 371 5955</li>
           <li className="text-sm text-[#f8fafc]">Address: Colombo, Sri Lanka</li>
         </ul>
       </div>
