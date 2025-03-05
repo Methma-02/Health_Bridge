@@ -70,29 +70,54 @@ export const googleLogin = async (credential) => {
     };
   }
 };
+// Add these to your api.js file
+
+// For checking if email exists and initiating password reset
 export const forgotPassword = async (email) => {
   try {
-    const response = await api.post('/auth/forgot-password', { email });
-    return response.data;
+    const response = await fetch('/api/auth/forgot-password', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email }),
+    });
+    
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || 'Error checking email');
+    }
+    
+    return await response.json();
   } catch (error) {
-    throw {
-      message: error.response?.data?.message || error.message || 'Password reset request failed',
-      status: error.response?.status,
-      data: error.response?.data
-    };
+    console.error('Forgot password API error:', error);
+    throw error;
   }
 };
 
+// For resetting the password (modified to work with current backend)
 export const resetPassword = async (email, password) => {
   try {
-    const response = await api.post('/auth/reset-password', { email, password });
-    return response.data;
+    const response = await fetch('/api/auth/reset-password', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ 
+        email, 
+        password
+      }),
+    });
+    
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || 'Password reset failed');
+    }
+    
+    return await response.json();
   } catch (error) {
-    throw {
-      message: error.response?.data?.message || error.message || 'Password reset failed',
-      status: error.response?.status,
-      data: error.response?.data
-    };
+    console.error('Reset password API error:', error);
+    throw error;
   }
 };
 
