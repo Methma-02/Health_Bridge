@@ -7,20 +7,13 @@ import DevelopmentMilestones from "./pages/developmentMilestones";
 import ChildHealthRecords from "./pages/childHealthRecord";
 import StudentHealthRecords from "./pages/studentHealthRecords";
 import Referal from "./pages/referal";
+import Dashboard from "./pages/dashboard";
 
 function App(){
   return(
   
     <>
-  <BabyDetails/>
-  <SensoryScreening/>
-  <DevelopmentMilestones/>
-  <ChildHealthRecords/>
-  <StudentHealthRecords/>
-  <Referal/>  
-  <WeightGainChart/>
-  <HeightGainChart/>
-   <ImmunizationForm/>
+  <Dashboard/>
   
     </>
   )
