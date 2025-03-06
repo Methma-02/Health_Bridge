@@ -49,7 +49,7 @@ const DonationForm = ({ onSubmit, onCancel, defaultItemImg }) => {
     <div className="donation-form-container">
       <h2>Donate an Item</h2>
       <p className="form-intro">
-        Your generous donation can make a difference in another mother's journey.
+      Your generous donation can make a difference in someone else's life.
       </p>
       
       <form onSubmit={handleSubmit}>
