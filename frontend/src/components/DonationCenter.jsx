@@ -239,7 +239,7 @@ const DonationCenter = () => {
           condition: 'Gently Used',
           description: 'Ergonomic baby carrier, suitable for infants 3-36 months. Comfortable and well-maintained.',
           pickupLocation: 'Near Colombo Central MOH Office',
-          contactDetails: 'Phone: 077-123-4567, Email: mother1@example.com',
+          contactDetails: 'Phone: 077-123-4567, Email: user1@example.com',
           datePosted: '2025-02-15',
           postedBy: 'Amara Silva',
           mohDivision: 'Colombo',
@@ -263,7 +263,7 @@ const DonationCenter = () => {
           condition: 'Good',
           description: 'Collection of 15 baby outfits, washed and ready to use.',
           pickupLocation: 'Near Colombo Central Hospital',
-          contactDetails: 'Email: mother3@example.com',
+          contactDetails: 'Email: user3@example.com',
           datePosted: '2025-02-18',
           postedBy: 'Nilmini Fernando',
           mohDivision: 'Colombo',
@@ -547,7 +547,7 @@ const DonationCenter = () => {
       <div className="donation-center-header">
         <div className="header-content">
           <h1>Donation Center</h1>
-          <p>Connect with mothers in your MOH division to share essential items for your little ones.</p>
+          <p>Connect with others in your MOH division to share essential items for children and families.</p>
           {userMohDivision && (
             <div className="user-info-indicator">
               <div className="moh-division-indicator">
