@@ -65,7 +65,7 @@ body, html {
   overflow: hidden;
 }
 
-/* Hero Section */
+/* Hero Section - Fixed for both centering and responsiveness */
 .hero-section {
   position: relative;
   height: 100vh;
@@ -99,11 +99,11 @@ body, html {
   transform: scale(1.0) !important;
 }
 
-/* Hero content - Improved positioning */
+/* Hero content - Perfectly centered and responsive */
 .hero-content {
   position: relative;
   z-index: 10;
-  width: 100%;
+  width: 90%;
   max-width: 800px;
   padding: 3rem;
   background-color: transparent;
@@ -112,8 +112,7 @@ body, html {
   align-items: center;
   justify-content: center;
   text-align: center;
-  margin: 0 auto;
-  transform: translate(50%, 5%); /* Perfect centering technique */
+  transform: translate(50%, 5%);
 }
 
 .hero-content h2 {
@@ -801,8 +800,14 @@ body, html {
     width: 90%;
     max-width: 600px;
     padding: 2rem;
-    transform: translate(0, 0);
-    margin: 0 auto;
+  }
+  
+  .hero-content h2 {
+    font-size: clamp(1.8rem, 3vw, 3rem);
+  }
+  
+  .hero-content p {
+    font-size: clamp(0.9rem, 1.2vw, 1.1rem);
   }
   
   .about-section h3 {
@@ -819,6 +824,7 @@ body, html {
   .hero-buttons {
     flex-direction: column;
     gap: 15px;
+    width: 100%;
   }
   
   .cta-button {
