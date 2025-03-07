@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-
 import Tables from './TablesR1';
 import Table2 from "./TableR2";
 import Pregnancy2 from "./Pregnancy2";
@@ -56,7 +55,6 @@ const currentStatusFields = [
     { id: 'morePreg', label: 'Five or more Pregnancies', type: 'textarea', rows: 5, cols: 5 },
 ];
 
-// New fields for additional text areas
 const additionalFields = [
     { id: 'bloodPressure', label: 'Blood Pressure:', type: 'textarea', rows: 5, cols: 10 },
     { id: 'vaginalBleeding', label: 'Vaginal Bleeding:', type: 'textarea', rows: 5, cols: 10 },
@@ -83,7 +81,7 @@ const familyMedicalHistoryFields = [
 ];
 
 function Pregnancy() {
-    const {formData, setFormData} = useForm2Context();
+    const { formData, setFormData } = useForm2Context();
 
     useEffect(() => {
         console.log(formData);
@@ -137,8 +135,10 @@ function Pregnancy() {
 
     const renderInputFields = (fields) => {
         return fields.map((field) => (
-            <div key={field.id}>
-                <label htmlFor={field.id}>{field.label}</label>
+            <div key={field.id} className="mb-4">
+                <label htmlFor={field.id} className="block text-sm font-medium text-blue-700 mb-1">
+                    {field.label}
+                </label>
                 {field.type === 'textarea' ? (
                     <textarea
                         id={field.id}
@@ -147,6 +147,7 @@ function Pregnancy() {
                         onChange={handleChange}
                         rows={field.rows}
                         cols={field.cols}
+                        className="w-full p-2 text-sm border border-blue-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-blue-50"
                     />
                 ) : (
                     <input
@@ -155,37 +156,41 @@ function Pregnancy() {
                         name={field.id}
                         value={formData[field.id]}
                         onChange={handleChange}
+                        className="w-full p-2 text-sm border border-blue-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-blue-50"
                     />
                 )}
-                
             </div>
         ));
     };
 
     const renderRadioButtons = (questions) => {
         return questions.map((question) => (
-            <div key={question.id}>
-                <label>{question.label}</label>
-                <div>
-                    <label>
+            <div key={question.id} className="mb-4">
+                <label className="block text-sm font-medium text-blue-700 mb-1">
+                    {question.label}
+                </label>
+                <div className="flex items-center space-x-4">
+                    <label className="flex items-center">
                         <input
                             type="radio"
                             name={question.name}
                             value="Yes"
                             checked={formData[question.name] === "Yes"}
                             onChange={(e) => handleChange(e)}
+                            className="h-5 w-5 text-blue-600 focus:ring-blue-500 border-blue-300 rounded"
                         />
-                        Yes
+                        <span className="ml-2 text-sm text-blue-700">Yes</span>
                     </label>
-                    <label>
+                    <label className="flex items-center">
                         <input
                             type="radio"
                             name={question.name}
                             value="No"
                             checked={formData[question.name] === "No"}
                             onChange={(e) => handleChange(e)}
+                            className="h-5 w-5 text-blue-600 focus:ring-blue-500 border-blue-300 rounded"
                         />
-                        No
+                        <span className="ml-2 text-sm text-blue-700">No</span>
                     </label>
                 </div>
             </div>
@@ -193,85 +198,157 @@ function Pregnancy() {
     };
 
     return (
-        <div className='container'>
-            <h1>Pregnancy Record Part-B</h1> <br /><br />
+        <div className="w-full max-w-6xl mx-auto p-4 bg-gradient-to-br from-white to-blue-50 shadow-lg rounded-lg">
+            <h1 className="text-2xl md:text-3xl font-bold text-gradient bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 mb-6 text-center bg-clip-text text-transparent">
+                Pregnancy Record Part-B
+            </h1>
 
             <form>
                 {/* Render Registration Fields */}
-                {renderInputFields(registrationFields)}
-
-                {/* Add a "Get Info" Button */}
-                <button type="button" onClick={handleGetInfo}>
-                    Get Info
-                </button>
-
-                <hr /> <br />
+                <div className="bg-white border-l-4 border-blue-500 p-4 rounded-lg mb-6 shadow">
+                    <h2 className="text-xl font-semibold text-blue-700 mb-4 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                        </svg>
+                        Registration Details
+                    </h2>
+                    {renderInputFields(registrationFields)}
+                    <button
+                        type="button"
+                        onClick={handleGetInfo}
+                        className="px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-medium rounded-lg shadow-lg hover:from-blue-600 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all transform hover:scale-105"
+                    >
+                        Get Info
+                    </button>
+                </div>
 
                 {/* Render Personal Info Fields */}
-                {renderInputFields(personalInfoFields)}
+                <div className="bg-white border-l-4 border-blue-500 p-4 rounded-lg mb-6 shadow">
+                    <h2 className="text-xl font-semibold text-blue-700 mb-4 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
+                        Personal Information
+                    </h2>
+                    {renderInputFields(personalInfoFields)}
+                </div>
 
                 {/* Render Job Fields */}
-                <div className='job'>
+                <div className="bg-white border-l-4 border-blue-500 p-4 rounded-lg mb-6 shadow">
+                    <h2 className="text-xl font-semibold text-blue-700 mb-4 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                        </svg>
+                        Job Details
+                    </h2>
                     {renderInputFields(jobFields)}
                 </div>
 
                 {/* Mother's Age at Marriage */}
-                <div>
-                    <label htmlFor="marriageAge">Mother's age at the marriage:</label>
-                    <input
-                        type="text"
-                        id="marriageAge"
-                        name="marriageAge"
-                        value={formData.marriageAge}
-                        onChange={handleChange}
-                    />
+                <div className="bg-white border-l-4 border-blue-500 p-4 rounded-lg mb-6 shadow">
+                    <h2 className="text-xl font-semibold text-blue-700 mb-4 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        Mother's Age at Marriage
+                    </h2>
+                    <div className="mb-4">
+                        <label htmlFor="marriageAge" className="block text-sm font-medium text-blue-700 mb-1">
+                            Mother's age at the marriage:
+                        </label>
+                        <input
+                            type="text"
+                            id="marriageAge"
+                            name="marriageAge"
+                            value={formData.marriageAge}
+                            onChange={handleChange}
+                            className="w-full p-2 text-sm border border-blue-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-blue-50"
+                        />
+                    </div>
                 </div>
 
-                <br /><hr /><br />
-
                 {/* Render Radio Buttons */}
-                <div className='radio'>
+                <div className="bg-white border-l-4 border-blue-500 p-4 rounded-lg mb-6 shadow">
+                    <h2 className="text-xl font-semibold text-blue-700 mb-4 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        Additional Questions
+                    </h2>
                     {renderRadioButtons(radioQuestions)}
                 </div>
 
-                <br /><hr /> <br />
-
                 {/* Render Current Pregnancy Fields */}
-                <div className='currentStatus1'>
-                    <h2>Current Pregnancy State</h2>
+                <div className="bg-white border-l-4 border-blue-500 p-4 rounded-lg mb-6 shadow">
+                    <h2 className="text-xl font-semibold text-blue-700 mb-4 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+                        </svg>
+                        Current Pregnancy State
+                    </h2>
                     {renderInputFields(currentPregnancyFields)}
                 </div>
 
                 {/* Render Current Status Fields */}
-                <div className='currentStatus2'>
+                <div className="bg-white border-l-4 border-blue-500 p-4 rounded-lg mb-6 shadow">
+                    <h2 className="text-xl font-semibold text-blue-700 mb-4 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        Current Status
+                    </h2>
                     {renderInputFields(currentStatusFields)}
                 </div>
 
                 {/* Render Additional Fields */}
-                <div className='additionalFields'>
+                <div className="bg-white border-l-4 border-blue-500 p-4 rounded-lg mb-6 shadow">
+                    <h2 className="text-xl font-semibold text-blue-700 mb-4 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                        </svg>
+                        Additional Information
+                    </h2>
                     {renderInputFields(additionalFields)}
                 </div>
 
                 {/* Render Other Risk Factors Fields */}
-                <br /> <hr /> <br />
-                <div className='otherRiskFactors'>
-                    <h2>Other Risk Factors</h2> <br />
+                <div className="bg-white border-l-4 border-blue-500 p-4 rounded-lg mb-6 shadow">
+                    <h2 className="text-xl font-semibold text-blue-700 mb-4 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        Other Risk Factors
+                    </h2>
                     {renderInputFields(otherRiskFactorsFields)}
                 </div>
 
                 {/* Render Family Medical History Fields */}
-                <br /> <hr /> <br />
-                <div className='familyMedicalHistory'>
-                    <h2>Family Medical History</h2> <br />
+                <div className="bg-white border-l-4 border-blue-500 p-4 rounded-lg mb-6 shadow">
+                    <h2 className="text-xl font-semibold text-blue-700 mb-4 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                        </svg>
+                        Family Medical History
+                    </h2>
                     {renderInputFields(familyMedicalHistoryFields)}
                 </div>
 
                 {/* Submit Button */}
-                <button type="submit" onClick={handleSubmit}>Submit</button>
+                <div className="flex justify-end mt-6">
+                    <button
+                        type="submit"
+                        onClick={handleSubmit}
+                        className="px-6 py-3 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white font-medium rounded-lg shadow-lg hover:from-blue-600 hover:via-purple-600 hover:to-pink-600 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50 transition-all transform hover:scale-105"
+                    >
+                        Submit All Records
+                    </button>
+                </div>
             </form>
-            <Tables/>
-            <Table2/>
-            <Pregnancy2/>
+
+            {/* Imported Components */}
+            <Tables />
+            <Table2 />
+            <Pregnancy2 />
         </div>
     );
 }
