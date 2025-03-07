@@ -285,7 +285,8 @@ const BabySchema = new mongoose.Schema({
 const BabyModel = mongoose.model('Baby', BabySchema);
 
 // Routes for Baby
-app.get('/api/baby/:regNo', async (req, res) => {
+// Route to get baby record
+app.get('/api/baby/:regNo', canRead, async (req, res) => {
     try {
         const { regNo } = req.params;
         const record = await BabyModel.findOne({ regNo });
@@ -301,7 +302,8 @@ app.get('/api/baby/:regNo', async (req, res) => {
     }
 });
 
-app.post('/api/baby', async (req, res) => {
+// Route to create or update baby record
+app.post('/api/baby', canWrite, async (req, res) => {
     try {
         const { regNo } = req.body;
 
@@ -325,6 +327,27 @@ app.post('/api/baby', async (req, res) => {
     } catch (error) {
         console.error('Error saving data:', error);
         res.status(500).json({ message: 'Failed to save data.' });
+    }
+});
+
+// Route to edit sensory screening
+app.put('/api/baby/:regNo/sensoryScreening', canEditSensoryScreening, async (req, res) => {
+    try {
+        const { regNo } = req.params;
+        const updatedRecord = await BabyModel.findOneAndUpdate(
+            { regNo },
+            { $set: { sensoryScreening: req.body.sensoryScreening } },
+            { new: true }
+        );
+
+        if (updatedRecord) {
+            res.status(200).json({ message: 'Sensory screening updated successfully!', record: updatedRecord });
+        } else {
+            res.status(404).json({ message: 'Record not found' });
+        }
+    } catch (error) {
+        console.error('Error updating sensory screening:', error);
+        res.status(500).json({ message: 'Failed to update sensory screening.' });
     }
 });
 

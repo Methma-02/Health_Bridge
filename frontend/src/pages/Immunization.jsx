@@ -31,15 +31,34 @@ const ImmunizationForm = () => {
 
   const prepareFormData = () => {
     return {
+
       immunizationRecords: {
         vaccineSchedule: vaccineRecords,
       }
     };
   };
 
+  // Reset form function to pass to FormSubmitHandler
+  const resetForm = () => {
+    setVaccineRecords(initialVaccineSchedule);
+    //setRegNo('');
+  };
+
   return (
     <div className="w-full max-w-6xl mx-auto p-4 bg-gradient-to-br from-white to-blue-50 shadow-lg rounded-lg">
       <h1 className="text-2xl md:text-3xl font-bold text-blue-600 mb-6 text-center" >Immunization Record</h1>
+
+      <div className="mb-4">
+        <label htmlFor="regNo" className="block text-sm font-medium text-blue-700 mb-1">Registration Number</label>
+        <input
+          id="regNo"
+          type="text"
+         // value={regNo}
+         // onChange={(e) => setRegNo(e.target.value)}
+          className="w-full p-2 border border-blue-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-blue-50"
+          required
+        />
+      </div>
 
       <div className="overflow-x-auto">
         <table className="w-full border-collapse">
@@ -112,6 +131,7 @@ const ImmunizationForm = () => {
 
       <FormSubmitHandler 
         formData={prepareFormData()} 
+        resetForm={resetForm} 
       />
 
     </div>
