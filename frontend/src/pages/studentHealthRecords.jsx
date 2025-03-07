@@ -1,4 +1,5 @@
   import { useState } from "react";
+  import FormSubmitHandler from "../components/submit";
 
 const StudentHealthRecords = () => {
     const [formData, setFormData] = useState({

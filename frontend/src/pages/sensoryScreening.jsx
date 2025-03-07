@@ -1,4 +1,5 @@
 import { useState } from "react";
+import FormSubmitHandler from "../components/submit";
 
 export default function SensoryScreening() {
   const [answers, setAnswers] = useState({});

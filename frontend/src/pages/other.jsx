@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { ChevronRight, ChevronLeft } from "lucide-react";
+import FormSubmitHandler from "../components/submit";
 
 const Other = () => {
     // Number of cells to show at once

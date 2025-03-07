@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Plus, Trash2 } from "lucide-react";
+import FormSubmitHandler from "../components/submit";
 
 const Referal = () => {
   // Combined state for both hospitalizations and referrals
