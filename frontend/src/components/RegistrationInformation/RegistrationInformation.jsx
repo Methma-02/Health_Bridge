@@ -543,116 +543,116 @@ const PregnancyRecordForm = () => {
 
         {/* Family History */}
         <div className="bg-white border-l-4 border-blue-500 p-4 rounded-lg shadow">
-          <h2 className="text-xl font-semibold text-blue-700 mb-4">Family History</h2>
-          <div className="space-y-4">
-            {Object.keys(formData.familyHistory)
-              .filter((key) => key !== 'otherConditions')
-              .map((condition) => (
-                <div key={condition} className="flex items-center">
-                  <input
-                    type="checkbox"
-                    id={condition}
-                    checked={formData.familyHistory[condition]}
-                    onChange={(e) =>
-                      handleNestedInputChange('familyHistory', condition, e.target.checked)
-                    }
-                    className="h-5 w-5 text-blue-600 focus:ring-blue-500 border-blue-300 rounded"
-                  />
-                  <label htmlFor={condition} className="ml-2 text-sm text-blue-700">
-                    {condition.replace(/([A-Z])/g, ' $1').replace(/^./, (str) => str.toUpperCase())}
-                  </label>
-                </div>
-              ))}
-            <div>
-              <label className="block text-sm font-medium text-blue-700">Other Conditions</label>
-              <input
-                type="text"
-                value={formData.familyHistory.otherConditions}
-                onChange={(e) =>
-                  handleNestedInputChange('familyHistory', 'otherConditions', e.target.value)
-                }
-                className="w-full p-2 text-sm border border-blue-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-blue-50"
-              />
-            </div>
-          </div>
-        </div>
-
-        {/* Medical/Surgical History */}
-        <div className="bg-white border-l-4 border-blue-500 p-4 rounded-lg shadow">
-          <h2 className="text-xl font-semibold text-blue-700 mb-4">Medical/Surgical History</h2>
-          <div className="space-y-4">
-            {Object.keys(formData.medicalConditions).map((condition) => (
+        <h2 className="text-xl font-semibold text-blue-700 mb-4">Family History</h2>
+        <div className="space-y-4">
+          {Object.keys(formData.familyHistory)
+            .filter((key) => key !== 'otherConditions')
+            .map((condition) => (
               <div key={condition} className="flex items-center">
+                <label htmlFor={condition} className="text-sm text-blue-700 flex-1">
+                  {condition.replace(/([A-Z])/g, ' $1').replace(/^./, (str) => str.toUpperCase())}
+                </label>
                 <input
                   type="checkbox"
                   id={condition}
-                  checked={formData.medicalConditions[condition]}
+                  checked={formData.familyHistory[condition]}
                   onChange={(e) =>
-                    handleNestedInputChange('medicalConditions', condition, e.target.checked)
+                    handleNestedInputChange('familyHistory', condition, e.target.checked)
                   }
                   className="h-5 w-5 text-blue-600 focus:ring-blue-500 border-blue-300 rounded"
                 />
-                <label htmlFor={condition} className="ml-2 text-sm text-blue-700">
-                  {condition.replace(/([A-Z])/g, ' $1').replace(/^./, (str) => str.toUpperCase())}
-                </label>
               </div>
             ))}
+          <div className="flex items-center">
+            <label className="block text-sm font-medium text-blue-700 flex-1">Other Conditions</label>
+            <input
+              type="text"
+              value={formData.familyHistory.otherConditions}
+              onChange={(e) =>
+                handleNestedInputChange('familyHistory', 'otherConditions', e.target.value)
+              }
+              className="w-1/2 p-2 text-sm border border-blue-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-blue-50"
+            />
           </div>
         </div>
+      </div>
+
+        {/* Medical/Surgical History */}
+        <div className="bg-white border-l-4 border-blue-500 p-4 rounded-lg shadow">
+        <h2 className="text-xl font-semibold text-blue-700 mb-4">Medical/Surgical History</h2>
+        <div className="space-y-4">
+          {Object.keys(formData.medicalConditions).map((condition) => (
+            <div key={condition} className="flex items-center">
+              <label htmlFor={condition} className="text-sm text-blue-700 flex-1">
+                {condition.replace(/([A-Z])/g, ' $1').replace(/^./, (str) => str.toUpperCase())}
+              </label>
+              <input
+                type="checkbox"
+                id={condition}
+                checked={formData.medicalConditions[condition]}
+                onChange={(e) =>
+                  handleNestedInputChange('medicalConditions', condition, e.target.checked)
+                }
+                className="h-5 w-5 text-blue-600 focus:ring-blue-500 border-blue-300 rounded"
+              />
+            </div>
+          ))}
+        </div>
+      </div>
 
         {/* Additional Medical History */}
         <div className="bg-white border-l-4 border-blue-500 p-4 rounded-lg shadow">
-          <h2 className="text-xl font-semibold text-blue-700 mb-4">Additional Medical History</h2>
-          <div className="space-y-4">
-            <div className="flex items-center">
-              <input
-                type="checkbox"
-                id="previousDVT"
-                checked={formData.additionalMedicalHistory.previousDVT}
-                onChange={(e) =>
-                  handleNestedInputChange('additionalMedicalHistory', 'previousDVT', e.target.checked)
-                }
-                className="h-5 w-5 text-blue-600 focus:ring-blue-500 border-blue-300 rounded"
-              />
-              <label htmlFor="previousDVT" className="ml-2 text-sm text-blue-700">
-                Previous DVT
-              </label>
-            </div>
-            <div className="flex items-center">
-              <input
-                type="checkbox"
-                id="surgeriesOtherThanLSCS"
-                checked={formData.additionalMedicalHistory.surgeriesOtherThanLSCS}
-                onChange={(e) =>
-                  handleNestedInputChange(
-                    'additionalMedicalHistory',
-                    'surgeriesOtherThanLSCS',
-                    e.target.checked
-                  )
-                }
-                className="h-5 w-5 text-blue-600 focus:ring-blue-500 border-blue-300 rounded"
-              />
-              <label htmlFor="surgeriesOtherThanLSCS" className="ml-2 text-sm text-blue-700">
-                Surgeries other than LSCS
-              </label>
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-blue-700">Other Specific Conditions</label>
-              <input
-                type="text"
-                value={formData.additionalMedicalHistory.otherSpecificConditions}
-                onChange={(e) =>
-                  handleNestedInputChange(
-                    'additionalMedicalHistory',
-                    'otherSpecificConditions',
-                    e.target.value
-                  )
-                }
-                className="w-full p-2 text-sm border border-blue-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-blue-50"
-              />
-            </div>
+        <h2 className="text-xl font-semibold text-blue-700 mb-4">Additional Medical History</h2>
+        <div className="space-y-4">
+          <div className="flex items-center">
+            <label htmlFor="previousDVT" className="text-sm text-blue-700 flex-1">
+              Previous DVT
+            </label>
+            <input
+              type="checkbox"
+              id="previousDVT"
+              checked={formData.additionalMedicalHistory.previousDVT}
+              onChange={(e) =>
+                handleNestedInputChange('additionalMedicalHistory', 'previousDVT', e.target.checked)
+              }
+              className="h-5 w-5 text-blue-600 focus:ring-blue-500 border-blue-300 rounded"
+            />
+          </div>
+          <div className="flex items-center">
+            <label htmlFor="surgeriesOtherThanLSCS" className="text-sm text-blue-700 flex-1">
+              Surgeries other than LSCS
+            </label>
+            <input
+              type="checkbox"
+              id="surgeriesOtherThanLSCS"
+              checked={formData.additionalMedicalHistory.surgeriesOtherThanLSCS}
+              onChange={(e) =>
+                handleNestedInputChange(
+                  'additionalMedicalHistory',
+                  'surgeriesOtherThanLSCS',
+                  e.target.checked
+                )
+              }
+              className="h-5 w-5 text-blue-600 focus:ring-blue-500 border-blue-300 rounded"
+            />
+          </div>
+          <div className="flex items-center">
+            <label className="block text-sm font-medium text-blue-700 flex-1">Other Specific Conditions</label>
+            <input
+              type="text"
+              value={formData.additionalMedicalHistory.otherSpecificConditions}
+              onChange={(e) =>
+                handleNestedInputChange(
+                  'additionalMedicalHistory',
+                  'otherSpecificConditions',
+                  e.target.value
+                )
+              }
+              className="w-1/2 p-2 text-sm border border-blue-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-blue-50"
+            />
           </div>
         </div>
+      </div>
 
         {/* Social Z Score */}
         <div className="bg-white border-l-4 border-blue-500 p-4 rounded-lg shadow">
