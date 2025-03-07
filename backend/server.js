@@ -22,7 +22,7 @@ mongoose.connect(MONGO_URI, {
 
 // Baby Schema
 const BabySchema = new mongoose.Schema({
-    //regNo: { type: String, unique: true }, // Ensure regNo is unique
+    regNo: { type: String, unique: true }, // Ensure regNo is unique
     birthData: [{
         healthDivision: String,
         postPregnancyDivision: String,
@@ -78,14 +78,6 @@ const BabySchema = new mongoose.Schema({
                 y: Number   // Weight gain in kg
             }
         ],
-        createdAt: {
-            type: Date,
-            default: Date.now
-        },
-        updatedAt: {
-            type: Date,
-            default: Date.now
-        }
     }],
     HeightGainData: [{
         gender: String,
@@ -95,14 +87,6 @@ const BabySchema = new mongoose.Schema({
                 y: Number
             }
         ],
-        createdAt: {
-            type: Date,
-            default: Date.now
-        },
-        updatedAt: {
-            type: Date,
-            default: Date.now
-        }
     }],
     immunizationRecords: {
         vaccineSchedule: [
@@ -126,14 +110,6 @@ const BabySchema = new mongoose.Schema({
                 ]
             }
         ],
-        createdAt: {
-            type: Date,
-            default: Date.now
-        },
-        updatedAt: {
-            type: Date,
-            default: Date.now
-        }
     },
     sensoryScreening: {
         vision: {
@@ -206,14 +182,6 @@ const BabySchema = new mongoose.Schema({
                 }
             ]
         },
-        createdAt: {
-            type: Date,
-            default: Date.now
-        },
-        updatedAt: {
-            type: Date,
-            default: Date.now
-        }
     },
     developmentMilestones: [
         {
@@ -226,14 +194,6 @@ const BabySchema = new mongoose.Schema({
                     officer: String       // Officer's designation
                 }
             ],
-            createdAt: {
-                type: Date,
-                default: Date.now
-            },
-            updatedAt: {
-                type: Date,
-                default: Date.now
-            }
         }
     ],
     childHealthRecords: [
@@ -302,14 +262,6 @@ const BabySchema = new mongoose.Schema({
             folicAcid: String, // Folic acid supplements
             otherDrugs: String, // Other drugs
             signatureOfOfficer: String, // Signature of the officer
-            createdAt: {
-                type: Date,
-                default: Date.now
-            },
-            updatedAt: {
-                type: Date,
-                default: Date.now
-            }
         }
     ],
     hospitalizations: [
@@ -318,14 +270,6 @@ const BabySchema = new mongoose.Schema({
             reason: String, // Reason for hospitalization
             disease: String, // Disease or condition
             result: String, // Result or outcome
-            createdAt: {
-                type: Date,
-                default: Date.now
-            },
-            updatedAt: {
-                type: Date,
-                default: Date.now
-            }
         }
     ],
     referrals: [
@@ -334,24 +278,8 @@ const BabySchema = new mongoose.Schema({
             reason: String, // Reason for referral
             place: String, // Place referred to
             result: String, // Result or outcome
-            createdAt: {
-                type: Date,
-                default: Date.now
-            },
-            updatedAt: {
-                type: Date,
-                default: Date.now
-            }
         }
     ],
-    createdAt: {
-        type: Date,
-        default: Date.now
-    },
-    updatedAt: {
-        type: Date,
-        default: Date.now
-    }
 }, { collection: 'Baby_Record' });
 
 const BabyModel = mongoose.model('Baby', BabySchema);
