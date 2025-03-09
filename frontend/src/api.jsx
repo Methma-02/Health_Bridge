@@ -70,57 +70,78 @@ export const googleLogin = async (credential) => {
     };
   }
 };
-// Add these to your api.js file
 
-// For checking if email exists and initiating password reset
+
+// For checking if email exists
 export const forgotPassword = async (email) => {
   try {
-    const response = await fetch('/api/auth/forgot-password', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email }),
-    });
-    
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.error || 'Error checking email');
-    }
-    
-    return await response.json();
+    const response = await api.post('/auth/forgot-password', { email });
+    // Return a simple object with 'exists' property set to true if we get here
+    // because successful API response means the email exists
+    return { exists: true, ...response.data };
   } catch (error) {
+    // If error is 404, it means email not found, so we return exists: false
+    if (error.response?.status === 404) {
+      return { exists: false };
+    }
+    // For any other error, throw it
     console.error('Forgot password API error:', error);
-    throw error;
+    throw {
+      message: error.response?.data?.error || error.message || 'Error checking email',
+      status: error.response?.status,
+      data: error.response?.data
+    };
   }
 };
 
-// For resetting the password (modified to work with current backend)
+// For resetting the password
 export const resetPassword = async (email, password) => {
   try {
-    const response = await fetch('/api/auth/reset-password', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ 
-        email, 
-        password
-      }),
-    });
-    
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.error || 'Password reset failed');
+    // Make sure we're sending both email and password as strings
+    // The error suggests the backend is expecting string data
+    if (!email || !password) {
+      throw new Error("Email and password are required");
     }
     
-    return await response.json();
+    const response = await api.post('/auth/reset-password', {
+      email: String(email),
+      password: String(password)
+    });
+    
+    return response.data;
   } catch (error) {
     console.error('Reset password API error:', error);
-    throw error;
+    // Make sure we're properly extracting the error message
+    throw {
+      message: error.response?.data?.error || error.message || 'Password reset failed',
+      status: error.response?.status,
+      data: error.response?.data
+    };
   }
 };
 
+// For resetting password with a token (if you want to support email links in the future)
+export const resetPasswordWithToken = async (token, password) => {
+  try {
+    if (!token || !password) {
+      throw new Error("Token and password are required");
+    }
+    
+    const response = await api.post('/auth/reset-password', {
+      token: String(token),
+      password: String(password)
+    });
+    
+    return response.data;
+  } catch (error) {
+    console.error('Reset password API error:', error);
+    throw {
+      message: error.response?.data?.error || error.message || 'Password reset failed',
+      status: error.response?.status,
+      data: error.response?.data
+    };
+  }
+};
 
 // Verify a reset password token before showing the reset form
 export const verifyResetToken = async (token) => {
