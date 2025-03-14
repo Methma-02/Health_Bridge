@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import useFormSubmission from "../components/submit";
 
 const BabyDetails = () => {
     const [formData, setFormData] = useState({
@@ -51,6 +52,13 @@ const BabyDetails = () => {
         }],
         clinicDays: '',
     });
+
+    const { submitForm } = useFormSubmission('http://localhost:5000/api/baby');
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        await submitForm(formData);
+    };
 
     const handleBirthDataChange = (index, field, value) => {
         setFormData(prev => ({
@@ -208,9 +216,56 @@ const BabyDetails = () => {
         ));
     };
 
+    const fetchDataByRegistrationNumber = async () => {
+        const { registrationNumber } = formData;
+    
+        if (!registrationNumber) {
+          alert('Please enter a registration number.');
+          return;
+        }
+    
+        try {
+          const response = await fetch(
+            `http://localhost:5000/api/baby/${registrationNumber}`
+          );
+    
+          if (!response.ok) {
+            throw new Error('No data found for this registration number.');
+          }
+    
+          const data = await response.json();
+          console.log(data);
+          setFormData(prevFormData => ({
+            ...prevFormData, 
+            ...data           
+        })); // Auto-fill the form with the fetched data
+          alert('Data loaded successfully!');
+        } catch (error) {
+          console.error('Error fetching data:', error);
+          alert('No data found for this registration number.');
+        }
+      };
+    
+
     return (
+        <form onSubmit={handleSubmit}>
         <div className="w-full max-w-4xl mx-auto p-4 bg-gradient-to-br from-white to-blue-50 shadow-lg rounded-lg">
             <h1 className="text-2xl md:text-3xl font-bold text-blue-600 mb-6 text-center">Baby Details</h1>
+
+            <label>Registration Number</label>
+        <input
+          type="text"
+          value={formData.registrationNumber}
+          onChange={(e) => h('registrationNumber', e.target.value)}
+        /> <br />
+
+        <button
+          type="button"
+          onClick={fetchDataByRegistrationNumber}
+        >
+          Get Info
+        </button> <br /> <br />
+        
 
             {/* Birth Data Section */}
             <div className="bg-white border-l-4 border-blue-500 p-4 rounded-lg mb-6 shadow">
@@ -402,7 +457,9 @@ const BabyDetails = () => {
                     </table>
                 </div>
             </div>
+            <button type="submit">Submit</button>
         </div>
+        </form>
     );
 };
 
