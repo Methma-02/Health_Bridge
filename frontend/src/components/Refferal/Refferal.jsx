@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useFormContext } from '../../contexts/FormContext';
-import './Refferal.css';
+
 
 const Refferal = () => {
   const { formData, setFormData } = useFormContext();

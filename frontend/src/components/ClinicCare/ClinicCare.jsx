@@ -2,7 +2,6 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import SignatureCanvas from 'react-signature-canvas';
-import './ClinicCare.css';
 import { useFormContext } from '../../contexts/FormContext';
 
 const ClinicCare = () => {
