@@ -20,3 +20,21 @@ const FeaturePage = () => {
       alert("Error fetching data.");
     }
   };
+
+  return (
+    <div>
+      {showPopup && <RegisterPopup onSubmit={handleRegisterSubmit} />}
+      {motherData && (
+        <div>
+          <h3>Mother's Details</h3>
+          <p>Name: {motherData.name}</p>
+          <p>Age: {motherData.age}</p>
+          <p>Pregnancy Details: {motherData.pregnancyDetails}</p>
+          <p>Health History: {motherData.healthHistory}</p>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default FeaturePage;
