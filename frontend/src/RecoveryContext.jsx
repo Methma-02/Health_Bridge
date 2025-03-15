@@ -1,29 +1,17 @@
-import React, { createContext, useState } from 'react';
+import { createContext, useState } from "react";
 
-// Create the context
 export const RecoveryContext = createContext();
 
-// Create the provider component
-export const RecoveryProvider = ({ children }) => {
-  const [email, setEmail] = useState('');
+export function RecoveryProvider({ children }) {
+  const [email, setEmail] = useState("");
   const [otp, setOTP] = useState(null);
-  const [page, setPage] = useState('forgot-password');
-  
-  // Values to be provided by the context
-  const value = {
-    email,
-    setEmail,
-    otp,
-    setOTP,
-    page,
-    setPage
-  };
+  const [page, setPage] = useState("forgot");
 
   return (
-    <RecoveryContext.Provider value={value}>
+    <RecoveryContext.Provider
+      value={{ email, setEmail, otp, setOTP, page, setPage }}
+    >
       {children}
     </RecoveryContext.Provider>
   );
-};
-
-export default RecoveryProvider;
+}

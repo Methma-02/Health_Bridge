@@ -8,6 +8,8 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import ResetPasswordPage from './ResetPasswordPage';
 import ForgotPasswordPage from './ForgotPasswordPage';
 import { RecoveryProvider } from './RecoveryContext'; // Add this import
+import OTPInput from './OTPInput';
+
 
 function App() {
   return (
@@ -20,9 +22,7 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegistrationPage />} />
             <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-            <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
-            <Route path="*" element={<Navigate to="/" replace />} />
-            <Route path="/reset-password/:email" element={<ResetPasswordPage />} />
+            <Route path="/otp" element={<OTPInput />} />
             <Route path="/reset-password" element={<ResetPasswordPage />} />
           </Routes>
         </BrowserRouter>

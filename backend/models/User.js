@@ -45,7 +45,9 @@ const userSchema = new mongoose.Schema({
   createdAt: {
     type: Date,
     default: Date.now
-  }
+  },
+  resetPasswordOtp: String, // Store hashed OTP for security
+  resetPasswordOtpExpires: Date
 });
 
 userSchema.pre('save', async function(next) {

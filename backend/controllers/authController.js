@@ -7,7 +7,6 @@ const logger = require('../utils/logger');
 const crypto = require('crypto');
 const mongoose = require('mongoose');
 const nodemailer = require('nodemailer');
-const nodemailer = require('nodemailer');
 const bcrypt = require('bcrypt'); // Add this for password hashing
 
 const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
@@ -185,79 +184,74 @@ class AuthController {
     }
   }
 
+  static async sendOTP(req, res) {
+    try {
+      console.log("sendOTP called"); // Debugging log
+      const { recipient_email, OTP } = req.body;
+      console.log("Received OTP:", OTP); // Debugging log
+      console.log("Recipient email:", recipient_email); // Debugging log
   
-
-// Forgot Password Endpoint
-static async forgotPassword(req, res) {
-  const { email, otp } = req.body;
-
-  // Send OTP via email
-  const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS,
-    },
-  });
-
-  const mailOptions = {
-    from: process.env.EMAIL_USER,
-    to: email,
-    subject: 'Password Recovery OTP',
-    text: `Your OTP for password recovery is: ${otp}`,
-  };
-
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      return res.status(500).json({ error: 'Failed to send OTP' });
+      // Check if user exists
+      const user = await User.findOne({ email: recipient_email });
+      if (!user) {
+        console.log("User not found"); // Debugging log
+        return res.status(404).json({ error: "User not found" });
+      }
+  
+      // Save OTP to user
+      user.resetPasswordOtp = OTP;
+      user.resetPasswordOtpExpires = Date.now() + 300000; // 5 minutes
+      await user.save();
+      console.log("OTP saved to user"); // Debugging log
+  
+      // Send email with OTP
+      const transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+          user: process.env.EMAIL_USER,
+          pass: process.env.EMAIL_PASSWORD,
+        },
+      });
+  
+      const mailOptions = {
+        from: process.env.EMAIL_USER,
+        to: recipient_email,
+        subject: "Password Recovery OTP",
+        html: `<p>Your OTP for password recovery is: <strong>${OTP}</strong></p>`,
+      };
+  
+      await transporter.sendMail(mailOptions);
+      console.log("Email sent successfully"); // Debugging log
+  
+      res.status(200).json({ message: "OTP sent successfully" });
+    } catch (error) {
+      console.error("Error in sendOTP:", error); // Debugging log
+      res.status(500).json({ error: error.message });
     }
-    res.json({ message: 'OTP sent successfully' });
-  });
-}
-
-// Reset Password Endpoint
-static async resetPassword(req, res) {
-  const { email, newPassword, otp } = req.body;
-
-  // Verify OTP (you can store OTP in a temporary database or cache)
-  if (otp !== '1234') { // Replace with your OTP verification logic
-    return res.status(400).json({ error: 'Invalid OTP' });
   }
-
-  // Update password in the database
-  const user = await User.findOne({ email });
-  if (!user) {
-    return res.status(404).json({ error: 'User not found' });
-  }
-
-  user.password = newPassword;
-  await user.save();
-
-  res.json({ message: 'Password reset successfully' });
-}
-
-
-static async verifyResetToken(req, res) {
-  try {
-    const { token } = req.params;
-    
-    if (!token) {
-      return res.status(400).json({ error: 'Token is required' });
+  
+  static async resetPassword(req, res) {
+    try {
+      const { email, newPassword } = req.body;
+  
+      // Find user
+      const user = await User.findOne({ email });
+      if (!user) {
+        return res.status(404).json({ error: "User not found" });
+      }
+  
+      // Hash new password
+      const hashedPassword = await bcrypt.hash(newPassword, 10);
+      user.password = hashedPassword;
+      user.resetPasswordOtp = null;
+      user.resetPasswordOtpExpires = null;
+      await user.save();
+  
+      res.status(200).json({ message: "Password reset successfully" });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
     }
-    
-    // Verify the token
-    // Note: You might need to implement a proper token verification logic
-    // This is a placeholder implementation
-    
-    // For now, just return a success response
-    res.json({ valid: true });
-    
-  } catch (error) {
-    logger.error('Token verification error:', error);
-    res.status(400).json({ error: error.message });
   }
-}
 
 }
-
 module.exports = AuthController;
