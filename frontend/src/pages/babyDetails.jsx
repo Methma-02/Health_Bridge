@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
-import useFormSubmission from "../components/submit";
-
 const BabyDetails = () => {
     const [formData, setFormData] = useState({
+        regNo: '', // Added regNo field at the top level
         birthData: [{
             healthDivision: '',
             postPregnancyDivision: '',
@@ -50,14 +49,42 @@ const BabyDetails = () => {
             Other: '',
             "": "",
         }],
-        clinicDays: '',
+        clinicDays: [], // Changed to an array instead of empty string
     });
-
-    const { submitForm } = useFormSubmission('http://localhost:5000/api/baby');
-
+    
     const handleSubmit = async (e) => {
         e.preventDefault();
-        await submitForm(formData);
+        
+        try {
+            const response = await fetch('http://localhost:5000/api/baby', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-user-role': 'physician', // Add this header to pass the middleware check
+                },
+                body: JSON.stringify(formData),
+            });
+            
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Failed to submit form');
+            }
+            
+            const result = await response.json();
+            console.log('Form submitted successfully:', result);
+            alert('Form submitted successfully!');
+        } catch (error) {
+            console.error('Error submitting form:', error);
+            alert(`Failed to submit form: ${error.message}`);
+        }
+    };
+
+    // New handler for regNo
+    const handleRegNoChange = (value) => {
+        setFormData(prev => ({
+            ...prev,
+            regNo: value
+        }));
     };
 
     const handleBirthDataChange = (index, field, value) => {
@@ -120,6 +147,17 @@ const BabyDetails = () => {
                     }
                     : details
             ),
+        }));
+    };
+
+    // Added handler for clinic days
+    const handleClinicDayChange = (rowIndex, colIndex, value) => {
+        const newClinicDays = [...formData.clinicDays];
+        const index = rowIndex * 10 + colIndex;
+        newClinicDays[index] = value;
+        setFormData(prev => ({
+            ...prev,
+            clinicDays: newClinicDays
         }));
     };
 
@@ -217,34 +255,39 @@ const BabyDetails = () => {
     };
 
     const fetchDataByRegistrationNumber = async () => {
-        const { registrationNumber } = formData;
+        const regNo = formData.regNo;
     
-        if (!registrationNumber) {
-          alert('Please enter a registration number.');
-          return;
+        if (!regNo) {
+            alert('Please enter a registration number.');
+            return;
         }
     
         try {
-          const response = await fetch(
-            `http://localhost:5000/api/baby/${registrationNumber}`
-          );
+            const response = await fetch(
+                `http://localhost:5000/api/baby/${regNo}`,
+                {
+                    headers: {
+                        'x-user-role' : 'physician',
+                    }
+                }
+            );
     
-          if (!response.ok) {
-            throw new Error('No data found for this registration number.');
-          }
+            if (!response.ok) {
+                throw new Error('No data found for this registration number.');
+            }
     
-          const data = await response.json();
-          console.log(data);
-          setFormData(prevFormData => ({
-            ...prevFormData, 
-            ...data           
-        })); // Auto-fill the form with the fetched data
-          alert('Data loaded successfully!');
+            const data = await response.json();
+            console.log(data);
+            setFormData(prevFormData => ({
+                ...prevFormData, 
+                ...data           
+            })); // Auto-fill the form with the fetched data
+            alert('Data loaded successfully!');
         } catch (error) {
-          console.error('Error fetching data:', error);
-          alert('No data found for this registration number.');
+            console.error('Error fetching data:', error);
+            alert('No data found for this registration number.');
         }
-      };
+    };
     
 
     return (
@@ -252,20 +295,30 @@ const BabyDetails = () => {
         <div className="w-full max-w-4xl mx-auto p-4 bg-gradient-to-br from-white to-blue-50 shadow-lg rounded-lg">
             <h1 className="text-2xl md:text-3xl font-bold text-blue-600 mb-6 text-center">Baby Details</h1>
 
-            <label>Registration Number</label>
-        <input
-          type="text"
-          value={formData.registrationNumber}
-          onChange={(e) => h('registrationNumber', e.target.value)}
-        /> <br />
-
-        <button
-          type="button"
-          onClick={fetchDataByRegistrationNumber}
-        >
-          Get Info
-        </button> <br /> <br />
-        
+            <div className="mb-6 bg-white border-l-4 border-blue-500 p-4 rounded-lg shadow">
+                <h2 className="text-xl font-semibold text-blue-700 mb-4 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0" />
+                    </svg>
+                    Registration Information
+                </h2>
+                <div className="flex items-center space-x-4">
+                    <label className="text-sm font-medium text-blue-700">Registration Number</label>
+                    <input
+                        type="text"
+                        value={formData.regNo || ''}
+                        onChange={(e) => handleRegNoChange(e.target.value)}
+                        className="flex-grow p-2 text-sm border border-blue-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-blue-50"
+                    />
+                    <button
+                        type="button"
+                        onClick={fetchDataByRegistrationNumber}
+                        className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition duration-200"
+                    >
+                        Get Info
+                    </button>
+                </div>
+            </div>
 
             {/* Birth Data Section */}
             <div className="bg-white border-l-4 border-blue-500 p-4 rounded-lg mb-6 shadow">
@@ -320,8 +373,7 @@ const BabyDetails = () => {
                                     </div>
                                 </td>
                                 <td className="p-3">
-                                    <div className="p-3 bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg shadow-sm h-full">
-                                        <div className="font-medium text-blue-700 mb-2">Birth weight (kg)</div>
+                                    <div className="p-3 bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg shadow-sm h-full"><div className="font-medium text-blue-700 mb-2">Birth weight (kg)</div>
                                         {createBabyCareRow('birthWeight')}
                                     </div>
                                 </td>
@@ -457,7 +509,14 @@ const BabyDetails = () => {
                     </table>
                 </div>
             </div>
-            <button type="submit">Submit</button>
+            <div className="flex justify-center mt-6">
+  <button 
+    type="submit" 
+    className="px-6 py-3 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition duration-200 font-semibold text-lg"
+  >
+    Submit Baby Details
+  </button>
+</div>
         </div>
         </form>
     );

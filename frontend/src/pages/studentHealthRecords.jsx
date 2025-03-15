@@ -1,5 +1,4 @@
   import { useState } from "react";
-  import FormSubmitHandler from "../components/submit";
 
 const StudentHealthRecords = () => {
     const [formData, setFormData] = useState({
@@ -24,16 +23,16 @@ const StudentHealthRecords = () => {
             "dental issues": '',
             flurosis: '',
             goiter: '',
-            "defects in throat,ears or nose": '',
+            "facial defects": '',
             "insensitive marks": '',
             "Oesteoporosis": '',
             "heart": '',
             "lungs": '',
             "Teacher support": '',
-            "attenance below 75%": '',
+            "attendance below 75%": '',
             "Academically struggling": '',
-            "other disablilties (teachers consult)": '',
-            "Deworming & micronutrient supplements": '',
+            "other disablilties": '',
+            "Deworming, micronutrients ": '',
             "date given": '',
             "dewormimg pills": '',
             "Vitamin A overdose": '',
@@ -68,7 +67,7 @@ const StudentHealthRecords = () => {
     };
 
     return (
-        <div className="w-full max-w-6xl mx-auto p-4 bg-gradient-to-br from-white to-blue-50 shadow-lg rounded-lg">
+        <div className="w-full max-w-5xl mx-auto p-4 bg-gradient-to-br from-white to-blue-50 shadow-lg rounded-lg">
             <h1 className="text-2xl md:text-3xl font-bold text-blue-600 mb-6 text-center">Student Health Records</h1>
             <div className="overflow-x-auto bg-white rounded-lg shadow-md">
                 <table className="w-full border-collapse">

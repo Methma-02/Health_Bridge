@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { X } from 'lucide-react';
 import Other from './other';
-import FormSubmitHandler from '../components/submit';
 
 const HeightGainChart = () => {
   const [gender, setGender] = useState('boy');
@@ -478,9 +477,6 @@ const HeightGainChart = () => {
             <li>Points will be automatically connected in chronological order</li>
           </ul>
         </div>
-  
-        <Other />
-        <FormSubmitHandler formData={formattedData} />
       </div>
     );
   };

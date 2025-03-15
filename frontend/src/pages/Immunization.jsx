@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import FormSubmitHandler from '../components/submit';
 
 const ImmunizationForm = () => {
   const defaultVaccine = { date: '', batchNo: '', bcgScar: '', adverseEffects: false };
@@ -128,12 +127,6 @@ const ImmunizationForm = () => {
           </tbody>
         </table>
       </div>
-
-      <FormSubmitHandler 
-        formData={prepareFormData()} 
-        resetForm={resetForm} 
-      />
-
     </div>
   );
 };

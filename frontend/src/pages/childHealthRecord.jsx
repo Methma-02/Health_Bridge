@@ -1,5 +1,5 @@
 import { useState } from "react";
-import FormSubmitHandler from "../components/submit";
+
 
 const ChildHealthRecords = () => {
     const ageStages = [
@@ -8,6 +8,7 @@ const ChildHealthRecords = () => {
     ];
 
     const [formData, setFormData] = useState({
+        regNo: '',
         table: ageStages.map(age => ({
             Age: age, // Assign predefined ages
             clinicDate: '',
@@ -26,6 +27,41 @@ const ChildHealthRecords = () => {
             designation: ''
         }))
     });
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        
+        try {
+            const response = await fetch('http://localhost:5000/api/baby', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-user-role': 'physician', // Add this header to pass the middleware check
+                },
+                body: JSON.stringify(formData),
+            });
+            
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Failed to submit form');
+            }
+            
+            const result = await response.json();
+            console.log('Form submitted successfully:', result);
+            alert('Form submitted successfully!');
+        } catch (error) {
+            console.error('Error submitting form:', error);
+            alert(`Failed to submit form: ${error.message}`);
+        }
+    };
+
+    // New handler for regNo
+    const handleRegNoChange = (value) => {
+        setFormData(prev => ({
+            ...prev,
+            regNo: value
+        }));
+    };
 
     const handleTableChange = (index, field, value) => {
         setFormData(prev => ({
@@ -52,7 +88,43 @@ const ChildHealthRecords = () => {
         ));
     };
 
+    const fetchDataByRegistrationNumber = async () => {
+        const regNo = formData.regNo;
+    
+        if (!regNo) {
+            alert('Please enter a registration number.');
+            return;
+        }
+    
+        try {
+            const response = await fetch(
+                `http://localhost:5000/api/baby/${regNo}`,
+                {
+                    headers: {
+                        'x-user-role' : 'physician',
+                    }
+                }
+            );
+    
+            if (!response.ok) {
+                throw new Error('No data found for this registration number.');
+            }
+    
+            const data = await response.json();
+            console.log(data);
+            setFormData(prevFormData => ({
+                ...prevFormData, 
+                ...data           
+            })); // Auto-fill the form with the fetched data
+            alert('Data loaded successfully!');
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            alert('No data found for this registration number.');
+        }
+    };
+
     return (
+        <form onSubmit={handleSubmit}>
         <div className="w-full max-w-6xl mx-auto p-4 bg-gradient-to-br from-white to-blue-50 shadow-lg rounded-lg">
             <h1 className="text-2xl md:text-3xl font-bold text-blue-600 mb-6 text-center">Child Health Records</h1>
             <div className="overflow-x-auto bg-white rounded-lg shadow-md">
@@ -69,7 +141,16 @@ const ChildHealthRecords = () => {
                     </tbody>
                 </table>
             </div>
+            <div className="flex justify-center mt-6">
+  <button 
+    type="submit" 
+    className="px-6 py-3 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition duration-200 font-semibold text-lg"
+  >
+    Submit Baby Details
+  </button>
+</div>
         </div>
+        </form>
     );
 };
 

@@ -467,7 +467,7 @@ const BabySchema = new mongoose.Schema({
         },
         Other: String,
     }],
-    clinicDays: [Date],
+    clinicDays: [],
     weightGainData: [{
         gender: String,
         measurements: [
@@ -611,14 +611,7 @@ const BabySchema = new mongoose.Schema({
             other: String, // Other observations
             signature: String, // Officer's signature
             designation: String, // Officer's designation
-            createdAt: {
-                type: Date,
-                default: Date.now
-            },
-            updatedAt: {
-                type: Date,
-                default: Date.now
-            }
+           
         }
     ],
     studentHealthRecords: [
