@@ -24,3 +24,5 @@ const RegisterPopup = ({ onSubmit }) => {
     </div>
   );
 }
+
+export default RegisterPopup;
