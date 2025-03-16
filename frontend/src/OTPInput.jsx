@@ -1,11 +1,13 @@
 import React, { useState, useContext } from "react";
 import { RecoveryContext } from "./RecoveryContext";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function OTPInput() {
   const { email, otp, setPage } = useContext(RecoveryContext);
   const [OTPinput, setOTPinput] = useState([0, 0, 0, 0]);
   const [disable, setDisable] = useState(true);
+  const navigate = useNavigate();
 
   function resendOTP() {
     if (disable) return;
@@ -21,7 +23,7 @@ export default function OTPInput() {
 
   function verifyOTP() {
     if (parseInt(OTPinput.join("")) === otp) {
-      setPage("reset");
+      setPage("resetPassword");
       return;
     }
     alert("The code you entered is incorrect. Please try again.");
