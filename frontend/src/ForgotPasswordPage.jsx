@@ -19,7 +19,11 @@ export default function ForgotPasswordPage() {
       sendOTP(email, OTP)
         .then((response) => {
           console.log("OTP sent successfully:", response);
-          setPage("otp");
+          // Try adding a small delay before state update
+          setTimeout(() => {
+            setPage("otp");
+            console.log("Page state updated to: otp");
+          }, 100);
         })
         .catch((error) => {
           console.error("Error sending OTP:", error);
