@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
 import Other from './other';
 
 const HeightGainChart = () => {
   const [gender, setGender] = useState('boy');
   const [formData, setFormData] = useState({
+    regNo:'',
     chartPoints: []
   });
 
@@ -19,6 +20,23 @@ const HeightGainChart = () => {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [showCrosshair, setShowCrosshair] = useState(false);
   const [hoveredPoint, setHoveredPoint] = useState(null);
+
+  // Load saved data when component mounts
+  useEffect(() => {
+    // Check if there's a registration number in localStorage
+    const savedRegNo = localStorage.getItem('heightChartRegNo');
+    
+    if (savedRegNo) {
+      // Set the regNo from localStorage
+      setFormData(prev => ({
+        ...prev,
+        regNo: savedRegNo
+      }));
+      
+      // Fetch the data using the saved registration number
+      fetchDataByRegistrationNumber(savedRegNo);
+    }
+  }, []);
 
   // Make dimensions responsive
   const useResponsiveDimensions = () => {
@@ -176,20 +194,167 @@ const HeightGainChart = () => {
     }
   };
 
+  const handleRegNoChange = (value) => {
+    setFormData(prev => ({
+      ...prev,
+      regNo: value
+    }));
+  };
+
+  const fetchDataByRegistrationNumber = async (regNoParam) => {
+    const regNo = regNoParam || formData.regNo;
+  
+    if (!regNo) {
+      alert('Please enter a registration number.');
+      return;
+    }
+  
+    try {
+      const response = await fetch(
+        `http://localhost:5000/api/baby/${regNo}`,
+        {
+          headers: {
+            'x-user-role': 'physician',
+          }
+        }
+      );
+  
+      if (!response.ok) {
+        throw new Error('No data found for this registration number.');
+      }
+  
+      const data = await response.json();
+      console.log(data);
+      
+      // Save registration number to localStorage
+      localStorage.setItem('heightChartRegNo', regNo);
+      
+      // Check if HeightGainData exists and has measurements
+      if (data.HeightGainData && data.HeightGainData.length > 0 && data.HeightGainData[0].measurements) {
+        setFormData(prev => ({
+          ...prev,
+          regNo: regNo,
+          chartPoints: data.HeightGainData[0].measurements
+        }));
+        
+        // If gender is provided, update gender
+        if (data.HeightGainData[0].gender) {
+          setGender(data.HeightGainData[0].gender);
+        }
+      } else {
+        // If no height data exists, just update the regNo
+        setFormData(prev => ({
+          ...prev,
+          regNo: regNo,
+          chartPoints: []
+        }));
+      }
+      
+      // Only show alert when manually fetching (not on auto-load)
+      if (!regNoParam) {
+        alert('Data loaded successfully!');
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      if (!regNoParam) {
+        alert('No data found for this registration number.');
+      }
+    }
+  };
+
+  // Submit form data
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    if (!formData.regNo) {
+      alert('Please enter a registration number.');
+      return;
+    }
+    
+    try {
+      // First, fetch the existing record
+      const fetchResponse = await fetch(
+        `http://localhost:5000/api/baby/${formData.regNo}`,
+        {
+          headers: {
+            'x-user-role': 'physician',
+          }
+        }
+      );
+      
+      let existingData = {};
+      if (fetchResponse.ok) {
+        existingData = await fetchResponse.json();
+      }
+      
+      // Update the height gain data
+      existingData.HeightGainData = [{
+        gender,
+        measurements: formData.chartPoints
+      }];
+      
+      // Submit the updated data
+      const submitResponse = await fetch('http://localhost:5000/api/baby', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-user-role': 'physician',
+        },
+        body: JSON.stringify({
+          ...existingData,
+          regNo: formData.regNo
+        }),
+      });
+      
+      if (!submitResponse.ok) {
+        const errorData = await submitResponse.json();
+        throw new Error(errorData.message || 'Failed to submit form');
+      }
+      
+      // Save registration number to localStorage after successful submission
+      localStorage.setItem('heightChartRegNo', formData.regNo);
+      
+      const result = await submitResponse.json();
+      console.log('Form submitted successfully:', result);
+      alert('Height gain data submitted successfully!');
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      alert(`Failed to submit form: ${error.message}`);
+    }
+  };
   return (
+    <form onSubmit={handleSubmit}>
     <div className="w-full max-w-4xl mx-auto p-4 bg-gradient-to-br from-white to-blue-50 shadow-lg rounded-lg">
        <h1 className="text-2xl md:text-3xl font-bold text-blue-600 mb-6 text-center" >Height Gain Chart</h1>
+
+       <div className="mb-6 bg-white border-l-4 border-blue-500 p-4 rounded-lg shadow">
+          <h2 className="text-xl font-semibold text-blue-700 mb-4 flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0" />
+            </svg>
+            Registration Information
+          </h2>
+          <div className="flex items-center space-x-4">
+            <label className="text-sm font-medium text-blue-700">Registration Number</label>
+            <input
+              type="text"
+              value={formData.regNo || ''}
+              onChange={(e) => handleRegNoChange(e.target.value)}
+              className="flex-grow p-2 text-sm border border-blue-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-blue-50"
+            />
+            <button
+              type="button"
+              onClick={() => fetchDataByRegistrationNumber()}
+              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition duration-200">
+                Get Info
+            </button>
+            </div>
+          </div>
       
       <div className="space-y-4 mb-6">
         <div className={`flex items-center justify-center space-x-8 p-4 ${gender === 'girl' ? 'bg-pink-50' : 'bg-blue-50'} rounded-lg`}>
           <div className="flex items-center space-x-2">
-            <input
-              type="radio"
-              id="boy"
-              name="gender"
-              value="boy"
-              checked={gender === "boy"}
-              onChange={(e) => {
+            <input type="radio" id="boy" name="gender" value="boy" checked={gender === "boy"} onChange={(e) => {
                 setGender(e.target.value);
                 setFormData((prev) => ({ ...prev, chartPoints: [] }));
               }}
@@ -198,9 +363,7 @@ const HeightGainChart = () => {
             <label htmlFor="boy" className={`text-sm font-medium ${gender === 'girl' ? 'text-pink-700' : 'text-blue-700'}`}>Boy</label>
           </div>
           <div className="flex items-center space-x-2">
-            <input
-              type="radio"
-              id="girl"
+            <input type="radio" id="girl"
               name="gender"
               value="girl"
               checked={gender === "girl"}
@@ -477,7 +640,19 @@ const HeightGainChart = () => {
             <li>Points will be automatically connected in chronological order</li>
           </ul>
         </div>
+
+        <Other/>
+
+        <div className="flex justify-center mt-6">
+  <button 
+    type="submit" 
+    className="px-6 py-3 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition duration-200 font-semibold text-lg"
+  >
+    Submit Height Details
+  </button>
+</div>
       </div>
+      </form>
     );
   };
   

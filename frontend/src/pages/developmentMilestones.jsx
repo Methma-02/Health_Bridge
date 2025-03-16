@@ -1,120 +1,596 @@
-import { useState } from "react";
+// import { useState, useEffect } from "react";
 
+// const DevelopmentMilestones = () => {
+//     const initialMilestones = [
+//         {
+//             age: "6 weeks to 3 months",
+//             milestones: [
+//                 "When laid down on their stomach, they try to raise their head",
+//                 "Continuously stare at moving objects",
+//                 "At a sudden sound, either stop the activity or increase the activity",
+//                 "Make sounds like ah--- ohh--- iee in response to stimuli",
+//                 "Recognize their mother and smile"
+//             ],
+//         },
+//         {
+//             age: "3 months to 6 months",
+//             milestones: [
+//                 "When laid on their stomach, they try to raise their head and chest",
+//                 "Intertwine their fingers and try to play with them",
+//                 "Try to reach and hold items with their whole hand",
+//                 "Turn their head when they hear a sound",
+//                 "Emit one-word sounds like ga-- da-- ta-- ba",
+//                 "Smile loudly"
+//             ],
+//         },
+//         {
+//             age: "6 months to 9 months",
+//             milestones: [
+//                 "When laying on their back, they lift their head",
+//                 "Can turn from laying on their back to their stomach and vice versa",
+//                 "Can move objects from one hand to the other",
+//                 "Repeat some sounds like da-da-ba-ba-ta-ta"
+//             ],
+//         },
+//         {
+//             age: "9 months to 12 months",
+//             milestones: [
+//                 "Can sit without help",
+//                 "Can stand by themselves, holding onto something",
+//                 "Can grab things with the thumb and index finger",
+//                 "Will imitate sounds",
+//                 "Can pronounce single meaningful words",
+//                 "Can understand simple instructions: clap, wave"
+//             ],
+//         },
+//     ];
+    
+//     useEffect(() ={
+//         const savedRegNo = localStorage.getItem('babyRegNo');
+
+//         if (savedRegNo){
+//             setFormData(prev =>({
+//                 ...prev,
+//                 regNo: savedRegNo
+//             }));
+
+//             fetchDataByRegistrationNumber(savedRegNo)
+//         }
+//     }, []);
+
+//     // Convert to the format expected by the MongoDB schema
+//     const createInitialData = () => {
+//         return initialMilestones.map(group => ({
+//             age: group.age,
+//             milestones: group.milestones.map(milestone => ({
+//                 milestone,
+//                 month: "",
+//                 monthProved: "",
+//                 officer: ""
+//             }))
+//         }));
+//     };
+
+//     const [formData, setFormData] = useState({
+//         regNo: "",
+//         developmentMilestones: createInitialData()
+//     });
+
+//     const handleChange = (ageIndex, milestoneIndex, field, value) => {
+//         setFormData(prev => {
+//             const updatedMilestones = [...prev.developmentMilestones];
+//             updatedMilestones[ageIndex].milestones[milestoneIndex][field] = value;
+//             return { 
+//                 ...prev, 
+//                 developmentMilestones: updatedMilestones 
+//             };
+//         });
+//     };
+
+//     // Handler for regNo change
+//     const handleRegNoChange = (value) => {
+//         setFormData(prev => ({
+//             ...prev,
+//             regNo: value
+//         }));
+//     };
+
+//     // Function to fetch existing data
+//     const fetchDataByRegistrationNumber = async () => {
+//         const regNo = formData.regNo;
+        
+//         if (!regNo) {
+//             alert('Please enter a registration number.');
+//             return;
+//         }
+        
+//         try {
+//             const response = await fetch(
+//                 `http://localhost:5000/api/baby/${regNo}`,
+//                 {
+//                     headers: {
+//                         'x-user-role': 'physician',
+//                     }
+//                 }
+//             );
+            
+//             if (!response.ok) {
+//                 throw new Error('No data found for this registration number.');
+//             }
+            
+//             const data = await response.json();
+//             console.log('Fetched data:', data);
+            
+//             // Check if developmentMilestones data exists
+//             const milestoneData = data.developmentMilestones && data.developmentMilestones.length > 0 
+//                 ? data.developmentMilestones 
+//                 : createInitialData();
+            
+//             setFormData({
+//                 ...formData,
+//                 regNo: data.regNo || formData.regNo,
+//                 developmentMilestones: milestoneData
+//             });
+            
+//             alert('Data loaded successfully!');
+//         } catch (error) {
+//             console.error('Error fetching data:', error);
+//             alert('No data found for this registration number.');
+//         }
+//     };
+// // Modify this function to accept a parameter
+// const fetchDataByRegistrationNumber = async (regNoParam) => {
+//     const regNo = regNoParam || formData.regNo;
+    
+//     if (!regNo) {
+//       alert('Please enter a registration number.');
+//       return;
+//     }
+    
+//     try {
+//       const response = await fetch(
+//         `http://localhost:5000/api/baby/${regNo}`,
+//         {
+//           headers: {
+//             'x-user-role': 'physician',
+//           }
+//         }
+//       );
+      
+//       if (!response.ok) {
+//         throw new Error('No data found for this registration number.');
+//       }
+      
+//       const data = await response.json();
+      
+//       // Save registration number to localStorage
+//       localStorage.setItem('babyRegNo', regNo);
+      
+//       // Check if developmentMilestones data exists
+//       const milestoneData = data.developmentMilestones && data.developmentMilestones.length > 0 
+//         ? data.developmentMilestones 
+//         : createInitialData();
+      
+//       setFormData({
+//         regNo: data.regNo || regNo,
+//         developmentMilestones: milestoneData
+//       });
+      
+//       // Don't show alert when loading automatically on page refresh
+//       if (regNoParam === undefined) {
+//         alert('Data loaded successfully!');
+//       }
+//     } catch (error) {
+//       console.error('Error fetching data:', error);
+//       if (regNoParam === undefined) {
+//         alert('No data found for this registration number.');
+//       }
+//     }
+//   };
+//     // Function to submit data
+//     const handleSubmit = async (e) => {
+//         e.preventDefault();
+        
+//         try {
+//             const response = await fetch('http://localhost:5000/api/baby', {
+//                 method: 'POST',
+//                 headers: {
+//                     'Content-Type': 'application/json',
+//                     'x-user-role': 'physician',
+//                 },
+//                 body: JSON.stringify(formData),
+//             });
+            
+//             if (!response.ok) {
+//                 const errorData = await response.json();
+//                 throw new Error(errorData.message || 'Failed to submit form');
+//             }
+            
+//             const result = await response.json();
+//             console.log('Form submitted successfully:', result);
+//             alert('Development milestones submitted successfully!');
+//         } catch (error) {
+//             console.error('Error submitting form:', error);
+//             alert(`Failed to submit form: ${error.message}`);
+//         }
+//     };
+
+//     return (
+//         <form onSubmit={handleSubmit}>
+//             <div className="w-full max-w-6xl mx-auto p-4 bg-gradient-to-br from-white to-blue-50 shadow-lg rounded-lg">
+//                 <h1 className="text-2xl md:text-3xl font-bold text-blue-600 mb-6 text-center">Development Milestones Tracker</h1>
+                
+//                 {/* Registration Number Section */}
+//                 <div className="mb-6 bg-white border-l-4 border-blue-500 p-4 rounded-lg shadow">
+//                     <h2 className="text-xl font-semibold text-blue-700 mb-4 flex items-center">
+//                         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+//                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0" />
+//                         </svg>
+//                         Registration Information
+//                     </h2>
+//                     <div className="flex items-center space-x-4">
+//                         <label className="text-sm font-medium text-blue-700">Registration Number</label>
+//                         <input
+//                             type="text"
+//                             value={formData.regNo || ''}
+//                             onChange={(e) => handleRegNoChange(e.target.value)}
+//                             className="flex-grow p-2 text-sm border border-blue-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-blue-50"
+//                         />
+//                         <button
+//                             type="button"
+//                             onClick={ ()fetchDataByRegistrationNumber}
+//                             className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition duration-200"
+//                         >
+//                             Get Info
+//                         </button>
+//                     </div>
+//                 </div>
+                
+//                 <div className="overflow-x-auto bg-white rounded-lg shadow-md">
+//                     <table className="w-full border-collapse">
+//                         <thead>
+//                             <tr className="bg-gradient-to-r from-blue-100 to-blue-200">
+//                                 <th className="p-2 md:p-4 text-left text-xs md:text-sm font-semibold text-blue-700">Age</th>
+//                                 <th className="p-2 md:p-4 text-left text-xs md:text-sm font-semibold text-blue-700">Milestones</th>
+//                                 <th className="p-2 md:p-4 text-left text-xs md:text-sm font-semibold text-blue-700">Month</th>
+//                                 <th className="p-2 md:p-4 text-left text-xs md:text-sm font-semibold text-blue-700">Month Proved</th>
+//                                 <th className="p-2 md:p-4 text-left text-xs md:text-sm font-semibold text-blue-700">Officer's Designation</th>
+//                             </tr>
+//                         </thead>
+//                         <tbody>
+//                             {formData.developmentMilestones.map((ageGroup, ageIndex) => (
+//                                 ageGroup.milestones.map((milestone, milestoneIndex) => (
+//                                     <tr key={`${ageIndex}-${milestoneIndex}`} className="border-b border-blue-100 hover:bg-blue-50">
+//                                         {milestoneIndex === 0 && (
+//                                             <td rowSpan={ageGroup.milestones.length} className="p-2 md:p-4 text-xs md:text-sm font-medium text-blue-700 bg-blue-50">
+//                                                 {ageGroup.age}
+//                                             </td>
+//                                         )}
+//                                         <td className="p-2 md:p-4 text-xs md:text-sm text-blue-700">{milestone.milestone}</td>
+//                                         <td className="p-2 md:p-4">
+//                                             <input 
+//                                                 type="month"  
+//                                                 value={milestone.month || ''}
+//                                                 onChange={(e) => handleChange(ageIndex, milestoneIndex, "month", e.target.value)}
+//                                                 className="w-full p-1 md:p-2 text-xs md:text-sm border border-blue-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-blue-50"
+//                                             />
+//                                         </td>
+//                                         <td className="p-2 md:p-4">
+//                                             <input 
+//                                                 type="month"
+//                                                 value={milestone.monthProved || ''}
+//                                                 onChange={(e) => handleChange(ageIndex, milestoneIndex, "monthProved", e.target.value)}
+//                                                 className="w-full p-1 md:p-2 text-xs md:text-sm border border-blue-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-blue-50"
+//                                             />
+//                                         </td>
+//                                         <td className="p-2 md:p-4">
+//                                             <input 
+//                                                 type="text"
+//                                                 value={milestone.officer || ''}
+//                                                 onChange={(e) => handleChange(ageIndex, milestoneIndex, "officer", e.target.value)}
+//                                                 className="w-full p-1 md:p-2 text-xs md:text-sm border border-blue-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-blue-50"
+//                                                 placeholder="Enter designation"
+//                                             />
+//                                         </td>
+//                                     </tr>
+//                                 ))
+//                             ))}
+//                         </tbody>
+//                     </table>
+//                 </div>
+                
+//                 <div className='flex justify-center mt-6'>
+//                     <button
+//                         type="submit"
+//                         className="px-6 py-3 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition duration-200 font-semibold text-lg"
+//                     >
+//                         Save Development Milestones
+//                     </button>
+//                 </div>
+//             </div>
+//         </form>
+//     );
+// };
+
+// export default DevelopmentMilestones;
+
+import { useState, useEffect } from "react";
 
 const DevelopmentMilestones = () => {
+    const initialMilestones = [
+        {
+            age: "6 weeks to 3 months",
+            milestones: [
+                "When laid down on their stomach, they try to raise their head",
+                "Continuously stare at moving objects",
+                "At a sudden sound, either stop the activity or increase the activity",
+                "Make sounds like ah--- ohh--- iee in response to stimuli",
+                "Recognize their mother and smile"
+            ],
+        },
+        {
+            age: "3 months to 6 months",
+            milestones: [
+                "When laid on their stomach, they try to raise their head and chest",
+                "Intertwine their fingers and try to play with them",
+                "Try to reach and hold items with their whole hand",
+                "Turn their head when they hear a sound",
+                "Emit one-word sounds like ga-- da-- ta-- ba",
+                "Smile loudly"
+            ],
+        },
+        {
+            age: "6 months to 9 months",
+            milestones: [
+                "When laying on their back, they lift their head",
+                "Can turn from laying on their back to their stomach and vice versa",
+                "Can move objects from one hand to the other",
+                "Repeat some sounds like da-da-ba-ba-ta-ta"
+            ],
+        },
+        {
+            age: "9 months to 12 months",
+            milestones: [
+                "Can sit without help",
+                "Can stand by themselves, holding onto something",
+                "Can grab things with the thumb and index finger",
+                "Will imitate sounds",
+                "Can pronounce single meaningful words",
+                "Can understand simple instructions: clap, wave"
+            ],
+        },
+    ];
+
+    // Convert to the format expected by the MongoDB schema
+    const createInitialData = () => {
+        return initialMilestones.map(group => ({
+            age: group.age,
+            milestones: group.milestones.map(milestone => ({
+                milestone,
+                month: "",
+                monthProved: "",
+                officer: ""
+            }))
+        }));
+    };
+
     const [formData, setFormData] = useState({
-        table: [
-            {
-                age: "6 weeks to 3 months",
-                milestones: [
-                    "When laid down on their stomach, they try to raise their head",
-                    "Continuously stare at moving objects",
-                    "At a sudden sound, either stop the activity or increase the activity",
-                    "Make sounds like ah--- ohh--- iee in response to stimuli",
-                    "Recognize their mother and smile"
-                ],
-            },
-            {
-                age: "3 months to 6 months",
-                milestones: [
-                    "When laid on their stomach, they try to raise their head and chest",
-                    "Intertwine their fingers and try to play with them",
-                    "Try to reach and hold items with their whole hand",
-                    "Turn their head when they hear a sound",
-                    "Emit one-word sounds like ga-- da-- ta-- ba",
-                    "Smile loudly"
-                ],
-            },
-            {
-                age: "6 months to 9 months",
-                milestones: [
-                    "When laying on their back, they lift their head",
-                    "Can turn from laying on their back to their stomach and vice versa",
-                    "Can move objects from one hand to the other",
-                    "Repeat some sounds like da-da-ba-ba-ta-ta"
-                ],
-            },
-            {
-                age: "9 months to 12 months",
-                milestones: [
-                    "Can sit without help",
-                    "Can stand by themselves, holding onto something",
-                    "Can grab things with the thumb and index finger",
-                    "Will imitate sounds",
-                    "Can pronounce single meaningful words",
-                    "Can understand simple instructions: clap, wave"
-                ],
-            },
-        ].map((group) => ({
-            ...group,
-            inputs: group.milestones.map(() => ({ month: "", monthProved: "", officer: "" }))
-        }))
+        regNo: "",
+        developmentMilestones: createInitialData()
     });
 
+    // Load saved data on component mount
+    useEffect(() => {
+        // Check if there's a registration number in localStorage
+        const savedRegNo = localStorage.getItem('babyRegNo');
+        
+        if (savedRegNo) {
+            // Set the regNo from localStorage
+            setFormData(prev => ({
+                ...prev,
+                regNo: savedRegNo
+            }));
+            
+            // Fetch the data using the saved registration number
+            fetchDataByRegistrationNumber(savedRegNo);
+        }
+    }, []);  // Empty dependency array means this runs once on component mount
+
     const handleChange = (ageIndex, milestoneIndex, field, value) => {
-        setFormData((prev) => {
-            const updatedTable = [...prev.table];
-            updatedTable[ageIndex].inputs[milestoneIndex][field] = value;
-            return { ...prev, table: updatedTable };
+        setFormData(prev => {
+            const updatedMilestones = [...prev.developmentMilestones];
+            updatedMilestones[ageIndex].milestones[milestoneIndex][field] = value;
+            return { 
+                ...prev, 
+                developmentMilestones: updatedMilestones 
+            };
         });
     };
 
+    // Handler for regNo change
+    const handleRegNoChange = (value) => {
+        setFormData(prev => ({
+            ...prev,
+            regNo: value
+        }));
+    };
+
+    // Function to fetch existing data
+    const fetchDataByRegistrationNumber = async (regNoParam) => {
+        const regNo = regNoParam || formData.regNo;
+        
+        if (!regNo) {
+            alert('Please enter a registration number.');
+            return;
+        }
+        
+        try {
+            const response = await fetch(
+                `http://localhost:5000/api/baby/${regNo}`,
+                {
+                    headers: {
+                        'x-user-role': 'physician',
+                    }
+                }
+            );
+            
+            if (!response.ok) {
+                throw new Error('No data found for this registration number.');
+            }
+            
+            const data = await response.json();
+            console.log('Fetched data:', data);
+            
+            // Save registration number to localStorage
+            localStorage.setItem('babyRegNo', regNo);
+            
+            // Check if developmentMilestones data exists
+            const milestoneData = data.developmentMilestones && data.developmentMilestones.length > 0 
+                ? data.developmentMilestones 
+                : createInitialData();
+            
+            setFormData({
+                regNo: data.regNo || regNo,
+                developmentMilestones: milestoneData
+            });
+            
+            // Don't show alert when loading automatically on page refresh
+            if (regNoParam === undefined) {
+                alert('Data loaded successfully!');
+            }
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            if (regNoParam === undefined) {
+                alert('No data found for this registration number.');
+            }
+        }
+    };
+
+    // Function to submit data
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        
+        try {
+            const response = await fetch('http://localhost:5000/api/baby', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-user-role': 'physician',
+                },
+                body: JSON.stringify(formData),
+            });
+            
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Failed to submit form');
+            }
+            
+            // Save registration number to localStorage after successful submission
+            localStorage.setItem('babyRegNo', formData.regNo);
+            
+            const result = await response.json();
+            console.log('Form submitted successfully:', result);
+            alert('Development milestones submitted successfully!');
+        } catch (error) {
+            console.error('Error submitting form:', error);
+            alert(`Failed to submit form: ${error.message}`);
+        }
+    };
+
     return (
-        <div className="w-full max-w-6xl mx-auto p-4 bg-gradient-to-br from-white to-blue-50 shadow-lg rounded-lg">
-            <h1 className="text-2xl md:text-3xl font-bold text-blue-600 mb-6 text-center">Development Milestones Tracker</h1>
-            <div className="overflow-x-auto bg-white rounded-lg shadow-md">
-                <table className="w-full border-collapse">
-                    <thead>
-                        <tr className="bg-gradient-to-r from-blue-100 to-blue-200">
-                            <th className="p-2 md:p-4 text-left text-xs md:text-sm font-semibold text-blue-700">Age</th>
-                            <th className="p-2 md:p-4 text-left text-xs md:text-sm font-semibold text-blue-700">Milestones</th>
-                            <th className="p-2 md:p-4 text-left text-xs md:text-sm font-semibold text-blue-700">Month</th>
-                            <th className="p-2 md:p-4 text-left text-xs md:text-sm font-semibold text-blue-700">Month Proved</th>
-                            <th className="p-2 md:p-4 text-left text-xs md:text-sm font-semibold text-blue-700">Officer's Designation</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {formData.table.map((ageGroup, ageIndex) => (
-                            ageGroup.milestones.map((milestone, milestoneIndex) => (
-                                <tr key={`${ageIndex}-${milestoneIndex}`} className="border-b border-blue-100 hover:bg-blue-50">
-                                    {milestoneIndex === 0 && (
-                                        <td rowSpan={ageGroup.milestones.length} className="p-2 md:p-4 text-xs md:text-sm font-medium text-blue-700 bg-blue-50">
-                                            {ageGroup.age}
+        <form onSubmit={handleSubmit}>
+            <div className="w-full max-w-6xl mx-auto p-4 bg-gradient-to-br from-white to-blue-50 shadow-lg rounded-lg">
+                <h1 className="text-2xl md:text-3xl font-bold text-blue-600 mb-6 text-center">Development Milestones Tracker</h1>
+                
+                {/* Registration Number Section */}
+                <div className="mb-6 bg-white border-l-4 border-blue-500 p-4 rounded-lg shadow">
+                    <h2 className="text-xl font-semibold text-blue-700 mb-4 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0" />
+                        </svg>
+                        Registration Information
+                    </h2>
+                    <div className="flex items-center space-x-4">
+                        <label className="text-sm font-medium text-blue-700">Registration Number</label>
+                        <input
+                            type="text"
+                            value={formData.regNo || ''}
+                            onChange={(e) => handleRegNoChange(e.target.value)}
+                            className="flex-grow p-2 text-sm border border-blue-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-blue-50"
+                        />
+                        <button
+                            type="button"
+                            onClick={() => fetchDataByRegistrationNumber()}
+                            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition duration-200"
+                        >
+                            Get Info
+                        </button>
+                    </div>
+                </div>
+                
+                <div className="overflow-x-auto bg-white rounded-lg shadow-md">
+                    <table className="w-full border-collapse">
+                        <thead>
+                            <tr className="bg-gradient-to-r from-blue-100 to-blue-200">
+                                <th className="p-2 md:p-4 text-left text-xs md:text-sm font-semibold text-blue-700">Age</th>
+                                <th className="p-2 md:p-4 text-left text-xs md:text-sm font-semibold text-blue-700">Milestones</th>
+                                <th className="p-2 md:p-4 text-left text-xs md:text-sm font-semibold text-blue-700">Month</th>
+                                <th className="p-2 md:p-4 text-left text-xs md:text-sm font-semibold text-blue-700">Month Proved</th>
+                                <th className="p-2 md:p-4 text-left text-xs md:text-sm font-semibold text-blue-700">Officer's Designation</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {formData.developmentMilestones.map((ageGroup, ageIndex) => (
+                                ageGroup.milestones.map((milestone, milestoneIndex) => (
+                                    <tr key={`${ageIndex}-${milestoneIndex}`} className="border-b border-blue-100 hover:bg-blue-50">
+                                        {milestoneIndex === 0 && (
+                                            <td rowSpan={ageGroup.milestones.length} className="p-2 md:p-4 text-xs md:text-sm font-medium text-blue-700 bg-blue-50">
+                                                {ageGroup.age}
+                                            </td>
+                                        )}
+                                        <td className="p-2 md:p-4 text-xs md:text-sm text-blue-700">{milestone.milestone}</td>
+                                        <td className="p-2 md:p-4">
+                                            <input 
+                                                type="month"  
+                                                value={milestone.month || ''}
+                                                onChange={(e) => handleChange(ageIndex, milestoneIndex, "month", e.target.value)}
+                                                className="w-full p-1 md:p-2 text-xs md:text-sm border border-blue-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-blue-50"
+                                            />
                                         </td>
-                                    )}
-                                    <td className="p-2 md:p-4 text-xs md:text-sm text-blue-700">{milestone}</td>
-                                    <td className="p-2 md:p-4">
-                                        <input 
-                                            type="month"  
-                                            value={ageGroup.inputs[milestoneIndex].month}
-                                            onChange={(e) => handleChange(ageIndex, milestoneIndex, "month", e.target.value)}
-                                            className="w-full p-1 md:p-2 text-xs md:text-sm border border-blue-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-blue-50"
-                                        />
-                                    </td>
-                                    <td className="p-2 md:p-4">
-                                        <input 
-                                            type="month"
-                                            value={ageGroup.inputs[milestoneIndex].monthProved}
-                                            onChange={(e) => handleChange(ageIndex, milestoneIndex, "monthProved", e.target.value)}
-                                            className="w-full p-1 md:p-2 text-xs md:text-sm border border-blue-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-blue-50"
-                                        />
-                                    </td>
-                                    <td className="p-2 md:p-4">
-                                        <input 
-                                            type="text"
-                                            value={ageGroup.inputs[milestoneIndex].officer}
-                                            onChange={(e) => handleChange(ageIndex, milestoneIndex, "officer", e.target.value)}
-                                            className="w-full p-1 md:p-2 text-xs md:text-sm border border-blue-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-blue-50"
-                                            placeholder="Enter designation"
-                                        />
-                                    </td>
-                                </tr>
-                            ))
-                        ))}
-                    </tbody>
-                </table>
+                                        <td className="p-2 md:p-4">
+                                            <input 
+                                                type="month"
+                                                value={milestone.monthProved || ''}
+                                                onChange={(e) => handleChange(ageIndex, milestoneIndex, "monthProved", e.target.value)}
+                                                className="w-full p-1 md:p-2 text-xs md:text-sm border border-blue-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-blue-50"
+                                            />
+                                        </td>
+                                        <td className="p-2 md:p-4">
+                                            <input 
+                                                type="text"
+                                                value={milestone.officer || ''}
+                                                onChange={(e) => handleChange(ageIndex, milestoneIndex, "officer", e.target.value)}
+                                                className="w-full p-1 md:p-2 text-xs md:text-sm border border-blue-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-blue-50"
+                                                placeholder="Enter designation"
+                                            />
+                                        </td>
+                                    </tr>
+                                ))
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div className='flex justify-center mt-6'>
+                    <button
+                        type="submit"
+                        className="px-6 py-3 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition duration-200 font-semibold text-lg"
+                    >
+                        Save Development Milestones
+                    </button>
+                </div>
             </div>
-        </div>
+        </form>
     );
 };
 
