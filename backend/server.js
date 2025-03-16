@@ -10,6 +10,7 @@ const { connectDB, waitForDB } = require('./config/database');
 const { validateEnv } = require('./config/env');
 const logger = require('./utils/logger');
 
+
 // Routes
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/users');
