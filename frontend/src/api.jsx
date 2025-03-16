@@ -85,18 +85,24 @@ export const sendOTP = async (email, OTP) => {
   }
 };
 
+// In api.jsx
 export const resetPassword = async (email, newPassword) => {
   try {
-    const response = await api.post('/auth/reset-password', { email, newPassword });
+    console.log("Resetting password for email:", email);
+    const response = await axios.post('http://localhost:3000/api/auth/reset-password', { 
+      email, 
+      newPassword 
+    });
+    console.log("Reset password response:", response.data);
     return response.data;
   } catch (error) {
+    console.error("Reset password error in API:", error);
     throw {
-      message: error.response?.data?.message || error.message || 'Failed to reset password',
+      message: error.response?.data?.error || error.message || 'Failed to reset password',
       status: error.response?.status,
       data: error.response?.data
     };
   }
 };
-
 // Export API instance as default
 export default api;
