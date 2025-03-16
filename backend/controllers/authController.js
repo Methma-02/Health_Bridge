@@ -7,7 +7,7 @@ const logger = require('../utils/logger');
 const crypto = require('crypto');
 const mongoose = require('mongoose');
 const nodemailer = require('nodemailer');
-const bcrypt = require('bcrypt'); // Add this for password hashing
+const bcrypt = require('bcrypt'); 
 
 const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
@@ -211,6 +211,9 @@ class AuthController {
           user: process.env.EMAIL_USER,
           pass: process.env.EMAIL_PASSWORD,
         },
+        tls: {
+          rejectUnauthorized: false
+        }
       });
   
       const mailOptions = {
@@ -220,8 +223,15 @@ class AuthController {
         html: `<p>Your OTP for password recovery is: <strong>${OTP}</strong></p>`,
       };
   
-      await transporter.sendMail(mailOptions);
-      console.log("Email sent successfully"); // Debugging log
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          console.error("Email sending error:", error);
+          return res.status(500).json({ error: "Failed to send OTP email" });
+        } else {
+          console.log("Email sent:", info.response);
+          return res.status(200).json({ message: "OTP sent successfully" });
+        }
+      });
   
       res.status(200).json({ message: "OTP sent successfully" });
     } catch (error) {
@@ -252,6 +262,8 @@ class AuthController {
       res.status(500).json({ error: error.message });
     }
   }
+
+  
 
 }
 module.exports = AuthController;
