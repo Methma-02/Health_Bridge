@@ -186,24 +186,24 @@ class AuthController {
 
   static async sendOTP(req, res) {
     try {
-      console.log("sendOTP called"); // Debugging log
+      console.log("sendOTP called");
       const { recipient_email, OTP } = req.body;
-      console.log("Received OTP:", OTP); // Debugging log
-      console.log("Recipient email:", recipient_email); // Debugging log
-  
+      console.log("Received OTP:", OTP);
+      console.log("Recipient email:", recipient_email);
+      
       // Check if user exists
       const user = await User.findOne({ email: recipient_email });
       if (!user) {
-        console.log("User not found"); // Debugging log
+        console.log("User not found");
         return res.status(404).json({ error: "User not found" });
       }
-  
+      
       // Save OTP to user
       user.resetPasswordOtp = OTP;
       user.resetPasswordOtpExpires = Date.now() + 300000; // 5 minutes
       await user.save();
-      console.log("OTP saved to user"); // Debugging log
-  
+      console.log("OTP saved to user");
+      
       // Send email with OTP
       const transporter = nodemailer.createTransport({
         service: "gmail",
@@ -216,26 +216,40 @@ class AuthController {
         }
       });
   
+      const emailHtml = `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <h2>Password Recovery</h2>
+          <p>Hello,</p>
+          <p>We received a request to reset your password for your account with <strong>Health Bridge</strong>.</p>
+          <p>Your verification code is: <strong style="font-size: 18px; color: #d9534f;">${OTP}</strong></p>
+          <p>This code will expire in 5 minutes.</p>
+          <p>If you didn't request this code, you can safely ignore this email.</p>
+          <p>Best regards,<br>The Health Bridge Team</p>
+        </div>
+      `;
+      
       const mailOptions = {
-        from: process.env.EMAIL_USER,
+        from: `"Health Bridge" <${process.env.EMAIL_USER}>`,
         to: recipient_email,
         subject: "Password Recovery OTP",
-        html: `<p>Your OTP for password recovery is: <strong>${OTP}</strong></p>`,
-      };
-  
-      transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-          console.error("Email sending error:", error);
-          return res.status(500).json({ error: "Failed to send OTP email" });
-        } else {
-          console.log("Email sent:", info.response);
-          return res.status(200).json({ message: "OTP sent successfully" });
+        html: emailHtml,
+        headers: {
+          'Precedence': 'bulk',
+          'X-Auto-Response-Suppress': 'OOF'
         }
-      });
-  
-      res.status(200).json({ message: "OTP sent successfully" });
+      };
+      
+      // Use Promise instead of callback to handle email sending
+      try {
+        const info = await transporter.sendMail(mailOptions);
+        console.log("Email sent:", info.response);
+        return res.status(200).json({ message: "OTP sent successfully" });
+      } catch (emailError) {
+        console.error("Email sending error:", emailError);
+        return res.status(500).json({ error: "Failed to send OTP email" });
+      }
     } catch (error) {
-      console.error("Error in sendOTP:", error); // Debugging log
+      console.error("Error in sendOTP:", error);
       res.status(500).json({ error: error.message });
     }
   }
@@ -243,26 +257,39 @@ class AuthController {
   static async resetPassword(req, res) {
     try {
       const { email, newPassword } = req.body;
-  
+      
+      if (!email || !newPassword) {
+        return res.status(400).json({ error: "Email and new password are required" });
+      }
+      
       // Find user
       const user = await User.findOne({ email });
       if (!user) {
         return res.status(404).json({ error: "User not found" });
       }
-  
+      
+      // Validate password
+      if (newPassword.length < 6) {
+        return res.status(400).json({ error: "Password must be at least 6 characters long" });
+      }
+      
       // Hash new password
       const hashedPassword = await bcrypt.hash(newPassword, 10);
       user.password = hashedPassword;
+      
+      // Clear the reset tokens
       user.resetPasswordOtp = null;
       user.resetPasswordOtpExpires = null;
+      
       await user.save();
-  
+      console.log("Password reset successfully for user:", email);
+      
       res.status(200).json({ message: "Password reset successfully" });
     } catch (error) {
+      console.error("Error in resetPassword:", error);
       res.status(500).json({ error: error.message });
     }
   }
-
   
 
 }
