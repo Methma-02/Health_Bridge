@@ -1,10 +1,10 @@
 import React, { useContext, useState } from "react";
 import { RecoveryContext } from "./RecoveryContext";
 import { useNavigate } from "react-router-dom";
-import { resetPassword } from "./api"; // Import the API function
+import { resetPassword } from "./api";
 
 export default function ResetPasswordPage() {
-  const { email } = useContext(RecoveryContext);
+  const { email, setPage } = useContext(RecoveryContext);
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isResetting, setIsResetting] = useState(false);
@@ -12,10 +12,13 @@ export default function ResetPasswordPage() {
   const navigate = useNavigate();
 
   function changePassword(e) {
-    e.preventDefault(); // Prevent form submission
+    e.preventDefault();
+    
+    console.log("Email from context:", email); // Debug log to check if email exists
     
     if (!email) {
       alert("Email information is missing. Please try again from the beginning.");
+      setPage("forgotPassword");
       return;
     }
     
@@ -31,9 +34,9 @@ export default function ResetPasswordPage() {
     
     setIsResetting(true);
     
-    // Use the API function instead of axios directly
     resetPassword(email, newPassword)
-      .then(() => {
+      .then((result) => {
+        console.log("Password reset success:", result);
         setSuccess(true);
         setIsResetting(false);
       })
@@ -48,7 +51,7 @@ export default function ResetPasswordPage() {
     navigate("/login");
   }
 
-  // If password reset was successful, show success message and redirect button
+  // Success message and login button
   if (success) {
     return (
       <div className="flex justify-center items-center w-screen h-screen bg-gray-50">
@@ -77,7 +80,6 @@ export default function ResetPasswordPage() {
     );
   }
 
-  // Regular password reset form
   return (
     <div className="flex justify-center items-center w-screen h-screen bg-gray-50">
       <div className="bg-white px-6 pt-10 pb-9 shadow-xl mx-auto w-full max-w-lg rounded-2xl">
