@@ -71,7 +71,7 @@ export const googleLogin = async (credential) => {
   }
 };
 
-// New API functions for password recovery
+// Password recovery functions
 export const sendOTP = async (email, OTP) => {
   try {
     const response = await api.post('/auth/send-otp', { recipient_email: email, OTP });
@@ -98,6 +98,5 @@ export const resetPassword = async (email, newPassword) => {
   }
 };
 
-
-
+// Export API instance as default
 export default api;
