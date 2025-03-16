@@ -8,4 +8,5 @@ router.post('/google', AuthController.googleLogin);
 router.post("/send-otp", AuthController.sendOTP);
 router.post('/reset-password', AuthController.resetPassword);
 
+
 module.exports = router;
