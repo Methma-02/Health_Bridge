@@ -20,7 +20,7 @@ export default function ForgotPasswordPage() {
         .then((response) => {
           console.log("OTP sent successfully:", response);
           // Navigate to OTP page
-          navigate("/otp");
+          setPage("otp");
         })
         .catch((error) => {
           console.error("Error sending OTP:", error);
