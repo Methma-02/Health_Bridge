@@ -5,7 +5,7 @@ export const RecoveryContext = createContext();
 export function RecoveryProvider({ children }) {
   const [email, setEmail] = useState("");
   const [otp, setOTP] = useState(null);
-  const [page, setPage] = useState("forgot");
+  const [page, setPage] = useState("forgotPassword");
 
   return (
     <RecoveryContext.Provider
