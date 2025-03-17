@@ -123,7 +123,7 @@ const ChildHealthRecords = () => {
                     type={fieldName === "clinicDate" ? "date" : "text"}
                     value={row[fieldName] || ''}
                     onChange={(e) => handleTableChange(idx, fieldName, e.target.value)}
-                    className={`w-full p-2 text-sm border border-blue-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-blue-50 ${
+                    className={`w-25 h-6 p-1 text-sm border border-blue-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-blue-50 ${
                         fieldName === "age" ? "bg-gray-100 cursor-not-allowed" : ""
                     }`}
                     readOnly={fieldName === "age"} // Make Age field read-only
@@ -184,7 +184,7 @@ const ChildHealthRecords = () => {
 
     return (
         <form onSubmit={handleSubmit}>
-        <div className="w-full max-w-5xl mx-auto p-4 bg-gradient-to-br from-white to-blue-50 shadow-lg rounded-lg">
+        <div className="w-full max-w-4xl mx-auto p-4 bg-gradient-to-br from-white to-blue-50 shadow-lg rounded-lg">
             <h1 className="text-2xl md:text-3xl font-bold text-blue-600 mb-6 text-center">Child Health Records</h1>
 
             <div className="mb-6 bg-white border-l-4 border-blue-500 p-4 rounded-lg shadow">

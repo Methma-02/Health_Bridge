@@ -61,7 +61,7 @@ const Other = () => {
                                                 type={field === 'Family planning' ? "text" : "date"}
                                                 value={formData[startIdx + idx][field]}
                                                 onChange={(e) => handleOtherDataChange(startIdx + idx, field, e.target.value)}
-                                                className="w-full p-2 text-sm border border-blue-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-blue-50"
+                                                className="w-29 h-6 p-1 text-sm border border-blue-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-blue-50"
                                             />
                                         </td>
                                     ))}
