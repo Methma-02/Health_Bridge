@@ -31,7 +31,7 @@ const Dashboard = () => {
         return <ChildHealthRecordsComponent />;
       case "StudentHealthRecords":
         return <StudentHealthRecordsComponent />;  
-      case "Referal":
+      case "Referral":
         return <ReferalComponent />;
       default:
         return <ChildHealthRecordsComponent />;
