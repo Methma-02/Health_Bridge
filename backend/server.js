@@ -1,18 +1,37 @@
-const http = require("http");
+// backend/index.js
+require('dotenv').config();
+const express = require('express');
+const mongoose = require('mongoose');
+const cors = require('cors');
+const http = require('http');
+const { setupSocket } = require('./socket/socketSetup');
+const emergencyRoutes = require('./routes/emergencyRoutes');
 
+const app = express();
 const PORT = process.env.PORT || 5000;
 
-const server = http.createServer((req, res) => {
-  res.writeHead(200, { "Content-Type": "application/json" });
+// Middleware
+app.use(cors());
+app.use(express.json());
 
-  if (req.url === "/" && req.method === "GET") {
-    res.end(JSON.stringify({ message: "Backend is running!" }));
-  } else {
-    res.writeHead(404, { "Content-Type": "application/json" });
-    res.end(JSON.stringify({ message: "Route not found" }));
-  }
-});
+// Connect to MongoDB
+mongoose.connect(process.env.MONGODB_URI.replace('add_the collection name we are making for this feature for the collection', 'healthbridge_emergency'))
+  .then(() => console.log('Connected to MongoDB'))
+  .catch(err => console.error('MongoDB connection error:', err));
 
+// Routes
+app.use('/api/emergency', emergencyRoutes);
+
+// Create HTTP server
+const server = http.createServer(app);
+
+// Setup Socket.io
+const io = setupSocket(server);
+
+// Make io available to other modules
+app.set('io', io);
+
+// Start server
 server.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });
