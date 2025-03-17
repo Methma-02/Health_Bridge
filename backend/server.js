@@ -1,18 +1,39 @@
-const http = require("http");
+const express = require('express');
+const mongoose = require('mongoose');
+const cors = require('cors');
+const dotenv = require('dotenv');
+const requestRoutes = require('./routes/requestRoutes');
+const donationRoutes = require('./routes/donationRoutes');
+const statsRoutes = require('./routes/statsRoutes');
 
-const PORT = process.env.PORT || 5000;
+// Load environment variables
+dotenv.config();
 
-const server = http.createServer((req, res) => {
-  res.writeHead(200, { "Content-Type": "application/json" });
+const app = express();
 
-  if (req.url === "/" && req.method === "GET") {
-    res.end(JSON.stringify({ message: "Backend is running!" }));
-  } else {
-    res.writeHead(404, { "Content-Type": "application/json" });
-    res.end(JSON.stringify({ message: "Route not found" }));
-  }
+// Middleware
+app.use(cors());
+app.use(express.json());
+
+// Connect to MongoDB
+mongoose.connect(process.env.MONGODB_URI)
+  .then(() => console.log('Connected to MongoDB Atlas'))
+  .catch(err => console.error('MongoDB connection error:', err));
+
+// Routes
+app.use('/api/requests', requestRoutes);
+app.use('/api/donations', donationRoutes);
+app.use('/api/stats', statsRoutes);
+
+// Default route
+app.get('/', (req, res) => {
+  res.send('Donation Center API is running');
 });
 
-server.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
+// Start server
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
+
+module.exports = app;
