@@ -119,6 +119,15 @@ const BabySchema = new mongoose.Schema({
             }
         ],
     }],
+    WeightGainData: [{
+        gender: String,
+        measurements: [
+            {
+                x: Number,
+                y: Number
+            }
+        ],
+    }],
     HeightGainData: [{
         gender: String,
         measurements: [
