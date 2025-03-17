@@ -67,3 +67,19 @@
     padding: 5px;
     border-bottom: 1px solid #ddd;
   }
+
+  .search-item:last-child {
+    border-bottom: none;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
