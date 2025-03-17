@@ -65,6 +65,7 @@ const Footer = () => {
             <div className="footer-links">
               <a href="/about" className="quick-link">How To Use</a>
               <a href="https://healthbridgemarketing.netlify.app/" className="quick-link">Marketing Website</a>
+              <a href="/privacy-policy" className="quick-link">Privacy Policy</a>
             </div>
           </div>
         </div>
