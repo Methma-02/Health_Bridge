@@ -1,18 +1,17 @@
-const http = require("http");
+const express = require('express');
+const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
+const app = express();
+const port = 5000;
 
-const PORT = process.env.PORT || 5000;
+// MongoDB connection
+mongoose.connect('mongodb://localhost:27017/yourDatabase', { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log("Connected to MongoDB"))
+  .catch(err => console.log(err));
 
-const server = http.createServer((req, res) => {
-  res.writeHead(200, { "Content-Type": "application/json" });
-
-  if (req.url === "/" && req.method === "GET") {
-    res.end(JSON.stringify({ message: "Backend is running!" }));
-  } else {
-    res.writeHead(404, { "Content-Type": "application/json" });
-    res.end(JSON.stringify({ message: "Route not found" }));
-  }
-});
-
-server.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
-});
+// User Schema (assuming registration_number is stored in _id)
+const userSchema = new mongoose.Schema({
+  email: { type: String, required: true },
+  password: { type: String, required: true },
+  role: { type: String, required: true },
+}, { collection: 'users' });
