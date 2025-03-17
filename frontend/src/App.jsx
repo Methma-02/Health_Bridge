@@ -1,51 +1,43 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
-import "./App.css";
+// frontend/src/App.jsx
+import React, { useEffect } from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { EmergencyProvider } from './components/context/EmergencyContext';
+import FloatingWidget from './components/EmergencyAlert/FloatingWidget';
+import { initializeOneSignal, setUserExternalId } from './components/services/notificationService';
+import EmergencyForm from './components/EmergencyAlert/EnergencyForm';
+import EmergencyTracker from './components/EmergencyAlert/EmergencyTracker';
+import HospitalChat from './components/EmergencyAlert/HospitalChat';
 
-function App() {
-  const [count, setCount] = useState(0);
-  const [data, setData] = useState(null);
+const App = () => {
+  // In a real app, you'd get this from auth context or similar
+  const userId = 'user123'; // Replace with actual user ID
 
-  // Fetch data from backend when component mounts
   useEffect(() => {
-    axios.get("http://localhost:5000/")
-      .then(response => setData(response.data))
-      .catch(error => console.error("Error fetching data:", error));
-  }, []);
+    // Initialize OneSignal when the app loads
+    initializeOneSignal();
+    
+    // Set user ID for OneSignal
+    if (userId) {
+      setUserExternalId(userId);
+    }
+  }, [userId]);
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-
-      {/* Display data from backend */}
-      <div className="backend-data">
-        <h2>Backend Response:</h2>
-        {data ? <p>{data.message}</p> : <p>Loading data...</p>}
-      </div>
-
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <BrowserRouter>
+      <EmergencyProvider userId={userId}>
+        <div className="App">
+          <Routes>
+          <Route path="/emergency-form" element={<EmergencyForm />} />
+            <Route path="/emergency-tracker" element={<EmergencyTracker />} />
+            <Route path="/hospital-chat" element={<HospitalChat />} />
+          </Routes>
+          
+          {/* Emergency Alert Widget - visible on all pages */}
+          <FloatingWidget userId={userId} />
+        </div>
+      </EmergencyProvider>
+    </BrowserRouter>
   );
-}
+};
 
 export default App;
