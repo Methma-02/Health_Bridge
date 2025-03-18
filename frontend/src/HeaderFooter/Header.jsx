@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { User, AlertCircle, Menu, X } from 'lucide-react';
 import './Header.css';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const location = useLocation();
 
   // Handle scroll effect for header appearance
   useEffect(() => {
@@ -43,6 +45,14 @@ const Header = () => {
     return () => document.removeEventListener('keydown', handleEscKey);
   }, [isMenuOpen]);
 
+  // Close menu when route changes
+  useEffect(() => {
+    if (isMenuOpen) {
+      setIsMenuOpen(false);
+      document.body.style.overflow = '';
+    }
+  }, [location.pathname]);
+
   // Toggle menu and manage body scroll
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -53,10 +63,10 @@ const Header = () => {
     <header className={`health-bridge-header ${scrolled ? 'scrolled' : ''}`}>
       <div className="header-container">
         <div className="logo-container">
-          <a href="/" className="logo-link" aria-label="Health Bridge Home">
-            <img src="src/HeaderFooter/1.png" alt="" className="logo-image" />
+          <Link to="/" className="logo-link" aria-label="Health Bridge Home">
+            <img src="/src/HeaderFooter/1.png" alt="" className="logo-image" />
             <span className="logo-text">Health Bridge</span>
-          </a>
+          </Link>
         </div>
         
         <nav className={`navbar ${isMenuOpen ? 'open' : ''}`} aria-label="Main navigation">
@@ -70,17 +80,17 @@ const Header = () => {
           </button>
           
           <div className="nav-links">
-            <a href="/mothers-dashboard" className="nav-item">Mother's Dashboard</a>
-            <a href="/childrens-dashboard" className="nav-item">Child's Dashboard</a>
-            <a href="/symptom-recorder" className="nav-item">Symptom Recorder</a>
-            <a href="/donation-center" className="nav-item">Donation Center</a>
-            <a href="/emergency-alert" className="nav-item emergency-link">
+            <Link to="/mothers-dashboard" className="nav-item">Mother's Dashboard</Link>
+            <Link to="/childrens-dashboard" className="nav-item">Child's Dashboard</Link>
+            <Link to="/symptom-recorder" className="nav-item">Symptom Recorder</Link>
+            <Link to="/donation-center" className="nav-item">Donation Center</Link>
+            <Link to="/emergency-alert" className="nav-item emergency-link">
               <AlertCircle size={16} />
               <span>Emergency Alert</span>
-            </a>
-            <a href="/profile" className="nav-item profile-link" aria-label="User profile">
+            </Link>
+            <Link to="/profile" className="nav-item profile-link" aria-label="User profile">
               <User size={20} />
-            </a>
+            </Link>
           </div>
         </nav>
 
