@@ -3,27 +3,27 @@
   --primary-color: #4f46e5;
   --primary-dark: #4338ca;
   --primary-light: #818cf8;
-  
+
   --secondary-color: #10b981;
   --secondary-dark: #059669;
   --secondary-light: #34d399;
   --secondary-bg: #eef2ff;
 
   --accent-color: #f97316;
-  
+
   --text-color: #333;
   --text-light: #666;
   --text-dark: #111;
   --text-light-mode: #f0f0f0;
   --text-dark-mode: #d0d0d0;
-  
+
   --bg-light: #f9f9f9;
   --bg-dark: #121212;
   --bg-dark-alt: #1e1e1e;
-  
+
   --gradient-primary: linear-gradient(135deg, #4f46e5, #818cf8);
   --gradient-secondary: linear-gradient(135deg, #10b981, #34d399);
-  
+
   --shadow-light: rgba(0, 0, 0, 0.1);
   --shadow-medium: rgba(0, 0, 0, 0.15);
   --shadow-dark: rgba(0, 0, 0, 0.2);
@@ -34,88 +34,142 @@
 }
 
 body {
-  @apply font-sans bg-gray-50 text-gray-800 m-0 p-0;
+  font-family: 'Arial', sans-serif;
+  background-color: var(--bg-light);
+  margin: 0;
+  padding: 0;
+  color: var(--text-color);
 }
 
 .symptom-tracker-container {
-  @apply max-w-2xl mx-auto my-5 bg-white p-6 rounded-lg shadow-md;
+  max-width: 600px;
+  margin: 20px auto;
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px var(--shadow-light);
 }
 
 .header-text {
-  @apply text-center text-indigo-600 font-semibold mb-5;
+  text-align: center;
+  color: var(--primary-color);
+  font-weight: 600;
+  margin-bottom: 20px;
 }
 
 /* Calendar */
 .calendar-container {
-  @apply flex justify-center mb-5;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
 }
 
 .react-calendar__tile.highlighted-date {
-  @apply bg-orange-500 text-white rounded-full font-bold;
+  background-color: var(--accent-color);
+  color: white;
+  border-radius: 50%;
+  font-weight: bold;
 }
 
 .react-calendar__tile.highlighted-date:hover {
-  @apply bg-indigo-300;
+  background-color: var(--primary-light);
 }
 
 /* Symptoms List */
 .date-title {
-  @apply text-lg text-indigo-600 font-medium;
+  font-size: 18px;
+  color: var(--primary-color);
+  font-weight: 500;
 }
 
 .symptom-item {
-  @apply p-2 rounded-lg mb-2 text-base font-bold transition-all duration-300 ease-in-out;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 /* Hover Effect for Symptoms */
 .symptom-item:hover {
-  @apply bg-gray-100 scale-105 cursor-pointer;
+  background-color: var(--shadow-light);
+  transform: scale(1.02);
+  cursor: pointer;
 }
 
 /* Intensity Levels */
-.intensity-1 { @apply bg-green-100; } /* Light Green */
-.intensity-2 { @apply bg-yellow-100; } /* Yellow */
-.intensity-3 { @apply bg-orange-100; } /* Orange */
-.intensity-4 { @apply bg-red-100; } /* Red */
-.intensity-5 { @apply bg-red-500 text-white; } /* Dark Red */
+.intensity-1 { background-color: #d4f7dc; } /* Light Green */
+.intensity-2 { background-color: #f7f7a7; } /* Yellow */
+.intensity-3 { background-color: #f7d6a7; } /* Orange */
+.intensity-4 { background-color: #f7a7a7; } /* Red */
+.intensity-5 { background-color: #f75a5a; color: white; } /* Dark Red */
 
 /* Input Section */
 .input-section {
-  @apply flex flex-col items-center mt-5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
 }
 
 .input-field {
-  @apply w-11/12 p-2 border-2 border-gray-300 rounded-lg text-base mb-2;
+  width: 90%;
+  padding: 10px;
+  border: 2px solid var(--shadow-medium);
+  border-radius: 8px;
+  font-size: 16px;
+  margin-bottom: 10px;
 }
 
 /* Intensity Selector */
 .intensity-container {
-  @apply w-full text-center mb-2;
+  width: 100%;
+  text-align: center;
+  margin-bottom: 10px;
 }
 
 .intensity-label {
-  @apply text-base text-indigo-600 font-bold mb-1;
+  font-size: 16px;
+  color: var(--primary-color);
+  font-weight: bold;
+  display: block;
+  margin-bottom: 5px;
 }
 
 .intensity-slider {
-  @apply w-11/12;
+  width: 90%;
 }
 
 .intensity-levels {
-  @apply flex justify-between text-sm text-gray-500 w-11/12;
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  color: var(--text-light);
+  width: 90%;
 }
 
 /* Add Button */
 .add-button {
-  @apply bg-green-500 text-white px-5 py-2 text-base border-none rounded-lg cursor-pointer transition-all duration-300 ease-in-out;
+  background-color: var(--secondary-color);
+  color: white;
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 /* Hover Effect for Add Button */
 .add-button:hover {
-  @apply bg-green-600 scale-105;
+  background-color: var(--secondary-dark);
+  transform: scale(1.05);
 }
 
 /* Disabled Add Button */
 .add-button:disabled {
-  @apply bg-gray-400 cursor-not-allowed scale-100;
+  background-color: #ccc;
+  cursor: not-allowed;
+  transform: none;
 }
