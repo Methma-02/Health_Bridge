@@ -4,13 +4,13 @@ import "react-calendar/dist/Calendar.css";
 import dayjs from "dayjs";
 import "./App.css"; // Import the CSS file
 
-const API_URL = "http://localhost:5000"; // Update this if backend URL changes
+const API_URL = "http://localhost:5000"; // Change if backend URL differs
 
 const SymptomTracker = () => {
   const [date, setDate] = useState(new Date());
   const [symptoms, setSymptoms] = useState({});
   const [newSymptom, setNewSymptom] = useState("");
-  const [intensity, setIntensity] = useState(3); // Default intensity level
+  const [intensity, setIntensity] = useState(3);
 
   const today = dayjs().format("YYYY-MM-DD");
   const selectedDate = dayjs(date).format("YYYY-MM-DD");
@@ -18,23 +18,39 @@ const SymptomTracker = () => {
 
   // Fetch symptoms from backend
   const fetchSymptoms = async () => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      console.log("No token found, please log in.");
-      return;
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        console.log("No token found, please log in.");
+        return;
+      }
+
+      const response = await fetch(`${API_URL}/symptoms`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (!response.ok) throw new Error("Failed to fetch symptoms");
+
+      const data = await response.json();
+
+      // Convert fetched symptoms into a format that matches state structure
+      const symptomsData = data.reduce((acc, symptom) => {
+        const { date, symptom: symptomText, time, intensity } = symptom;
+        if (!acc[date]) acc[date] = [];
+        acc[date].push({ symptom: symptomText, time, intensity });
+        return acc;
+      }, {});
+
+      setSymptoms(symptomsData);
+    } catch (error) {
+      console.error("Error fetching symptoms:", error);
     }
-
-    const response = await fetch(`${API_URL}/symptoms`, {
-      headers: { Authorization: token },
-    });
-
-    const data = await response.json();
-    console.log("Decrypted Symptoms:", data);
   };
 
   // Save symptom to backend
   const handleAddSymptom = async () => {
     if (!newSymptom.trim() || isFutureDate) return;
+
     const timestamp = dayjs().format("HH:mm:ss");
 
     const symptomData = {
@@ -45,7 +61,7 @@ const SymptomTracker = () => {
     };
 
     try {
-      const token = localStorage.getItem("token"); // Retrieve JWT
+      const token = localStorage.getItem("token");
       if (!token) {
         console.log("No authentication token found");
         return;
@@ -62,11 +78,10 @@ const SymptomTracker = () => {
 
       if (!response.ok) throw new Error("Failed to save symptom");
 
-      setSymptoms((prev) => ({
-        ...prev,
-        [selectedDate]: [...(prev[selectedDate] || []), symptomData],
-      }));
+      // Fetch symptoms again after adding
+      await fetchSymptoms();
 
+      // Clear input fields
       setNewSymptom("");
       setIntensity(3);
     } catch (error) {
