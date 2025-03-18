@@ -188,7 +188,7 @@ const StudentHealthRecords = () => {
 
     return (
         <form onSubmit={handleSubmit}>
-            <div className="w-full max-w-5xl mx-auto p-4 bg-gradient-to-br from-white to-blue-50 shadow-lg rounded-lg">
+            <div className="w-full max-w-4xl mx-auto p-4 bg-gradient-to-br from-white to-blue-50 shadow-lg rounded-lg">
                 <h1 className="text-2xl md:text-3xl font-bold text-blue-600 mb-6 text-center">Student Health Records</h1>
                 
                 <div className="mb-6 bg-white border-l-4 border-blue-500 p-4 rounded-lg shadow">

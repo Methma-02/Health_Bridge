@@ -1,12 +1,16 @@
 import { useState, useEffect } from 'react';
-import { X } from 'lucide-react';
-import Other from './other';
+import { X, ChevronRight, ChevronLeft } from 'lucide-react';
 
 const HeightGainChart = () => {
   const [gender, setGender] = useState('boy');
   const [formData, setFormData] = useState({
     regNo:'',
-    chartPoints: []
+    chartPoints: [],
+    heightOtherData: Array(60).fill().map(() => ({
+      "date the phm came": '',
+      "other dates": '',
+      "Family planning": '',
+  }))
   });
 
   const formattedData = {
@@ -27,7 +31,6 @@ const HeightGainChart = () => {
     const savedRegNo = localStorage.getItem('heightChartRegNo');
     
     if (savedRegNo) {
-      // Set the regNo from localStorage
       setFormData(prev => ({
         ...prev,
         regNo: savedRegNo
@@ -203,62 +206,79 @@ const HeightGainChart = () => {
 
   const fetchDataByRegistrationNumber = async (regNoParam) => {
     const regNo = regNoParam || formData.regNo;
-  
     if (!regNo) {
       alert('Please enter a registration number.');
       return;
     }
-  
     try {
-      const response = await fetch(
-        `http://localhost:5000/api/baby/${regNo}`,
-        {
-          headers: {
-            'x-user-role': 'physician',
+      const response = await fetch(`http://localhost:5000/api/baby/${regNo}`, {
+        headers: { 'x-user-role': 'physician' }
+      });
+      
+      // Initialize default weight data structure for a new patient
+      const defaultHeightOtherData = Array(60).fill().map(() => ({
+        "date the phm came": '',
+        "other dates": '',
+        "Family planning": '',
+      }));
+      
+      if (response.ok) {
+        const data = await response.json();
+        localStorage.setItem('heightChartRegNo', regNo);
+        
+        // Check if weight gain data exists and is properly formatted
+        let heightGainData = { gender: 'boy', measurements: [] };
+        let heightOtherData = defaultHeightOtherData;
+        
+        // Handle WeightGainData
+        if (data.HeightGainData && data.HeightGainData.length > 0) {
+          if (data.HeightGainData[0].gender) {
+            heightGainData.gender = data.HeightGainData[0].gender;
+          }
+          
+          if (data.HeightGainData[0].measurements && Array.isArray(data.HeightGainData[0].measurements)) {
+            heightGainData.measurements = data.HeightGainData[0].measurements;
           }
         }
-      );
-  
-      if (!response.ok) {
-        throw new Error('No data found for this registration number.');
-      }
-  
-      const data = await response.json();
-      console.log(data);
-      
-      // Save registration number to localStorage
-      localStorage.setItem('heightChartRegNo', regNo);
-      
-      // Check if HeightGainData exists and has measurements
-      if (data.HeightGainData && data.HeightGainData.length > 0 && data.HeightGainData[0].measurements) {
+        
+        // Handle weightOtherData as a separate top-level array
+        if (data.heightOtherData && Array.isArray(data.heightOtherData)) {
+          // Make sure we maintain the structure even if some entries are missing
+          heightOtherData = defaultHeightOtherData.map((defaultItem, index) => {
+            if (data.heightOtherData[index]) {
+              return {
+                "date the phm came": data.heightOtherData[index]["date the phm came"] || '',
+                "other dates": data.heightOtherData[index]["other dates"] || '',
+                "Family planning": data.heightOtherData[index]["Family planning"] || '',
+              };
+            }
+            return defaultItem;
+          });
+        }
+        
+        // Update state with retrieved or default data
+        setGender(heightGainData.gender);
         setFormData(prev => ({
           ...prev,
           regNo: regNo,
-          chartPoints: data.HeightGainData[0].measurements
+          chartPoints: heightGainData.measurements,
+          heightOtherData: heightOtherData
         }));
         
-        // If gender is provided, update gender
-        if (data.HeightGainData[0].gender) {
-          setGender(data.HeightGainData[0].gender);
-        }
+        if (!regNoParam) alert('Data loaded successfully!');
       } else {
-        // If no height data exists, just update the regNo
+        // If no data found, set up default data structure for a new patient
         setFormData(prev => ({
           ...prev,
           regNo: regNo,
-          chartPoints: []
+          chartPoints: [],
+          heightOtherData: defaultHeightOtherData
         }));
-      }
-      
-      // Only show alert when manually fetching (not on auto-load)
-      if (!regNoParam) {
-        alert('Data loaded successfully!');
+        if (!regNoParam) alert('No existing data found for this registration number. Creating new record.');
       }
     } catch (error) {
       console.error('Error fetching data:', error);
-      if (!regNoParam) {
-        alert('No data found for this registration number.');
-      }
+      if (!regNoParam) alert('Error fetching data. Please try again.');
     }
   };
 
@@ -292,7 +312,7 @@ const HeightGainChart = () => {
         gender,
         measurements: formData.chartPoints
       }];
-      
+      existingData.heightOtherData = formData.heightOtherData
       // Submit the updated data
       const submitResponse = await fetch('http://localhost:5000/api/baby', {
         method: 'POST',
@@ -322,6 +342,49 @@ const HeightGainChart = () => {
       alert(`Failed to submit form: ${error.message}`);
     }
   };
+
+  const [currentPage, setCurrentPage] = useState(0);
+  const CELLS_PER_PAGE = 12;
+
+  const handleHeightOtherDataChange = (index, field, value) => {
+    setFormData(prev => ({
+      ...prev,
+      heightOtherData: prev.heightOtherData.map((row, i) =>
+        i === index ? { ...row, [field]: value } : row
+      )
+    }));
+  };
+
+  const startIdx = currentPage * CELLS_PER_PAGE;
+  const endIdx = startIdx + CELLS_PER_PAGE;
+  const totalPages = Math.ceil(60 / CELLS_PER_PAGE);
+
+  const nextPage = () => {
+    if (currentPage < totalPages - 1) setCurrentPage(prev => prev + 1);
+  };
+
+  const prevPage = () => {
+    if (currentPage > 0) setCurrentPage(prev => prev - 1);
+  };
+
+  // Ensure weightOtherData exists with default fields
+  const ensureHeightOtherData = () => {
+    if (!formData.heightOtherData || !Array.isArray(formData.heightOtherData) || formData.heightOtherData.length === 0) {
+      return Array(60).fill().map(() => ({
+        "date the phm came": '',
+        "other dates": '',
+        "Family planning": '',
+      }));
+    }
+    return formData.heightOtherData;
+  };
+
+  // Get field names safely
+  const getHeightOtherDataFields = () => {
+    const safeHeightOtherData = ensureHeightOtherData();
+    return Object.keys(safeHeightOtherData[0] || {});
+  };
+
   return (
     <form onSubmit={handleSubmit}>
     <div className="w-full max-w-4xl mx-auto p-4 bg-gradient-to-br from-white to-blue-50 shadow-lg rounded-lg">
@@ -641,9 +704,92 @@ const HeightGainChart = () => {
           </ul>
         </div>
 
-        <Other/>
-
-        <div className="flex justify-center mt-6">
+        <div className="mt-6 p-4 bg-gradient-to-br from-white to-blue-50 border border-blue-200 rounded-lg shadow-md">
+  <h3 className={`text-xl font-semibold mb-4 flex items-center ${gender === 'girl' ? 'text-pink-600' : 'text-blue-600'}`}>
+    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+    </svg>
+    Additional Details
+  </h3>
+  
+  <div className="overflow-x-auto rounded-lg border border-blue-100">
+    <table className="w-full border-collapse bg-white">
+      <thead className="bg-blue-50">
+        <tr>
+          <th className="p-2 border border-blue-100 text-left font-semibold text-blue-700">Week</th>
+          {getHeightOtherDataFields().map(field => (
+            <th key={field} className="p-2 border border-blue-100 text-left font-semibold text-blue-700">{field}</th>
+          ))}
+        </tr>
+      </thead>
+      <tbody>
+        {ensureHeightOtherData().slice(startIdx, endIdx).map((rowData, rowIndex) => (
+          <tr key={startIdx + rowIndex} className={rowIndex % 2 === 0 ? 'bg-blue-50 bg-opacity-30' : 'bg-white'}>
+            <td className="p-2 border border-blue-100 font-medium text-blue-600">{startIdx + rowIndex + 1}</td>
+            {getHeightOtherDataFields().map(field => (
+              <td key={field} className="p-2 border border-blue-100">
+                {field === "date the phm came" || field === "other dates" ? (
+                  <input
+                    type="date"
+                    value={rowData[field] || ''}
+                    onChange={(e) => {
+                      handleHeightOtherDataChange(startIdx + rowIndex, field, e.target.value);
+                    }}
+                    className="w-full p-1 border border-blue-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-400 bg-blue-50 bg-opacity-50"
+                  />
+                ) : (
+                  <input
+                    type="text"
+                    value={rowData[field] || ''}
+                    onChange={(e) => {
+                      handleHeightOtherDataChange(startIdx + rowIndex, field, e.target.value);
+                    }}
+                    className="w-full p-1 border border-blue-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-400 bg-blue-50 bg-opacity-50"
+                  />
+                )}
+              </td>
+            ))}
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+  
+  {/* Pagination */}
+  <div className="flex justify-between items-center mt-4 px-2">
+    <button 
+      type="button"
+      onClick={prevPage}
+      disabled={currentPage === 0}
+      className={`flex items-center px-4 py-2 rounded-md transition duration-200 font-medium ${
+        currentPage === 0 
+          ? 'bg-blue-100 text-blue-300 cursor-not-allowed' 
+          : 'bg-blue-500 text-white hover:bg-blue-600'
+      }`}
+    >
+      <ChevronLeft size={16} className="mr-1" />
+      Previous
+    </button>
+    <span className="text-sm bg-blue-50 px-3 py-1 rounded-full text-blue-600 font-medium border border-blue-200">
+      Page {currentPage + 1} of {totalPages}
+    </span>
+    <button 
+      type="button"
+      onClick={nextPage}
+      disabled={currentPage >= totalPages - 1}
+      className={`flex items-center px-4 py-2 rounded-md transition duration-200 font-medium ${
+        currentPage >= totalPages - 1 
+          ? 'bg-blue-100 text-blue-300 cursor-not-allowed' 
+          : 'bg-blue-500 text-white hover:bg-blue-600'
+      }`}
+    >
+      Next
+      <ChevronRight size={16} className="ml-1" />
+    </button>
+  </div>
+</div>
+      
+<div className="flex justify-center mt-6">
   <button 
     type="submit" 
     className="px-6 py-3 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition duration-200 font-semibold text-lg"

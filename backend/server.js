@@ -110,15 +110,6 @@ const BabySchema = new mongoose.Schema({
         Other: String,
     }],
     clinicDays: [],
-    weightGainData: [{
-        gender: String,
-        measurements: [
-            {
-                x: Number,  // Week number
-                y: Number   // Weight gain in kg
-            }
-        ],
-    }],
     WeightGainData: [{
         gender: String,
         measurements: [
@@ -136,6 +127,16 @@ const BabySchema = new mongoose.Schema({
                 y: Number
             }
         ],
+    }],
+    heightOtherData: [{
+        "date the phm came": date,
+        "other dates": date,
+        "Family planning": String,
+    }],
+    weightOtherData: [{
+        "date the phm came": date,
+        "other dates": date,
+        "Family planning": String,
     }],
     immunizationRecords: {
         vaccineSchedule: [
