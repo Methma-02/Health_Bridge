@@ -9,7 +9,7 @@ import EmergencyTracker from './components/EmergencyAlert/EmergencyTracker';
 import HospitalChat from './components/EmergencyAlert/HospitalChat';
 
 const App = () => {
-  // In a real app, you'd get this from auth context or similar
+  
   const userId = 'user123'; // Replace with actual user ID
 
   useEffect(() => {
