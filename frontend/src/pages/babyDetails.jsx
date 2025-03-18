@@ -529,6 +529,8 @@ const BabyDetails = () => {
                                         <td key={colIndex} className="p-2">
                                             <input 
                                                 type="date" 
+                                                value={formData.clinicDays[rowIndex * 10 + colIndex] || ''}
+                                                onChange={(e) => handleClinicDayChange (rowIndex, colIndex, e.target.value)}
                                                 className="w-full p-2 text-sm border border-blue-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-blue-50"
                                             />
                                         </td>
