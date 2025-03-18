@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import dayjs from "dayjs";
-import "./App.css";
+import "./App.css"; // Import the CSS file
 
 const API_URL = "http://localhost:5000"; // Update this if backend URL changes
 
@@ -23,11 +23,11 @@ const SymptomTracker = () => {
       console.log("No token found, please log in.");
       return;
     }
-  
-    const response = await fetch("http://localhost:5000/symptoms", {
-      headers: { Authorization: token }
+
+    const response = await fetch(`${API_URL}/symptoms`, {
+      headers: { Authorization: token },
     });
-  
+
     const data = await response.json();
     console.log("Decrypted Symptoms:", data);
   };
@@ -41,7 +41,7 @@ const SymptomTracker = () => {
       date: selectedDate,
       symptom: newSymptom,
       time: timestamp,
-      intensity
+      intensity,
     };
 
     try {
@@ -55,16 +55,16 @@ const SymptomTracker = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(symptomData)
+        body: JSON.stringify(symptomData),
       });
 
       if (!response.ok) throw new Error("Failed to save symptom");
 
       setSymptoms((prev) => ({
         ...prev,
-        [selectedDate]: [...(prev[selectedDate] || []), symptomData]
+        [selectedDate]: [...(prev[selectedDate] || []), symptomData],
       }));
 
       setNewSymptom("");
@@ -90,7 +90,11 @@ const SymptomTracker = () => {
 
       {/* Calendar */}
       <div className="calendar-container">
-        <Calendar onChange={setDate} value={date} tileClassName={getTileClassName} />
+        <Calendar
+          onChange={setDate}
+          value={date}
+          tileClassName={getTileClassName}
+        />
       </div>
 
       {/* Symptoms List */}
