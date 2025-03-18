@@ -1,4 +1,4 @@
-// frontend/src/components/EmergencyAlert/FloatingWidget.jsx (continued)
+// frontend/src/components/EmergencyAlert/FloatingWidget.jsx 
 import React, { useState } from 'react';
 import { useEmergency } from '../context/EmergencyContext';
 import EmergencyForm from './EnergencyForm';
