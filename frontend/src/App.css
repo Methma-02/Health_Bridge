@@ -1,5 +1,4 @@
 /* Global Styles */
-/* Global Styles */
 :root {
   --primary-color: #4f46e5;
   --primary-dark: #4338ca;
@@ -35,142 +34,88 @@
 }
 
 body {
-  font-family: 'Arial', sans-serif;
-  background-color: var(--bg-light);
-  margin: 0;
-  padding: 0;
-  color: var(--text-color);
+  @apply font-sans bg-gray-50 text-gray-800 m-0 p-0;
 }
 
 .symptom-tracker-container {
-  max-width: 600px;
-  margin: 20px auto;
-  background-color: #fff;
-  padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px var(--shadow-light);
+  @apply max-w-2xl mx-auto my-5 bg-white p-6 rounded-lg shadow-md;
 }
 
 .header-text {
-  text-align: center;
-  color: var(--primary-color);
-  font-weight: 600;
-  margin-bottom: 20px;
+  @apply text-center text-indigo-600 font-semibold mb-5;
 }
 
 /* Calendar */
 .calendar-container {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 20px;
+  @apply flex justify-center mb-5;
 }
 
 .react-calendar__tile.highlighted-date {
-  background-color: var(--accent-color);
-  color: white;
-  border-radius: 50%;
-  font-weight: bold;
+  @apply bg-orange-500 text-white rounded-full font-bold;
 }
 
 .react-calendar__tile.highlighted-date:hover {
-  background-color: var(--primary-light);
+  @apply bg-indigo-300;
 }
 
 /* Symptoms List */
 .date-title {
-  font-size: 18px;
-  color: var(--primary-color);
-  font-weight: 500;
+  @apply text-lg text-indigo-600 font-medium;
 }
 
 .symptom-item {
-  padding: 10px;
-  border-radius: 8px;
-  margin-bottom: 10px;
-  font-size: 16px;
-  font-weight: bold;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  @apply p-2 rounded-lg mb-2 text-base font-bold transition-all duration-300 ease-in-out;
 }
 
 /* Hover Effect for Symptoms */
 .symptom-item:hover {
-  background-color: var(--shadow-light);
-  transform: scale(1.02);
-  cursor: pointer;
+  @apply bg-gray-100 scale-105 cursor-pointer;
 }
 
 /* Intensity Levels */
-.intensity-1 { background-color: #d4f7dc; } /* Light Green */
-.intensity-2 { background-color: #f7f7a7; } /* Yellow */
-.intensity-3 { background-color: #f7d6a7; } /* Orange */
-.intensity-4 { background-color: #f7a7a7; } /* Red */
-.intensity-5 { background-color: #f75a5a; color: white; } /* Dark Red */
+.intensity-1 { @apply bg-green-100; } /* Light Green */
+.intensity-2 { @apply bg-yellow-100; } /* Yellow */
+.intensity-3 { @apply bg-orange-100; } /* Orange */
+.intensity-4 { @apply bg-red-100; } /* Red */
+.intensity-5 { @apply bg-red-500 text-white; } /* Dark Red */
 
 /* Input Section */
 .input-section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 20px;
+  @apply flex flex-col items-center mt-5;
 }
 
 .input-field {
-  width: 90%;
-  padding: 10px;
-  border: 2px solid var(--shadow-medium);
-  border-radius: 8px;
-  font-size: 16px;
-  margin-bottom: 10px;
+  @apply w-11/12 p-2 border-2 border-gray-300 rounded-lg text-base mb-2;
 }
 
 /* Intensity Selector */
 .intensity-container {
-  width: 100%;
-  text-align: center;
-  margin-bottom: 10px;
+  @apply w-full text-center mb-2;
 }
 
 .intensity-label {
-  font-size: 16px;
-  color: var(--primary-color);
-  font-weight: bold;
-  display: block;
-  margin-bottom: 5px;
+  @apply text-base text-indigo-600 font-bold mb-1;
 }
 
 .intensity-slider {
-  width: 90%;
+  @apply w-11/12;
 }
 
 .intensity-levels {
-  display: flex;
-  justify-content: space-between;
-  font-size: 14px;
-  color: var(--text-light);
-  width: 90%;
+  @apply flex justify-between text-sm text-gray-500 w-11/12;
 }
 
 /* Add Button */
 .add-button {
-  background-color: var(--secondary-color);
-  color: white;
-  padding: 10px 20px;
-  font-size: 16px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  @apply bg-green-500 text-white px-5 py-2 text-base border-none rounded-lg cursor-pointer transition-all duration-300 ease-in-out;
 }
 
 /* Hover Effect for Add Button */
 .add-button:hover {
-  background-color: var(--secondary-dark);
-  transform: scale(1.05);
+  @apply bg-green-600 scale-105;
 }
 
 /* Disabled Add Button */
 .add-button:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
-  transform: none;
+  @apply bg-gray-400 cursor-not-allowed scale-100;
 }
