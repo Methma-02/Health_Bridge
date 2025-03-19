@@ -1,5 +1,5 @@
 import React from 'react';
-import { useForm2Context } from './contexts/Form2Context';
+import { useForm2Context } from '../../contexts/Form2Context';
 
 const ClinicForm = () => {
   const { formData, setFormData } = useForm2Context();
