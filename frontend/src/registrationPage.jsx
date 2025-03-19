@@ -195,7 +195,7 @@ const RegistrationPage = () => {
 
       if (response.token) {
         login(response.token);
-        navigate('/dashboard');
+        navigate('/homepage');
       } else {
         throw new Error('No token received from server');
       }
