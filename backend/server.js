@@ -590,7 +590,6 @@ app.post('/api/pregnancy-form1', async (req, res) => {
     try {
         console.log(req);
         const { registrationNumber } = req.body;
-        console.log("meka thama",registrationNumber);
 
         // Check if a record with the same registrationNumber exists
         const existingRecord = await PregnancyForm1Model.findOne({ registrationNumber });
