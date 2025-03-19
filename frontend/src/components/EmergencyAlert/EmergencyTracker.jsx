@@ -127,6 +127,21 @@ const EmergencyTracker = ({ emergency, onClose }) => {
     }
   };
 
+  const getStatusClass = () => {
+    switch (emergency.status) {
+      case 'pending':
+        return 'emergency-status-pending';
+      case 'accepted':
+        return 'emergency-status-accepted';
+      case 'canceled':
+        return 'emergency-status-canceled';
+      case 'completed':
+        return 'emergency-status-completed';
+      default:
+        return '';
+    }
+  };
+
   const getStatusText = () => {
     switch (emergency.status) {
       case 'pending':
@@ -142,59 +157,41 @@ const EmergencyTracker = ({ emergency, onClose }) => {
     }
   };
 
-  const getStatusColor = () => {
-    switch (emergency.status) {
-      case 'pending':
-        return 'bg-yellow-100 text-yellow-800';
-      case 'accepted':
-        return 'bg-green-100 text-green-800';
-      case 'canceled':
-        return 'bg-gray-100 text-gray-800';
-      case 'completed':
-        return 'bg-blue-100 text-blue-800';
-      default:
-        return 'bg-gray-100 text-gray-800';
-    }
-  };
-
   return (
-    <div>
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-lg font-bold text-red-600">Emergency Alert</h2>
-        <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+    <div className="emergency-tracker">
+      <div className="emergency-tracker-header">
+        <h2 className="emergency-tracker-title">Emergency Alert</h2>
+        <button onClick={onClose} className="emergency-form-close">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M6 18L18 6M6 6l12 12" />
           </svg>
         </button>
       </div>
       
-      <div className={`rounded-md p-3 mb-4 ${getStatusColor()}`}>
-        <p className="font-medium">{getStatusText()}</p>
-        <p className="text-sm mt-1">
+      <div className={`emergency-status ${getStatusClass()}`}>
+        <p className="emergency-status-text">{getStatusText()}</p>
+        <p className="emergency-status-time">
           {emergency.createdAt && `Created at ${new Date(emergency.createdAt).toLocaleTimeString()}`}
         </p>
       </div>
 
       {/* Map display */}
-      <div 
-        id="emergency-map" 
-        className="w-full h-48 bg-gray-200 rounded-md mb-4"
-      ></div>
+      <div id="emergency-map" className="emergency-map"></div>
       
       {emergency.status === 'accepted' && (
-        <div className="mb-4">
-          <h3 className="font-medium text-green-600 mb-2">Hospital Information</h3>
-          <div className="bg-gray-50 p-3 rounded-md">
-            <p className="font-medium">{emergency.acceptedBy?.name}</p>
-            <p className="text-sm text-gray-600">{emergency.acceptedBy?.address}</p>
+        <div className="emergency-hospital-info">
+          <h3 className="emergency-hospital-header">Hospital Information</h3>
+          <div className="emergency-hospital-card">
+            <p className="emergency-hospital-name">{emergency.acceptedBy?.name}</p>
+            <p className="emergency-hospital-address">{emergency.acceptedBy?.address}</p>
             
-            <div className="mt-3 flex justify-between">
+            <div className="emergency-hospital-actions">
               <button 
                 onClick={() => setShowChat(!showChat)} 
-                className="bg-blue-500 hover:bg-blue-600 text-white py-1 px-3 rounded-md text-sm flex items-center"
+                className="emergency-chat-button"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
                 </svg>
                 {showChat ? 'Hide Chat' : 'Chat with Hospital'}
               </button>
@@ -208,8 +205,8 @@ const EmergencyTracker = ({ emergency, onClose }) => {
       )}
 
       {error && (
-        <div className="bg-red-50 border-l-4 border-red-400 p-4 mb-4">
-          <p className="text-red-700">{error}</p>
+        <div className="emergency-alert-error">
+          <p className="emergency-alert-error-text">{error}</p>
         </div>
       )}
       
@@ -217,13 +214,13 @@ const EmergencyTracker = ({ emergency, onClose }) => {
         <button
           onClick={handleCancel}
           disabled={loading}
-          className="w-full bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-400 mt-4 disabled:opacity-50"
+          className="emergency-button-secondary"
         >
           {loading ? (
-            <span className="flex items-center justify-center">
-              <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-gray-700" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            <span className="emergency-button-loading">
+              <svg className="emergency-button-loading-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="10" />
+                <path d="M12 6v6l4 2" />
               </svg>
               Processing...
             </span>
