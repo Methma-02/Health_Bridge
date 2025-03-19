@@ -1,40 +1,36 @@
 /* Global Styles */
 :root {
-  --primary-color: #4f46e5;
-  --primary-dark: #4338ca;
-  --primary-light: #818cf8;
+  --primary-color: #260eff; /* Modern purple */
+  --primary-dark: #5a4fcf;
+  --primary-light: #8a7ffc;
   
-  --secondary-color: #10b981;
-  --secondary-dark: #059669;
-  --secondary-light: #34d399;
-  --secondary-bg: #eef2ff;
-
-  --accent-color: #f97316;
+  --secondary-color: #4ad7d1; /* Teal */
+  --secondary-dark: #3abcb6;
+  --secondary-light: #6ae0da;
+  --secondary-bg: #e6f9f8;
   
-  --text-color: #333;
-  --text-light: #666;
-  --text-dark: #111;
-  --text-light-mode: #f0f0f0;
-  --text-dark-mode: #d0d0d0;
+  --accent-color: #ff6b6b; /* Coral */
   
-  --bg-light: #f9f9f9;
+  --text-color: #2c3e50; /* Dark blue-gray */
+  --text-light: #7f8c8d; /* Light gray */
+  --text-dark: #1a1a1a; /* Almost black */
+  
+  --bg-light: #f5f7fa; /* Light gray-blue */
   --bg-dark: #121212;
   --bg-dark-alt: #1e1e1e;
   
-  --gradient-primary: linear-gradient(135deg, #4f46e5, #818cf8);
-  --gradient-secondary: linear-gradient(135deg, #10b981, #34d399);
+  --gradient-primary: linear-gradient(135deg, #0d0085, #8a7ffc);
+  --gradient-secondary: linear-gradient(135deg, #4ad7d1, #6ae0da);
   
   --shadow-light: rgba(0, 0, 0, 0.1);
   --shadow-medium: rgba(0, 0, 0, 0.15);
   --shadow-dark: rgba(0, 0, 0, 0.2);
-  --shadow-glow-primary: 0 0 20px rgba(79, 70, 229, 0.3);
-  --shadow-glow-secondary: 0 0 20px rgba(16, 185, 129, 0.3);
-  --shadow-transparent-white: rgba(255, 255, 255, 0.1);
-  --shadow-transparent-black: rgba(0, 0, 0, 0.1);
+  --shadow-glow-primary: 0 0 20px rgba(109, 93, 252, 0.3);
+  --shadow-glow-secondary: 0 0 20px rgba(74, 215, 209, 0.3);
 }
 
 body {
-  font-family: 'Arial', sans-serif;
+  font-family: 'Inter', sans-serif;
   background-color: var(--bg-light);
   margin: 0;
   padding: 0;
@@ -42,26 +38,41 @@ body {
 }
 
 .symptom-tracker-container {
-  max-width: 600px;
-  margin: 20px auto;
+  max-width: 800px;
+  margin: 40px auto;
   background-color: #fff;
-  padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px var(--shadow-light);
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px var(--shadow-light);
 }
 
 .header-text {
   text-align: center;
   color: var(--primary-color);
-  font-weight: 600;
-  margin-bottom: 20px;
+  font-weight: 700;
+  font-size: 28px;
+  margin-bottom: 30px;
+  letter-spacing: -0.5px;
 }
 
 /* Calendar */
 .calendar-container {
   display: flex;
   justify-content: center;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
+}
+
+.react-calendar {
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px var(--shadow-light);
+  overflow: hidden;
+}
+
+.react-calendar__tile--now {
+  background-color: var(--secondary-bg);
+  color: var(--primary-color);
+  font-weight: 600;
 }
 
 .react-calendar__tile.highlighted-date {
@@ -77,68 +88,113 @@ body {
 
 /* Symptoms List */
 .date-title {
-  font-size: 18px;
+  font-size: 20px;
   color: var(--primary-color);
-  font-weight: 500;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.symptom-items {
+  list-style: none;
+  padding: 0;
 }
 
 .symptom-item {
-  padding: 10px;
+  padding: 12px;
   border-radius: 8px;
   margin-bottom: 10px;
   font-size: 16px;
-  font-weight: bold;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--bg-light);
+  border: 1px solid var(--shadow-light);
 }
 
-/* Hover Effect for Symptoms */
 .symptom-item:hover {
-  background-color: var(--shadow-light);
-  transform: scale(1.02);
-  cursor: pointer;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px var(--shadow-light);
 }
 
 /* Intensity Levels */
-.intensity-1 { background-color: var(--secondary-light); } /* Light Teal */
-.intensity-2 { background-color: #f7f7a7; } /* Yellow */
-.intensity-3 { background-color: #f7d6a7; } /* Orange */
-.intensity-4 { background-color: #f7a7a7; } /* Red */
-.intensity-5 { background-color: #f75a5a; color: white; } /* Dark Red */
+.intensity-1 { background-color: var(--secondary-light); }
+.intensity-2 { background-color: #f7f7a7; }
+.intensity-3 { background-color: #f7d6a7; }
+.intensity-4 { background-color: #f7a7a7; }
+.intensity-5 { background-color: #f75a5a; color: white; }
 
 /* Input Section */
 .input-section {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 20px;
+  margin-top: 30px;
 }
 
 .input-field {
-  width: 90%;
-  padding: 10px;
+  width: 100%;
+  padding: 12px;
   border: 2px solid var(--shadow-medium);
   border-radius: 8px;
   font-size: 16px;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
+  transition: border-color 0.3s ease;
+}
+
+.input-field:focus {
+  border-color: var(--primary-color);
+  outline: none;
 }
 
 /* Intensity Selector */
 .intensity-container {
   width: 100%;
   text-align: center;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 }
 
 .intensity-label {
   font-size: 16px;
   color: var(--primary-color);
-  font-weight: bold;
+  font-weight: 600;
   display: block;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
 }
 
 .intensity-slider {
-  width: 90%;
+  width: 100%;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 8px;
+  background: var(--bg-light);
+  border-radius: 4px;
+  outline: none;
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+}
+
+.intensity-slider:hover {
+  opacity: 1;
+}
+
+.intensity-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  background: var(--primary-color);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.intensity-slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  background: var(--primary-color);
+  border-radius: 50%;
+  cursor: pointer;
 }
 
 .intensity-levels {
@@ -146,30 +202,67 @@ body {
   justify-content: space-between;
   font-size: 14px;
   color: var(--text-light);
-  width: 90%;
+  width: 100%;
+  margin-top: 5px;
 }
 
 /* Add Button */
 .add-button {
-  background-color: var(--secondary-color);
+  background: var(--gradient-primary);
   color: white;
-  padding: 10px 20px;
+  padding: 12px 24px;
   font-size: 16px;
+  font-weight: 600;
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  transition: all 0.3s ease;
+  width: 100%;
 }
 
-/* Hover Effect for Add Button */
 .add-button:hover {
-  background-color: var(--secondary-dark);
-  transform: scale(1.05);
+  background: var(--gradient-secondary);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px var(--shadow-glow-primary);
 }
 
-/* Disabled Add Button */
 .add-button:disabled {
-  background-color: #ccc;
+  background: #ccc;
   cursor: not-allowed;
   transform: none;
+  box-shadow: none;
+}
+
+/* All Symptoms List */
+.all-symptoms-container {
+  margin-top: 40px;
+}
+
+.all-symptoms-title {
+  font-size: 22px;
+  color: var(--primary-color);
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.all-symptoms-list {
+  list-style: none;
+  padding: 0;
+}
+
+.symptoms-group {
+  margin-bottom: 20px;
+}
+
+.symptoms-group-date {
+  font-size: 18px;
+  color: var(--primary-color);
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.no-symptoms-text {
+  color: var(--text-light);
+  text-align: center;
+  font-style: italic;
 }
