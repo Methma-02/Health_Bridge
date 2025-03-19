@@ -7,10 +7,12 @@ import { initializeOneSignal, setUserExternalId } from './components/services/no
 import EmergencyForm from './components/EmergencyAlert/EnergencyForm';
 import EmergencyTracker from './components/EmergencyAlert/EmergencyTracker';
 import HospitalChat from './components/EmergencyAlert/HospitalChat';
+//import { useAuth } from './components/context/AuthContext';
 
 const App = () => {
   
   const userId = 'user123'; // Replace with actual user ID
+  //const { user } = useAuth();
 
   useEffect(() => {
     // Initialize OneSignal when the app loads
@@ -27,9 +29,9 @@ const App = () => {
       <EmergencyProvider userId={userId}>
         <div className="App">
           <Routes>
-          <Route path="/emergency-form" element={<EmergencyForm />} />
-            <Route path="/emergency-tracker" element={<EmergencyTracker />} />
-            <Route path="/hospital-chat" element={<HospitalChat />} />
+            {/* Your existing routes */}
+            <Route path="/" element={<YourExistingComponents />} />
+            {/* Other routes */}
           </Routes>
           
           {/* Emergency Alert Widget - visible on all pages */}
