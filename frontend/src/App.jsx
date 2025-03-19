@@ -1,3 +1,40 @@
+// import React from 'react';
+// import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+// import MDashboard from './mainDash';
+// import Dashboard from './pages/dashboard';
+// import BabyDetails from './pages/babyDetails';
+// import WeightChart from './pages/WeightChart';
+// import HeightChart from './pages/HeightChart';
+// import Immunization from './pages/Immunization';
+// import SensoryScreening from './pages/sensoryScreening';
+// import DevelopmentMilestones from './pages/developmentMilestones';
+// import ChildHealthRecord from './pages/childHealthRecord';
+// import StudentHealthRecords from './pages/studentHealthRecords';
+// import Referral from './pages/referal';
+
+// const App = () => {
+//   return (
+//     <Router>
+//       <Routes>
+//         {/* Dashboard */}
+//         <Route path="/" element={<MDashboard />} />
+//         {/* Each page wrapped inside the Dashboard layout */}
+//         <Route path="/Babydetails" element={<Dashboard><BabyDetails /></Dashboard>} />
+//         <Route path="/Weightchart" element={<Dashboard><WeightChart /></Dashboard>} />
+//         <Route path="/heightchart" element={<Dashboard><HeightChart /></Dashboard>} />
+//         <Route path="/immunization" element={<Dashboard><Immunization /></Dashboard>} />
+//         <Route path="/sensoryscreening" element={<Dashboard><SensoryScreening /></Dashboard>} />
+//         <Route path="/developmentmilestones" element={<Dashboard><DevelopmentMilestones /></Dashboard>} />
+//         <Route path="/childhealthrecord" element={<Dashboard><ChildHealthRecord /></Dashboard>} />
+//         <Route path="/studenthealthrecords" element={<Dashboard><StudentHealthRecords /></Dashboard>} />
+//         <Route path="/referral" element={<Dashboard><Referral /></Dashboard>} />
+//       </Routes>
+//     </Router>
+//   );
+// };
+
+// export default App;
+
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import MDashboard from './mainDash';
@@ -16,18 +53,22 @@ const App = () => {
   return (
     <Router>
       <Routes>
-        {/* Dashboard */}
+        {/* Main Dashboard */}
         <Route path="/" element={<MDashboard />} />
-        {/* Each page wrapped inside the Dashboard layout */}
-        <Route path="/Babydetails" element={<Dashboard><BabyDetails /></Dashboard>} />
-        <Route path="/Weightchart" element={<Dashboard><WeightChart /></Dashboard>} />
-        <Route path="/heightchart" element={<Dashboard><HeightChart /></Dashboard>} />
-        <Route path="/immunization" element={<Dashboard><Immunization /></Dashboard>} />
-        <Route path="/sensoryscreening" element={<Dashboard><SensoryScreening /></Dashboard>} />
-        <Route path="/developmentmilestones" element={<Dashboard><DevelopmentMilestones /></Dashboard>} />
-        <Route path="/childhealthrecord" element={<Dashboard><ChildHealthRecord /></Dashboard>} />
-        <Route path="/studenthealthrecords" element={<Dashboard><StudentHealthRecords /></Dashboard>} />
-        <Route path="/referral" element={<Dashboard><Referral /></Dashboard>} />
+
+        {/* Sub Dashboard */}
+        <Route path="/dashboard" element={<Dashboard />}>
+          <Route index element={<BabyDetails />} />
+          <Route path="babyDetails" element={<BabyDetails />} />
+          <Route path="weightChart" element={<WeightChart />} />
+          <Route path="heightChart" element={<HeightChart />} />
+          <Route path="immunization" element={<Immunization />} />
+          <Route path="sensoryScreening" element={<SensoryScreening />} />
+          <Route path="developmentMilestones" element={<DevelopmentMilestones />} />
+          <Route path="childHealthRecord" element={<ChildHealthRecord />} />
+          <Route path="studentHealthRecords" element={<StudentHealthRecords />} />
+          <Route path="referral" element={<Referral />} />
+        </Route>
       </Routes>
     </Router>
   );
