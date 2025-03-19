@@ -1,6 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
 /* Global Styles */
 :root {
-  --primary-color: #260eff; /* Modern purple */
+  --primary-color: #6d5dfc; /* Modern purple */
   --primary-dark: #5a4fcf;
   --primary-light: #8a7ffc;
   
@@ -19,7 +21,7 @@
   --bg-dark: #121212;
   --bg-dark-alt: #1e1e1e;
   
-  --gradient-primary: linear-gradient(135deg, #0d0085, #8a7ffc);
+  --gradient-primary: linear-gradient(135deg, #6d5dfc, #8a7ffc);
   --gradient-secondary: linear-gradient(135deg, #4ad7d1, #6ae0da);
   
   --shadow-light: rgba(0, 0, 0, 0.1);
@@ -35,6 +37,7 @@ body {
   margin: 0;
   padding: 0;
   color: var(--text-color);
+  line-height: 1.6;
 }
 
 .symptom-tracker-container {
