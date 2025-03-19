@@ -129,13 +129,13 @@ const BabySchema = new mongoose.Schema({
         ],
     }],
     heightOtherData: [{
-        "date the phm came": date,
-        "other dates": date,
+        "date the phm came": Date,
+        "other dates": Date,
         "Family planning": String,
     }],
     weightOtherData: [{
-        "date the phm came": date,
-        "other dates": date,
+        "date the phm came": Date,
+        "other dates": Date,
         "Family planning": String,
     }],
     immunizationRecords: {

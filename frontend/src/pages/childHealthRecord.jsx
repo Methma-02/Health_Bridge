@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect } from "react"; //Import react hooks for managing state and lifecycle effects
 
 const ChildHealthRecords = () => {
     const ageStages = [
@@ -6,10 +6,11 @@ const ChildHealthRecords = () => {
         "18 months", "3 years", "4 years", "5 years"
     ];
 
+    //State to manage form data
     const [formData, setFormData] = useState({
-        regNo: '',
+        regNo: '', //stores the register number
         childHealthRecords: ageStages.map(age => ({
-            age: age, // Assign predefined ages
+            age: age, // Assign predefined ages for the columns
             clinicDate: '',
             head: '',
             disabilities: '',
@@ -29,11 +30,11 @@ const ChildHealthRecords = () => {
 
     // Load data when component mounts
     useEffect(() => {
-        // Check if there's a registration number in localStorage
+        // Check if there's a registration number in localStorage to persist data across sessions
         const savedRegNo = localStorage.getItem('childHealthRegNo');
         
         if (savedRegNo) {
-            // Set the regNo from localStorage
+            // Set the regNo from localStorage and update the form data
             setFormData(prev => ({
                 ...prev,
                 regNo: savedRegNo
@@ -42,18 +43,18 @@ const ChildHealthRecords = () => {
             // Fetch the data using the saved registration number
             fetchDataByRegistrationNumber(savedRegNo);
         }
-    }, []);  // Empty dependency array means this runs once on component mount
+    }, []);  // Empty dependency array means this runs only once on component mount
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
+        e.preventDefault(); //prevents default refresh behavior of submit
         
-        if (!formData.regNo) {
+        if (!formData.regNo) { //alert to get registration number
             alert('Please enter a registration number.');
             return;
         }
         
         try {
-            // First, fetch the existing record
+            //check if records exist for the registration number
             const fetchResponse = await fetch(
                 `http://localhost:5000/api/baby/${formData.regNo}`,
                 {
@@ -63,64 +64,66 @@ const ChildHealthRecords = () => {
                 }
             );
             
-            let existingData = {};
+            let existingData = {}; //placeholder for existing data
             if (fetchResponse.ok) {
-                existingData = await fetchResponse.json();
+                existingData = await fetchResponse.json(); //parse existing data if found
             }
             
-            // Merge the data
+            // Merge new data with existing data before sending to the server
             const response = await fetch('http://localhost:5000/api/baby', {
-                method: 'POST',
+                method: 'POST', //send data using HTTP POST 
                 headers: {
-                    'Content-Type': 'application/json',
-                    'x-user-role': 'physician', // Add this header to pass the middleware check
+                    'Content-Type': 'application/json', //specify the data type being sent
+                    'x-user-role': 'physician', 
                 },
                 body: JSON.stringify({
-                    ...existingData,
-                    regNo: formData.regNo,
-                    childHealthRecords: formData.childHealthRecords
+                    ...existingData, //retain existing data
+                    regNo: formData.regNo, //update the reg number
+                    childHealthRecords: formData.childHealthRecords //sends the updated data
                 }),
             });
             
-            if (!response.ok) {
+            if (!response.ok) { //if the response is not ok, extract the error message
                 const errorData = await response.json();
                 throw new Error(errorData.message || 'Failed to submit form');
             }
             
-            // Save registration number to localStorage after successful submission
+            // Save registration number to localStorage after successful submission for future retrieval
             localStorage.setItem('childHealthRegNo', formData.regNo);
             
-            const result = await response.json();
+            const result = await response.json(); //parse the response from the server
             console.log('Form submitted successfully:', result);
             alert('Form submitted successfully!');
         } catch (error) {
-            console.error('Error submitting form:', error);
+            console.error('Error submitting form:', error); 
             alert(`Failed to submit form: ${error.message}`);
         }
     };
 
-    // New handler for regNo
+    // New handler for regNo to update the reg number state when input changes
     const handleRegNoChange = (value) => {
         setFormData(prev => ({
-            ...prev,
+            ...prev, // reference the previous state
             regNo: value
         }));
     };
 
+    //handles to update record table
     const handleTableChange = (index, field, value) => {
         setFormData(prev => ({
             ...prev,
             childHealthRecords: prev.childHealthRecords.map((row, i) =>
-                i === index ? { ...row, [field]: value } : row
+                i === index ? { ...row, [field]: value } : row //update inly the modified row
             )
         }));
     };
 
+    // Generates table rows dynamically based on field names
     const createTableRow = (fieldName) => {
         return formData.childHealthRecords.map((row, idx) => (
             <td key={idx} className="p-2">
                 <input
-                    type={fieldName === "clinicDate" ? "date" : "text"}
+                    type={fieldName === "clinicDate" ? "date" : "text"} //use data input for clinicDate
                     value={row[fieldName] || ''}
                     onChange={(e) => handleTableChange(idx, fieldName, e.target.value)}
                     className={`w-25 h-6 p-1 text-sm border border-blue-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-blue-50 ${
