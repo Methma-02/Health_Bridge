@@ -1,3 +1,4 @@
+
 /* Global Styles & Variables */
 /* Global Styles & Variables */
 :root {
@@ -1104,3 +1105,13 @@ select:focus {
     background-color: var(--gray-200);
   }
 }
+
+
+@import "tailwindcss";
+
+body {
+    font-family: 'Inter', sans-serif;
+}
+
+
+

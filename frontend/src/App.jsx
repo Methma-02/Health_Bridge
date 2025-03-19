@@ -1,6 +1,10 @@
-// src/App.jsx
-import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React, { useState, useEffect, useContext } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider } from './authContext';
+import { GoogleOAuthProvider } from '@react-oauth/google';
+import { RecoveryContext, RecoveryProvider } from './RecoveryContext';
+import axios from 'axios';
+// Import components from donation center
 import Title from './components/Title';
 import Dashboard from './components/Dashboard';
 import TabNavigation from './components/TabNavigation';
@@ -13,12 +17,45 @@ import DonationForm from './components/DonationForm';
 import RequestDetails from './components/RequestDetails';
 import RegistrationModal from './components/RegistrationModal';
 import { isUserRegistered, saveUserRegistration, getUserRegistration } from './utils/userStorage';
-import axios from 'axios';
+
+// Import pages from test/dev
+import MDashboard from './mainDash';
+import Dashboard as MainDashboard from './pages/dashboard';
+import BabyDetails from './pages/babyDetails';
+import WeightChart from './pages/WeightChart';
+import HeightChart from './pages/HeightChart';
+import Immunization from './pages/Immunization';
+import SensoryScreening from './pages/sensoryScreening';
+import DevelopmentMilestones from './pages/developmentMilestones';
+import ChildHealthRecord from './pages/childHealthRecord';
+import StudentHealthRecords from './pages/studentHealthRecords';
+import Referral from './pages/referal';
+import LandingPage from './landingPage';
+import LoginPage from './loginPage';
+import RegistrationPage from './registrationPage';
+import ResetPasswordPage from './ResetPasswordPage';
+import ForgotPasswordPage from './ForgotPasswordPage';
+import OTPInput from './OTPInput';
+import Homepage from './Homepage';
 
 // API base URL
 const API_URL = 'http://localhost:3000/api';
 
-function App() {
+// Password Recovery Flow component
+function PasswordRecoveryFlow() {
+  const { page } = useContext(RecoveryContext);
+
+  return (
+    <>
+      {page === "forgotPassword" && <ForgotPasswordPage />}
+      {page === "otp" && <OTPInput />}
+      {page === "resetPassword" && <ResetPasswordPage />}
+    </>
+  );
+}
+
+// Donation Center component
+function DonationCenter() {
   // State management
   const [activeTab, setActiveTab] = useState('active');
   const [requests, setRequests] = useState([]);
@@ -319,60 +356,100 @@ Your donation has been recorded in your donation history.`);
 
   return (
     <div className="app-container">
-
-      <main className ="main-content">
-      <Title />
-      
-      {/* User registration status */}
-      {isRegistered && (
-        <div className="user-registration-status">
-          <p>Registered with number: {registrationNumber}</p>
-          <button onClick={handleLogout} className="logout-button">
-            Logout
-          </button>
-        </div>
-      )}
-      
-      <Dashboard stats={stats} />
-      
-      <div className="content-container">
-        <div className="content-header">
-          <TabNavigation activeTab={activeTab} setActiveTab={setActiveTab} />
-          {activeTab === 'myRequests' && isRegistered && (
-            <button 
-              className="new-request-button"
-              onClick={() => openModal('newRequest')}
-            >
-              New Request
+      <main className="main-content">
+        <Title />
+        
+        {/* User registration status */}
+        {isRegistered && (
+          <div className="user-registration-status">
+            <p>Registered with number: {registrationNumber}</p>
+            <button onClick={handleLogout} className="logout-button">
+              Logout
             </button>
-          )}
-          {!isRegistered && (
-            <button 
-              className="register-button"
-              onClick={() => openModal('registration')}
-            >
-              Register
-            </button>
-          )}
+          </div>
+        )}
+        
+        <Dashboard stats={stats} />
+        
+        <div className="content-container">
+          <div className="content-header">
+            <TabNavigation activeTab={activeTab} setActiveTab={setActiveTab} />
+            {activeTab === 'myRequests' && isRegistered && (
+              <button 
+                className="new-request-button"
+                onClick={() => openModal('newRequest')}
+              >
+                New Request
+              </button>
+            )}
+            {!isRegistered && (
+              <button 
+                className="register-button"
+                onClick={() => openModal('registration')}
+              >
+                Register
+              </button>
+            )}
+          </div>
+          
+          {renderContent()}
         </div>
         
-        {renderContent()}
-      </div>
-      
-      {/* First-time visitor registration modal */}
-      {!isRegistered && !modalOpen && (
-        <RegistrationModal onRegister={handleRegister} />
-      )}
-      
-      {/* Regular modal for other content */}
-      {modalOpen && (
-        <Modal onClose={closeModal}>
-          {renderModalContent()}
-        </Modal>
-      )}
-
+        {/* First-time visitor registration modal */}
+        {!isRegistered && !modalOpen && (
+          <RegistrationModal onRegister={handleRegister} />
+        )}
+        
+        {/* Regular modal for other content */}
+        {modalOpen && (
+          <Modal onClose={closeModal}>
+            {renderModalContent()}
+          </Modal>
+        )}
       </main>
     </div>
+  );
+}
+
+function App() {
+  return (
+    <AuthProvider>
+      <GoogleOAuthProvider clientId="995536188022-t1bci6di33lak0lfulniv7me90mj172t.apps.googleusercontent.com">
+        <RecoveryProvider>
+          <Router>
+            <Routes>
+              {/* Authentication Routes */}
+              <Route path="/" element={<LandingPage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/register" element={<RegistrationPage />} />
+              <Route path="/homepage" element={<Homepage />} />
+
+              {/* Password Recovery Routes */}
+              <Route path="/forgot-password" element={<PasswordRecoveryFlow />} />
+              <Route path="/otp" element={<Navigate to="/forgot-password" />} />
+              <Route path="/reset-password" element={<Navigate to="/forgot-password" />} />
+
+              {/* Main Dashboard */}
+              <Route path="/dashboard" element={<Dashboard />}>
+                <Route index element={<BabyDetails />} />
+                <Route path="babyDetails" element={<BabyDetails />} />
+                <Route path="weightChart" element={<WeightChart />} />
+                <Route path="heightChart" element={<HeightChart />} />
+                <Route path="immunization" element={<Immunization />} />
+                <Route path="sensoryScreening" element={<SensoryScreening />} />
+                <Route path="developmentMilestones" element={<DevelopmentMilestones />} />
+                <Route path="childHealthRecord" element={<ChildHealthRecord />} />
+                <Route path="studentHealthRecords" element={<StudentHealthRecords />} />
+                <Route path="referral" element={<Referral />} />
+              </Route>
+
+              {/* Donation Center Route */}
+              <Route path="/donation-center" element={<DonationCenter />} />
+            </Routes>
+          </Router>
+        </RecoveryProvider>
+      </GoogleOAuthProvider>
+    </AuthProvider>
   );
 }
 
