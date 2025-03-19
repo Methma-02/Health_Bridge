@@ -1,8 +1,9 @@
-// frontend/src/components/EmergencyAlert/FloatingWidget.jsx 
+// frontend/src/components/EmergencyAlert/FloatingWidget.jsx
 import React, { useState } from 'react';
 import { useEmergency } from '../context/EmergencyContext';
 import EmergencyForm from './EnergencyForm';
 import EmergencyTracker from './EmergencyTracker';
+import '../../emergency-alert-system.css';
 
 const FloatingWidget = ({ userId }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -13,12 +14,12 @@ const FloatingWidget = ({ userId }) => {
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-50">
+    <div className="emergency-widget">
       {isOpen && (
-        <div className="bg-white rounded-lg shadow-lg p-4 mb-4 w-[350px] max-h-[80vh] overflow-y-auto">
+        <div className="emergency-widget-content">
           {loading ? (
-            <div className="flex justify-center items-center h-32">
-              <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-red-500"></div>
+            <div className="emergency-loader-container">
+              <div className="emergency-loader"></div>
             </div>
           ) : (
             <>
@@ -33,19 +34,19 @@ const FloatingWidget = ({ userId }) => {
       )}
       <button
         onClick={toggleWidget}
-        className="bg-red-600 hover:bg-red-700 text-white rounded-full p-4 shadow-lg flex items-center justify-center"
+        className="emergency-widget-button"
       >
         {activeEmergency ? (
-          <span className="flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+          <span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M13 10V3L4 14h7v7l9-11h-7z" />
             </svg>
             Active Alert
           </span>
         ) : (
-          <span className="flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
+          <span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
             </svg>
             Emergency Help
           </span>
