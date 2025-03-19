@@ -3,27 +3,27 @@
   --primary-color: #4f46e5;
   --primary-dark: #4338ca;
   --primary-light: #818cf8;
-
+  
   --secondary-color: #10b981;
   --secondary-dark: #059669;
   --secondary-light: #34d399;
   --secondary-bg: #eef2ff;
 
   --accent-color: #f97316;
-
+  
   --text-color: #333;
   --text-light: #666;
   --text-dark: #111;
   --text-light-mode: #f0f0f0;
   --text-dark-mode: #d0d0d0;
-
+  
   --bg-light: #f9f9f9;
   --bg-dark: #121212;
   --bg-dark-alt: #1e1e1e;
-
+  
   --gradient-primary: linear-gradient(135deg, #4f46e5, #818cf8);
   --gradient-secondary: linear-gradient(135deg, #10b981, #34d399);
-
+  
   --shadow-light: rgba(0, 0, 0, 0.1);
   --shadow-medium: rgba(0, 0, 0, 0.15);
   --shadow-dark: rgba(0, 0, 0, 0.2);
@@ -99,7 +99,7 @@ body {
 }
 
 /* Intensity Levels */
-.intensity-1 { background-color: #d4f7dc; } /* Light Green */
+.intensity-1 { background-color: var(--secondary-light); } /* Light Teal */
 .intensity-2 { background-color: #f7f7a7; } /* Yellow */
 .intensity-3 { background-color: #f7d6a7; } /* Orange */
 .intensity-4 { background-color: #f7a7a7; } /* Red */

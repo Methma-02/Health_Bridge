@@ -8,52 +8,73 @@ const SymptomTracker = () => {
   const [date, setDate] = useState(new Date());
   const [symptoms, setSymptoms] = useState({});
   const [newSymptom, setNewSymptom] = useState("");
-  const [intensity, setIntensity] = useState(3); // Default intensity level
+  const [intensity, setIntensity] = useState(3);
+  const [token, setToken] = useState(localStorage.getItem("token") || ""); // Get JWT from localStorage
 
   const today = dayjs().format("YYYY-MM-DD");
   const selectedDate = dayjs(date).format("YYYY-MM-DD");
   const isFutureDate = dayjs(selectedDate).isAfter(today);
 
-  const handleAddSymptom = () => {
+  const handleAddSymptom = async () => {
     if (!newSymptom.trim() || isFutureDate) return;
+
     const timestamp = dayjs().format("HH:mm:ss");
 
-    setSymptoms((prev) => ({
-      ...prev,
-      [selectedDate]: [
-        ...(prev[selectedDate] || []),
-        { symptom: newSymptom, time: timestamp, intensity },
-      ],
-    }));
+    const newSymptomEntry = {
+      symptom: newSymptom,
+      time: timestamp,
+      intensity,
+    };
 
+    const updatedSymptoms = {
+      ...symptoms,
+      [selectedDate]: [...(symptoms[selectedDate] || []), newSymptomEntry],
+    };
+
+    setSymptoms(updatedSymptoms);
     setNewSymptom("");
     setIntensity(3);
-  };
 
-  const getTileClassName = ({ date, view }) => {
-    const dateKey = dayjs(date).format("YYYY-MM-DD");
-    return symptoms[dateKey] ? "highlighted-date" : "";
+    // Send Data to Backend
+    try {
+      const response = await fetch("http://localhost:5000/symptoms", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          date: selectedDate,
+          symptoms: updatedSymptoms[selectedDate],
+        }),
+      });
+
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.msg);
+      alert("✅ Symptom added successfully!");
+    } catch (error) {
+      console.error("Error adding symptom:", error);
+      alert("❌ Failed to add symptom.");
+    }
   };
 
   return (
     <div className="symptom-tracker-container">
       <h2 className="header-text">Pregnancy Symptom Tracker</h2>
 
-      {/* Calendar */}
       <div className="calendar-container">
         <Calendar
           onChange={setDate}
           value={date}
           className="calendar"
-          tileClassName={getTileClassName}
+          tileClassName={({ date }) =>
+            symptoms[dayjs(date).format("YYYY-MM-DD")] ? "highlighted-date" : ""
+          }
         />
       </div>
 
-      {/* Symptoms List */}
       <div className="symptoms-list">
-        <h3 className="date-title">
-          Symptoms on {dayjs(date).format("MMM D, YYYY")}
-        </h3>
+        <h3 className="date-title">Symptoms on {dayjs(date).format("MMM D, YYYY")}</h3>
         <ul className="symptom-items">
           {(symptoms[selectedDate] || []).map((entry, index) => (
             <li key={index} className={`symptom-item intensity-${entry.intensity}`}>
@@ -63,7 +84,6 @@ const SymptomTracker = () => {
         </ul>
       </div>
 
-      {/* Add Symptom Section */}
       <div className="input-section">
         <input
           type="text"
@@ -73,7 +93,6 @@ const SymptomTracker = () => {
           className="input-field"
         />
 
-        {/* Intensity Level Bar */}
         <div className="intensity-container">
           <label className="intensity-label">Intensity: {intensity}</label>
           <input
@@ -96,29 +115,6 @@ const SymptomTracker = () => {
         <button onClick={handleAddSymptom} className="add-button" disabled={isFutureDate}>
           {isFutureDate ? "Can't Add Future Symptoms" : "Add"}
         </button>
-      </div>
-
-      {/* All Symptoms List */}
-      <div className="all-symptoms-container">
-        <h3 className="all-symptoms-title">All Recorded Symptoms</h3>
-        <ul className="all-symptoms-list">
-          {Object.keys(symptoms).length === 0 ? (
-            <p className="no-symptoms-text">No symptoms recorded yet.</p>
-          ) : (
-            Object.entries(symptoms).map(([dateKey, symptomsArray]) => (
-              <li key={dateKey} className="symptoms-group">
-                <h4 className="symptoms-group-date">{dayjs(dateKey).format("MMM D, YYYY")}</h4>
-                <ul>
-                  {symptomsArray.map((entry, index) => (
-                    <li key={index} className={`symptom-item intensity-${entry.intensity}`}>
-                      {entry.time} - {entry.symptom} (Intensity: {entry.intensity}/5)
-                    </li>
-                  ))}
-                </ul>
-              </li>
-            ))
-          )}
-        </ul>
       </div>
     </div>
   );
