@@ -24,31 +24,33 @@ const HospitalChat = ({ emergencyId }) => {
   };
 
   return (
-    <div className="border rounded-md mb-4">
-      <div className="p-3 bg-gray-50 border-b">
-        <h3 className="font-medium">Hospital Communication</h3>
+    <div className="hospital-chat">
+      <div className="hospital-chat-header">
+        <h3 className="hospital-chat-title">Hospital Communication</h3>
       </div>
       
-      <div className="p-3 h-48 overflow-y-auto">
+      <div className="hospital-chat-messages">
         {messages.length === 0 ? (
-          <div className="flex justify-center items-center h-full text-gray-500">
+          <div className="hospital-chat-empty">
             <p>No messages yet</p>
           </div>
         ) : (
           messages.map((msg, index) => (
             <div 
               key={index} 
-              className={`mb-2 ${msg.sender === 'user' ? 'text-right' : 'text-left'}`}
+              className={`hospital-chat-message ${
+                msg.sender === 'user' ? 'hospital-chat-message-user' : 'hospital-chat-message-hospital'
+              }`}
             >
               <div 
-                className={`inline-block p-2 rounded-lg max-w-[80%] ${
+                className={`hospital-chat-bubble ${
                   msg.sender === 'user' 
-                    ? 'bg-blue-100 text-blue-800' 
-                    : 'bg-gray-100 text-gray-800'
+                    ? 'hospital-chat-bubble-user' 
+                    : 'hospital-chat-bubble-hospital'
                 }`}
               >
-                <p className="text-sm">{msg.message}</p>
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="hospital-chat-text">{msg.message}</p>
+                <p className="hospital-chat-time">
                   {new Date(msg.timestamp).toLocaleTimeString()}
                 </p>
               </div>
@@ -58,17 +60,17 @@ const HospitalChat = ({ emergencyId }) => {
         <div ref={messagesEndRef} />
       </div>
       
-      <form onSubmit={handleSendMessage} className="p-3 border-t flex">
+      <form onSubmit={handleSendMessage} className="hospital-chat-form">
         <input
           type="text"
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
           placeholder="Type your message..."
-          className="flex-1 border rounded-l-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
+          className="hospital-chat-input"
         />
         <button
           type="submit"
-          className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-r-md"
+          className="hospital-chat-submit"
         >
           Send
         </button>
