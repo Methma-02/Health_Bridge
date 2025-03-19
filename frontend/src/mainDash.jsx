@@ -38,6 +38,7 @@ const MDashboard = () => {
         {isRootRoute ? (
           // Show the cards grid only on the root route
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-4">
+            <SquareCard icon="🤱" title="Baby Details" route="babyDetails" />
             <SquareCard icon="📊" title="Weight Charts" route="weightchart" />
             <SquareCard icon="📏" title="Height Charts" route="heightchart" />
             <SquareCard icon="💉" title="Vaccinations" route="immunization" />

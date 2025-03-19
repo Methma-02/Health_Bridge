@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import MDashboard from './mainDash';
 import Dashboard from './pages/dashboard';
+import BabyDetails from './pages/babyDetails';
 import WeightChart from './pages/WeightChart';
 import HeightChart from './pages/HeightChart';
 import Immunization from './pages/Immunization';
@@ -17,8 +18,8 @@ const App = () => {
       <Routes>
         {/* Dashboard */}
         <Route path="/" element={<MDashboard />} />
-
         {/* Each page wrapped inside the Dashboard layout */}
+        <Route path="/Babydetails" element={<Dashboard><BabyDetails /></Dashboard>} />
         <Route path="/Weightchart" element={<Dashboard><WeightChart /></Dashboard>} />
         <Route path="/heightchart" element={<Dashboard><HeightChart /></Dashboard>} />
         <Route path="/immunization" element={<Dashboard><Immunization /></Dashboard>} />
