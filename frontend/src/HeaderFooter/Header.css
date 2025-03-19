@@ -1,0 +1,103 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+/* Header Styles */
+/* Header Styles */
+.health-bridge-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1rem;
+  background-color: rgba(255, 255, 255, 0.8); /* Translucent white background */
+  backdrop-filter: blur(5px); /* Adds a blur effect to content behind the header */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: fixed; /* Makes the header fixed */
+  top: 0; /* Positions it at the top */
+  left: 0; /* Aligns it to the left edge */
+  right: 0; /* Extends it to the right edge */
+  z-index: 1000; /* Ensures the header appears above other content */
+  height: 100px;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.logo-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+}
+
+.logo-image {
+  height: 5.2rem;
+  width: 5rem;
+}
+
+.logo-text {
+  font-size:2.5rem;
+  font-weight: 700;
+  color: black;
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.nav-links {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: black;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+  color: #fce7f3;
+}
+
+.emergency-link {
+  color: #FF0000 !important;
+  font-weight: bold;
+}
+
+.profile-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+  }
+
+  .nav-links {
+    display: none;
+  }
+
+  .navbar.open .nav-links {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .menu-toggle {
+    display: block;
+  }
+}
