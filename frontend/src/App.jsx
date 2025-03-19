@@ -4,6 +4,7 @@ import { AuthProvider } from './authContext';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { RecoveryContext, RecoveryProvider } from './RecoveryContext';
 import axios from 'axios';
+
 // Import components from donation center
 import Title from './components/Title';
 import Dashboard from './components/Dashboard';
@@ -20,7 +21,7 @@ import { isUserRegistered, saveUserRegistration, getUserRegistration } from './u
 
 // Import pages from test/dev
 import MDashboard from './mainDash';
-import  MainDashboard from './pages/dashboard';
+import MainDashboard from './pages/dashboard';
 import BabyDetails from './pages/babyDetails';
 import WeightChart from './pages/WeightChart';
 import HeightChart from './pages/HeightChart';
@@ -72,7 +73,7 @@ function DonationCenter() {
     mothersHelped: 0,
     itemsNeeded: 0
   });
-  
+
   // Load all requests and stats
   useEffect(() => {
     const fetchRequests = async () => {
@@ -83,7 +84,7 @@ function DonationCenter() {
         console.error('Error fetching requests:', error);
       }
     };
-    
+
     const fetchStats = async () => {
       try {
         const response = await axios.get(`${API_URL}/stats`);
@@ -92,11 +93,11 @@ function DonationCenter() {
         console.error('Error fetching stats:', error);
       }
     };
-    
+
     fetchRequests();
     fetchStats();
   }, []);
-  
+
   // Load user data when registered
   useEffect(() => {
     if (isRegistered && registrationNumber) {
@@ -117,7 +118,7 @@ function DonationCenter() {
           console.error('Error fetching user donations:', error);
         }
       };
-      
+
       fetchUserRequests();
       fetchUserDonations();
     }
@@ -162,17 +163,17 @@ function DonationCenter() {
         status: 'Active',
         registrationNumber: registrationNumber
       };
-      
+
       const response = await axios.post(`${API_URL}/requests`, requestToCreate);
       const createdRequest = response.data;
-      
+
       setUserRequests([createdRequest, ...userRequests]);
       setRequests([createdRequest, ...requests]);
-      
+
       // Refresh stats
       const statsResponse = await axios.get(`${API_URL}/stats`);
       setStats(statsResponse.data);
-      
+
       closeModal();
       alert('Your request has been created successfully!');
     } catch (error) {
@@ -187,7 +188,7 @@ function DonationCenter() {
       alert("Please register with your registration number before making a donation.");
       return;
     }
-    
+
     try {
       // Create donation
       const donationToCreate = {
@@ -204,28 +205,28 @@ function DonationCenter() {
         donorPhone: donationData.donorPhone,
         registrationNumber: registrationNumber
       };
-      
+
       const response = await axios.post(`${API_URL}/donations`, donationToCreate);
       const createdDonation = response.data;
-      
+
       // Refresh requests to get updated donation count
       const requestsResponse = await axios.get(`${API_URL}/requests`);
       setRequests(requestsResponse.data);
-      
+
       // Refresh user requests
       const userRequestsResponse = await axios.get(`${API_URL}/requests/user/${registrationNumber}`);
       setUserRequests(userRequestsResponse.data);
-      
+
       // Refresh user donations
       const userDonationsResponse = await axios.get(`${API_URL}/donations/user/${registrationNumber}`);
       setUserDonations(userDonationsResponse.data);
-      
+
       // Refresh stats
       const statsResponse = await axios.get(`${API_URL}/stats`);
       setStats(statsResponse.data);
-      
+
       closeModal();
-      
+
       // Show confirmation with requester contact info
       alert(`Thank you for your donation! 
 
@@ -245,19 +246,19 @@ Your donation has been recorded in your donation history.`);
   const completeRequest = async (requestId) => {
     try {
       await axios.patch(`${API_URL}/requests/${requestId}/status`, { status: 'Fulfilled' });
-      
+
       // Refresh requests
       const requestsResponse = await axios.get(`${API_URL}/requests`);
       setRequests(requestsResponse.data);
-      
+
       // Refresh user requests
       const userRequestsResponse = await axios.get(`${API_URL}/requests/user/${registrationNumber}`);
       setUserRequests(userRequestsResponse.data);
-      
+
       // Refresh stats
       const statsResponse = await axios.get(`${API_URL}/stats`);
       setStats(statsResponse.data);
-      
+
       alert('Request marked as complete!');
     } catch (error) {
       console.error('Error completing request:', error);
@@ -270,15 +271,15 @@ Your donation has been recorded in your donation history.`);
     try {
       const response = await axios.patch(`${API_URL}/requests/${requestId}`, updatedData);
       const updatedRequest = response.data;
-      
+
       // Refresh requests
       const requestsResponse = await axios.get(`${API_URL}/requests`);
       setRequests(requestsResponse.data);
-      
+
       // Refresh user requests
       const userRequestsResponse = await axios.get(`${API_URL}/requests/user/${registrationNumber}`);
       setUserRequests(userRequestsResponse.data);
-      
+
       closeModal();
       alert('Request updated successfully!');
     } catch (error) {
@@ -291,15 +292,15 @@ Your donation has been recorded in your donation history.`);
   const renderContent = () => {
     switch (activeTab) {
       case 'active':
-        return <RequestList 
-                 requests={requests} 
-                 onViewDetails={(request) => openModal('requestDetails', request)}
-                 onDonate={(request) => openModal('donate', request)}
-               />;
+        return <RequestList
+          requests={requests}
+          onViewDetails={(request) => openModal('requestDetails', request)}
+          onDonate={(request) => openModal('donate', request)}
+        />;
       case 'myRequests':
         return isRegistered ? (
-          <MyRequests 
-            requests={userRequests} 
+          <MyRequests
+            requests={userRequests}
             onEdit={(request) => openModal('editRequest', request)}
             onComplete={completeRequest}
           />
@@ -331,24 +332,24 @@ Your donation has been recorded in your donation history.`);
       case 'newRequest':
         return <NewRequestForm onSubmit={handleCreateRequest} onCancel={closeModal} />;
       case 'donate':
-        return <DonationForm 
-                 request={selectedRequest} 
-                 onSubmit={handleDonate} 
-                 onCancel={closeModal} 
-               />;
+        return <DonationForm
+          request={selectedRequest}
+          onSubmit={handleDonate}
+          onCancel={closeModal}
+        />;
       case 'requestDetails':
-        return <RequestDetails 
-                 request={selectedRequest} 
-                 onDonate={() => setModalContent('donate')}
-                 onClose={closeModal}
-               />;
+        return <RequestDetails
+          request={selectedRequest}
+          onDonate={() => setModalContent('donate')}
+          onClose={closeModal}
+        />;
       case 'editRequest':
-        return <NewRequestForm 
-                 request={selectedRequest} 
-                 isEditing={true}
-                 onSubmit={(data) => editRequest(selectedRequest._id, data)} 
-                 onCancel={closeModal} 
-               />;
+        return <NewRequestForm
+          request={selectedRequest}
+          isEditing={true}
+          onSubmit={(data) => editRequest(selectedRequest._id, data)}
+          onCancel={closeModal}
+        />;
       default:
         return null;
     }
@@ -358,7 +359,7 @@ Your donation has been recorded in your donation history.`);
     <div className="app-container">
       <main className="main-content">
         <Title />
-        
+
         {/* User registration status */}
         {isRegistered && (
           <div className="user-registration-status">
@@ -368,14 +369,14 @@ Your donation has been recorded in your donation history.`);
             </button>
           </div>
         )}
-        
+
         <Dashboard stats={stats} />
-        
+
         <div className="content-container">
           <div className="content-header">
             <TabNavigation activeTab={activeTab} setActiveTab={setActiveTab} />
             {activeTab === 'myRequests' && isRegistered && (
-              <button 
+              <button
                 className="new-request-button"
                 onClick={() => openModal('newRequest')}
               >
@@ -383,7 +384,7 @@ Your donation has been recorded in your donation history.`);
               </button>
             )}
             {!isRegistered && (
-              <button 
+              <button
                 className="register-button"
                 onClick={() => openModal('registration')}
               >
@@ -391,15 +392,15 @@ Your donation has been recorded in your donation history.`);
               </button>
             )}
           </div>
-          
+
           {renderContent()}
         </div>
-        
+
         {/* First-time visitor registration modal */}
         {!isRegistered && !modalOpen && (
           <RegistrationModal onRegister={handleRegister} />
         )}
-        
+
         {/* Regular modal for other content */}
         {modalOpen && (
           <Modal onClose={closeModal}>
@@ -430,7 +431,7 @@ function App() {
               <Route path="/reset-password" element={<Navigate to="/forgot-password" />} />
 
               {/* Main Dashboard */}
-              <Route path="/dashboard" element={<Dashboard />}>
+              <Route path="/dashboard" element={<MainDashboard />}>
                 <Route index element={<BabyDetails />} />
                 <Route path="babyDetails" element={<BabyDetails />} />
                 <Route path="weightChart" element={<WeightChart />} />
