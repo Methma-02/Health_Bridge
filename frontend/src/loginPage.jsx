@@ -115,7 +115,7 @@ const LoginPage = () => {
       setIsLoading(true);
       const { token } = await api.googleLogin(credentialResponse.credential);
       login(token);
-      navigate('/dashboard');
+      navigate('/homepage');
     } catch (error) {
       setErrors(prev => ({
         ...prev,
@@ -153,7 +153,7 @@ const LoginPage = () => {
       // API call to login
       const { token } = await api.login(loginData);
       login(token);
-      navigate('/dashboard');
+      navigate('/homepage');
     } catch (error) {
       setErrors(prev => ({
         ...prev,
