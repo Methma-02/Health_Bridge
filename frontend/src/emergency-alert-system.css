@@ -1,0 +1,502 @@
+/* emergency-alert-system.css */
+
+/* Base styles */
+:root {
+    --primary-red: #dc2626;
+    --primary-red-dark: #b91c1c;
+    --primary-red-light: #fee2e2;
+    --primary-blue: #3b82f6;
+    --primary-blue-dark: #2563eb;
+    --primary-blue-light: #dbeafe;
+    --primary-green: #10b981;
+    --primary-green-dark: #059669;
+    --primary-green-light: #d1fae5;
+    --primary-yellow: #f59e0b;
+    --primary-yellow-dark: #d97706;
+    --primary-yellow-light: #fef3c7;
+    --neutral-50: #f9fafb;
+    --neutral-100: #f3f4f6;
+    --neutral-200: #e5e7eb;
+    --neutral-300: #d1d5db;
+    --neutral-400: #9ca3af;
+    --neutral-500: #6b7280;
+    --neutral-600: #4b5563;
+    --neutral-700: #374151;
+    --neutral-800: #1f2937;
+    --neutral-900: #111827;
+  }
+  
+  /* Floating Widget */
+  .emergency-widget {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 1000;
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+  
+  .emergency-widget-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--primary-red);
+    color: white;
+    border: none;
+    border-radius: 9999px;
+    padding: 1rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    transition: all 0.2s ease;
+  }
+  
+  .emergency-widget-button:hover {
+    background-color: var(--primary-red-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  }
+  
+  .emergency-widget-button:active {
+    transform: translateY(0);
+  }
+  
+  .emergency-widget-button svg {
+    margin-right: 0.5rem;
+  }
+  
+  .emergency-widget-content {
+    position: absolute;
+    bottom: 5rem;
+    right: 0;
+    width: 350px;
+    max-height: 80vh;
+    background-color: white;
+    border-radius: 0.75rem;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    overflow-y: auto;
+    transform-origin: bottom right;
+    animation: slideIn 0.3s ease forwards;
+  }
+  
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px) scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+  
+  /* Emergency Form */
+  .emergency-form {
+    padding: 1.5rem;
+  }
+  
+  .emergency-form-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  
+  .emergency-form-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--primary-red);
+  }
+  
+  .emergency-form-close {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--neutral-500);
+    transition: color 0.2s ease;
+  }
+  
+  .emergency-form-close:hover {
+    color: var(--neutral-700);
+  }
+  
+  .emergency-form-description {
+    color: var(--neutral-700);
+    margin-bottom: 1rem;
+    line-height: 1.5;
+  }
+  
+  .emergency-button-primary {
+    width: 100%;
+    background-color: var(--primary-red);
+    color: white;
+    border: none;
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  .emergency-button-primary:hover {
+    background-color: var(--primary-red-dark);
+  }
+  
+  .emergency-button-secondary {
+    background-color: var(--neutral-200);
+    color: var(--neutral-800);
+    border: none;
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  .emergency-button-secondary:hover {
+    background-color: var(--neutral-300);
+  }
+  
+  .emergency-buttons-container {
+    display: flex;
+    gap: 0.5rem;
+  }
+  
+  .emergency-button-flex {
+    flex: 1;
+  }
+  
+  .emergency-alert-warning {
+    background-color: var(--primary-yellow-light);
+    border-left: 4px solid var(--primary-yellow);
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 0.25rem;
+  }
+  
+  .emergency-alert-warning-text {
+    color: var(--primary-yellow-dark);
+    line-height: 1.5;
+  }
+  
+  .emergency-alert-error {
+    background-color: var(--primary-red-light);
+    border-left: 4px solid var(--primary-red);
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 0.25rem;
+  }
+  
+  .emergency-alert-error-text {
+    color: var(--primary-red-dark);
+    line-height: 1.5;
+  }
+  
+  .emergency-form-group {
+    margin-bottom: 1rem;
+  }
+  
+  .emergency-form-label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--neutral-700);
+    margin-bottom: 0.25rem;
+  }
+  
+  .emergency-form-textarea {
+    width: 100%;
+    border: 1px solid var(--neutral-300);
+    border-radius: 0.375rem;
+    padding: 0.75rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    resize: vertical;
+    transition: border-color 0.2s ease;
+    color: var(--neutral-800);
+  }
+  
+  .emergency-form-textarea:focus {
+    outline: none;
+    border-color: var(--primary-red);
+    box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.1);
+  }
+  
+  .emergency-form-textarea::placeholder {
+    color: var(--neutral-400);
+  }
+  
+  /* Emergency Tracker */
+  .emergency-tracker {
+    padding: 1.5rem;
+  }
+  
+  .emergency-tracker-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  
+  .emergency-tracker-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--primary-red);
+  }
+  
+  .emergency-status {
+    padding: 0.75rem;
+    border-radius: 0.375rem;
+    margin-bottom: 1rem;
+  }
+  
+  .emergency-status-pending {
+    background-color: var(--primary-yellow-light);
+    color: var(--primary-yellow-dark);
+  }
+  
+  .emergency-status-accepted {
+    background-color: var(--primary-green-light);
+    color: var(--primary-green-dark);
+  }
+  
+  .emergency-status-canceled {
+    background-color: var(--neutral-100);
+    color: var(--neutral-700);
+  }
+  
+  .emergency-status-completed {
+    background-color: var(--primary-blue-light);
+    color: var(--primary-blue-dark);
+  }
+  
+  .emergency-status-text {
+    font-weight: 500;
+  }
+  
+  .emergency-status-time {
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+  }
+  
+  .emergency-map {
+    width: 100%;
+    height: 200px;
+    background-color: var(--neutral-200);
+    border-radius: 0.375rem;
+    margin-bottom: 1rem;
+    overflow: hidden;
+  }
+  
+  .emergency-hospital-info {
+    margin-bottom: 1rem;
+  }
+  
+  .emergency-hospital-header {
+    font-weight: 500;
+    color: var(--primary-green);
+    margin-bottom: 0.5rem;
+  }
+  
+  .emergency-hospital-card {
+    background-color: var(--neutral-50);
+    padding: 0.75rem;
+    border-radius: 0.375rem;
+  }
+  
+  .emergency-hospital-name {
+    font-weight: 500;
+  }
+  
+  .emergency-hospital-address {
+    font-size: 0.875rem;
+    color: var(--neutral-600);
+  }
+  
+  .emergency-hospital-actions {
+    margin-top: 0.75rem;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .emergency-chat-button {
+    background-color: var(--primary-blue);
+    color: white;
+    border: none;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  .emergency-chat-button:hover {
+    background-color: var(--primary-blue-dark);
+  }
+  
+  .emergency-chat-button svg {
+    margin-right: 0.25rem;
+    height: 1rem;
+    width: 1rem;
+  }
+  
+  /* Hospital Chat */
+  .hospital-chat {
+    border: 1px solid var(--neutral-200);
+    border-radius: 0.375rem;
+    margin-bottom: 1rem;
+    overflow: hidden;
+  }
+  
+  .hospital-chat-header {
+    padding: 0.75rem;
+    background-color: var(--neutral-50);
+    border-bottom: 1px solid var(--neutral-200);
+  }
+  
+  .hospital-chat-title {
+    font-weight: 500;
+  }
+  
+  .hospital-chat-messages {
+    padding: 0.75rem;
+    height: 200px;
+    overflow-y: auto;
+  }
+  
+  .hospital-chat-empty {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    color: var(--neutral-500);
+  }
+  
+  .hospital-chat-message {
+    margin-bottom: 0.5rem;
+  }
+  
+  .hospital-chat-message-user {
+    text-align: right;
+  }
+  
+  .hospital-chat-message-hospital {
+    text-align: left;
+  }
+  
+  .hospital-chat-bubble {
+    display: inline-block;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    max-width: 80%;
+  }
+  
+  .hospital-chat-bubble-user {
+    background-color: var(--primary-blue-light);
+    color: var(--primary-blue-dark);
+  }
+  
+  .hospital-chat-bubble-hospital {
+    background-color: var(--neutral-100);
+    color: var(--neutral-800);
+  }
+  
+  .hospital-chat-text {
+    font-size: 0.875rem;
+  }
+  
+  .hospital-chat-time {
+    font-size: 0.75rem;
+    color: var(--neutral-500);
+    margin-top: 0.25rem;
+  }
+  
+  .hospital-chat-form {
+    display: flex;
+    padding: 0.75rem;
+    border-top: 1px solid var(--neutral-200);
+  }
+  
+  .hospital-chat-input {
+    flex: 1;
+    border: 1px solid var(--neutral-300);
+    border-right: none;
+    border-top-left-radius: 0.375rem;
+    border-bottom-left-radius: 0.375rem;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+    transition: border-color 0.2s ease;
+  }
+  
+  .hospital-chat-input:focus {
+    outline: none;
+    border-color: var(--primary-blue);
+  }
+  
+  .hospital-chat-submit {
+    background-color: var(--primary-blue);
+    color: white;
+    border: none;
+    border-top-right-radius: 0.375rem;
+    border-bottom-right-radius: 0.375rem;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  .hospital-chat-submit:hover {
+    background-color: var(--primary-blue-dark);
+  }
+  
+  /* Loader */
+  .emergency-loader-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 8rem;
+  }
+  
+  .emergency-loader {
+    border-radius: 50%;
+    width: 2.5rem;
+    height: 2.5rem;
+    border: 0.25rem solid var(--neutral-200);
+    border-top-color: var(--primary-red);
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
+  .emergency-button-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .emergency-button-loading-icon {
+    animation: spin 1s linear infinite;
+    margin-right: 0.5rem;
+    height: 1rem;
+    width: 1rem;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 640px) {
+    .emergency-widget-content {
+      width: 100%;
+      max-width: calc(100vw - 2rem);
+      right: -1rem;
+    }
+    
+    .emergency-widget-button {
+      padding: 0.75rem 1rem;
+    }
+  }
