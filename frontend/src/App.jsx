@@ -20,7 +20,7 @@ import { isUserRegistered, saveUserRegistration, getUserRegistration } from './u
 
 // Import pages from test/dev
 import MDashboard from './mainDash';
-import Dashboard as MainDashboard from './pages/dashboard';
+import  MainDashboard from './pages/dashboard';
 import BabyDetails from './pages/babyDetails';
 import WeightChart from './pages/WeightChart';
 import HeightChart from './pages/HeightChart';
