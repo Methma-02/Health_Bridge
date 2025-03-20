@@ -101,6 +101,7 @@ function Pregnancy() {
             if (response.ok) {
                 const data = await response.json();
                 setFormData(data); // Populate form with fetched data
+                alert('Data fetched successfully!');
             } else {
                 alert('Record not found. Please fill out the form.');
             }
@@ -212,14 +213,33 @@ function Pregnancy() {
                         </svg>
                         Registration Details
                     </h2>
-                    {renderInputFields(registrationFields)}
+
+                    {/* Render the Registration No. field */}
+                    <div key="regNo" className="mb-4">
+                        <label htmlFor="regNo" className="block text-sm font-medium text-blue-700 mb-1">
+                            Registration No.:
+                        </label>
+                        <input
+                            type="text"
+                            id="regNo"
+                            name="regNo"
+                            value={formData.regNo}
+                            onChange={handleChange}
+                            className="w-full p-2 text-sm border border-blue-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-blue-50"
+                        />
+                    </div>
+
+                    {/* Place the "Get Info" button here */}
                     <button
                         type="button"
                         onClick={handleGetInfo}
-                        className="px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-medium rounded-lg shadow-lg hover:from-blue-600 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all transform hover:scale-105"
+                        className="px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-medium rounded-lg shadow-lg hover:from-blue-600 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all transform hover:scale-105 mb-4"
                     >
                         Get Info
                     </button>
+
+                    {/* Render the rest of the registration fields */}
+                    {renderInputFields(registrationFields.filter(field => field.id !== 'regNo'))}
                 </div>
 
                 {/* Render Personal Info Fields */}
