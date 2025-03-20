@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from './authContext';
 import * as api from './api';
 
+
 const RegistrationPage = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
