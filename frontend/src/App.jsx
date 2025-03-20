@@ -4,7 +4,7 @@ import { AuthProvider } from './authContext';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { RecoveryContext, RecoveryProvider } from './RecoveryContext';
 import axios from 'axios';
-
+import './index.css'; 
 // Import components from donation center
 import Title from './components/Title';
 import Dashboard from './components/Dashboard';
