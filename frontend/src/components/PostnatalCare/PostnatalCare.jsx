@@ -122,6 +122,7 @@ const PostnatalCare = () => {
               }
             />
           </div>
+          
           <div>
             <label className="block text-sm font-medium text-blue-700">Gender</label>
             <div className="flex items-center space-x-4">
@@ -130,6 +131,7 @@ const PostnatalCare = () => {
                   type="radio"
                   name="gender"
                   value="Female"
+                  checked={formData.gender === "Female"}
                   onChange={(e) => handleInputChange("gender", e.target.value)}
                   className="h-5 w-5 text-blue-600 focus:ring-blue-500 border-blue-300 rounded"
                 />
@@ -140,69 +142,66 @@ const PostnatalCare = () => {
                   type="radio"
                   name="gender"
                   value="Male"
+                  checked={formData.gender === "Male"}
                   onChange={(e) => handleInputChange("gender", e.target.value)}
                   className="h-5 w-5 text-blue-600 focus:ring-blue-500 border-blue-300 rounded"
                 />
                 <span className="ml-2 text-sm text-blue-700">Male</span>
               </label>
-            </div>
-          </div>
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-blue-700">Mode of Delivery</label>
-          <div className="flex items-center space-x-4">
-            <label className="flex items-center">
-              <input
-                type="radio"
-                name="modeOfDelivery"
-                value="VD"
-                onChange={(e) =>
-                  handleInputChange("modeOfDelivery", e.target.value)
-                }
-                className="h-5 w-5 text-blue-600 focus:ring-blue-500 border-blue-300 rounded"
-              />
-              <span className="ml-2 text-sm text-blue-700">VD</span>
-            </label>
-            <label className="flex items-center">
-              <input
-                type="radio"
-                name="modeOfDelivery"
-                value="Forceps"
-                onChange={(e) =>
-                  handleInputChange("modeOfDelivery", e.target.value)
-                }
-                className="h-5 w-5 text-blue-600 focus:ring-blue-500 border-blue-300 rounded"
-              />
-              <span className="ml-2 text-sm text-blue-700">Forceps</span>
-            </label>
-            <label className="flex items-center">
-              <input
-                type="radio"
-                name="modeOfDelivery"
-                value="Vacuum"
-                onChange={(e) =>
-                  handleInputChange("modeOfDelivery", e.target.value)
-                }
-                className="h-5 w-5 text-blue-600 focus:ring-blue-500 border-blue-300 rounded"
-              />
-              <span className="ml-2 text-sm text-blue-700">Vacuum</span>
-            </label>
-            <label className="flex items-center">
-              <input
-                type="radio"
-                name="modeOfDelivery"
-                value="LSCS"
-                onChange={(e) =>
-                  handleInputChange("modeOfDelivery", e.target.value)
-                }
-                className="h-5 w-5 text-blue-600 focus:ring-blue-500 border-blue-300 rounded"
-              />
-              <span className="ml-2 text-sm text-blue-700">LSCS</span>
-            </label>
           </div>
         </div>
       </div>
+
+      <div>
+        <label className="block text-sm font-medium text-blue-700">Mode of Delivery</label>
+        <div className="flex items-center space-x-4">
+          <label className="flex items-center">
+            <input
+              type="radio"
+              name="modeOfDelivery"
+              value="VD"
+              checked={formData.modeOfDelivery === "VD"}
+              onChange={(e) => handleInputChange("modeOfDelivery", e.target.value)}
+              className="h-5 w-5 text-blue-600 focus:ring-blue-500 border-blue-300 rounded"
+            />
+            <span className="ml-2 text-sm text-blue-700">VD</span>
+          </label>
+          <label className="flex items-center">
+            <input
+              type="radio"
+              name="modeOfDelivery"
+              value="Forceps"
+              checked={formData.modeOfDelivery === "Forceps"}
+              onChange={(e) => handleInputChange("modeOfDelivery", e.target.value)}
+              className="h-5 w-5 text-blue-600 focus:ring-blue-500 border-blue-300 rounded"
+            />
+            <span className="ml-2 text-sm text-blue-700">Forceps</span>
+          </label>
+          <label className="flex items-center">
+            <input
+              type="radio"
+              name="modeOfDelivery"
+              value="Vacuum"
+              checked={formData.modeOfDelivery === "Vacuum"}
+              onChange={(e) => handleInputChange("modeOfDelivery", e.target.value)}
+              className="h-5 w-5 text-blue-600 focus:ring-blue-500 border-blue-300 rounded"
+            />
+            <span className="ml-2 text-sm text-blue-700">Vacuum</span>
+          </label>
+          <label className="flex items-center">
+            <input
+              type="radio"
+              name="modeOfDelivery"
+              value="LSCS"
+              checked={formData.modeOfDelivery === "LSCS"}
+              onChange={(e) => handleInputChange("modeOfDelivery", e.target.value)}
+              className="h-5 w-5 text-blue-600 focus:ring-blue-500 border-blue-300 rounded"
+            />
+            <span className="ml-2 text-sm text-blue-700">LSCS</span>
+          </label>
+        </div>
+      </div>
+    </div>
 
       {/* Signature Section */}
       <div className="bg-white border-l-4 border-blue-500 p-4 rounded-lg mb-6 shadow">

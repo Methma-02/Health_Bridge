@@ -7,7 +7,7 @@ const Dashboard = () => {
       <div className="bg-blue-50 rounded-lg p-4 md:p-6 w-full max-w-4xl">
         {/* Header */}
         <h1 className="text-blue-600 text-xl md:text-2xl font-bold text-center mb-4 md:mb-6">
-          Mother's Health Report
+          Mother's Dashboard
         </h1>
 
         {/* Buttons Grid */}
