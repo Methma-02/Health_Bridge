@@ -12,7 +12,7 @@ const MONGO_URI = process.env.MONGO_URI;
 const JWT_SECRET = process.env.JWT_SECRET;
 const ENCRYPTION_SECRET = process.env.ENCRYPTION_SECRET;
 
-// Middleware
+// Middleware 
 app.use(express.json());
 app.use(cors());
 
