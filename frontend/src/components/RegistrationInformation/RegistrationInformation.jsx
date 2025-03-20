@@ -124,7 +124,7 @@ const PregnancyRecordForm = () => {
 
   return (
     <div className="w-full max-w-6xl mx-auto p-4 bg-gradient-to-br from-white to-blue-50 shadow-lg rounded-lg">
-      <h1 className="text-2xl md:text-3xl font-bold text-gradient bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 mb-6 text-center bg-clip-text text-transparent">
+      <h1 className="text-2xl md:text-3xl font-bold text-blue-600 mb-6 text-center">
         Pregnancy Record Form
       </h1>
 
@@ -762,7 +762,7 @@ const PregnancyRecordForm = () => {
         <div className="flex justify-end mt-6">
           <button
             type="submit"
-            className="px-6 py-3 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white font-medium rounded-lg shadow-lg hover:from-blue-600 hover:via-purple-600 hover:to-pink-600 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50 transition-all transform hover:scale-105"
+            className="px-6 py-3 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition duration-200 font-semibold text-lg"
           >
             Submit All Records
           </button>

@@ -40,7 +40,7 @@ const PostnatalCare = () => {
   return (
     <div className="w-full max-w-6xl mx-auto p-4 bg-gradient-to-br from-white to-blue-50 shadow-lg rounded-lg">
       {/* Header */}
-      <h1 className="text-2xl md:text-3xl font-bold text-gradient bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 mb-6 text-center bg-clip-text text-transparent">
+      <h1 className="text-2xl md:text-3xl font-bold text-blue-600 mb-6 text-center">
         Delivery & Postnatal Care
       </h1>
 
