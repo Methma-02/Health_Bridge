@@ -215,7 +215,7 @@ const WeightGainChart = () => {
       return;
     }
     try {
-      const response = await fetch(`http://localhost:5000/api/baby/${regNo}`, {
+      const response = await fetch(`http://localhost:3000/api/baby/${regNo}`, {
         headers: { 'x-user-role': 'physician' }
       });
       
@@ -293,7 +293,7 @@ const WeightGainChart = () => {
       return;
     }
     try {
-      const fetchResponse = await fetch(`http://localhost:5000/api/baby/${formData.regNo}`, {
+      const fetchResponse = await fetch(`http://localhost:3000/api/baby/${formData.regNo}`, {
         headers: { 'x-user-role': 'physician' }
       });
       
@@ -310,7 +310,7 @@ const WeightGainChart = () => {
       }];
       existingData.weightOtherData = formData.weightOtherData;
       
-      const submitResponse = await fetch('http://localhost:5000/api/baby', {
+      const submitResponse = await fetch('http://localhost:3000/api/baby', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
