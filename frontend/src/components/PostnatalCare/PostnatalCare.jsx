@@ -11,6 +11,20 @@ const PostnatalCare = () => {
 
   const signatureRef = useRef(null);
 
+  // Load signature when form data changes
+  useEffect(() => {
+    if (signatureRef.current && formData.signature) {
+      // Clear existing signature first
+      signatureRef.current.clear();
+      
+      // Need to wait for the clear operation to complete
+      setTimeout(() => {
+        // Now load the signature from the dataURL
+        signatureRef.current.fromDataURL(formData.signature);
+      }, 0);
+    }
+  }, [formData.signature]);
+
   const handleClearSignature = () => {
     signatureRef.current.clear();
   };

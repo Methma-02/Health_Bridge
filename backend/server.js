@@ -447,6 +447,7 @@ const pregnancyForm1Schema = new mongoose.Schema({
         referred: String,
         otherNotes: String,
         dateOfDischarge: String,
+        deliverySignature: String,
         signature: String,
         specialNotes: String,
 
