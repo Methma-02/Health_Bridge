@@ -85,7 +85,7 @@ export default function SensoryScreening() {
 
     try {
       const response = await fetch(
-        `http://localhost:5000/api/baby/${registrationNumber}`,
+        `http://localhost:3000/api/baby/${registrationNumber}`,
         {
           headers: {
             'x-user-role': 'mother',
@@ -180,7 +180,7 @@ export default function SensoryScreening() {
     });
     
     try {
-      const response = await fetch(`http://localhost:5000/api/baby/${regNo}/sensoryScreening`, {
+      const response = await fetch(`http://localhost:3000/api/baby/${regNo}/sensoryScreening`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
