@@ -74,7 +74,7 @@ const BabyDetails = () => {
         e.preventDefault();
         
         try {
-            const response = await fetch('http://localhost:5000/api/baby', {
+            const response = await fetch('http://localhost:3000/api/baby', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -285,7 +285,7 @@ const BabyDetails = () => {
     
         try {
             const response = await fetch(
-                `http://localhost:5000/api/baby/${regNo}`,
+                `http://localhost:3000/api/baby/${regNo}`,
                 {
                     headers: {
                         'x-user-role': 'physician',
