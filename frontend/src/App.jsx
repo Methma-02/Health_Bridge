@@ -21,7 +21,7 @@ import { isUserRegistered, saveUserRegistration, getUserRegistration } from './u
 
 // Import pages from test/dev
 import MDashboard from './mainDash';
-import MainDashboard from './pages/dashboard';
+//import MainDashboard from './pages/dashboard';
 import BabyDetails from './pages/babyDetails';
 import WeightChart from './pages/WeightChart';
 import HeightChart from './pages/HeightChart';
@@ -431,19 +431,19 @@ function App() {
               <Route path="/reset-password" element={<Navigate to="/forgot-password" />} />
 
               {/* Main Dashboard */}
-              <Route path='/MDashboard' element={<MDashboard/>} />
-              <Route path="/dashboard" element={<Dashboard />}>
-                <Route index element={<BabyDetails />} />
-                <Route path="babyDetails" element={<BabyDetails />} />
-                <Route path="weightChart" element={<WeightChart />} />
-                <Route path="heightChart" element={<HeightChart />} />
-                <Route path="immunization" element={<Immunization />} />
-                <Route path="sensoryScreening" element={<SensoryScreening />} />
-                <Route path="developmentMilestones" element={<DevelopmentMilestones />} />
-                <Route path="childHealthRecord" element={<ChildHealthRecord />} />
-                <Route path="studentHealthRecords" element={<StudentHealthRecords />} />
-                <Route path="referral" element={<Referral />} />
-              </Route>
+              <Route path="/MDashboard" element={<MDashboard />} />
+
+              {/* Dashboard Components */}
+              <Route path="/babyDetails" element={<BabyDetails />} />
+              <Route path="/weightChart" element={<WeightChart />} />
+              <Route path="/heightChart" element={<HeightChart />} />
+              <Route path="/immunization" element={<Immunization />} />
+              <Route path="/sensoryScreening" element={<SensoryScreening />} />
+              <Route path="/developmentMilestones" element={<DevelopmentMilestones />} />
+              <Route path="/childHealthRecord" element={<ChildHealthRecord />} />
+              <Route path="/studentHealthRecords" element={<StudentHealthRecords />} />
+              <Route path="/referral" element={<Referral />} />
+              
 
               {/* Donation Center Route */}
               <Route path="/donation-center" element={<DonationCenter />} />
