@@ -784,6 +784,9 @@ const Tables = () => {
                     </table>
                 </div>
 
+                {/* ClinicCare Component */}
+                <ClinicCare />
+
                 {/* Submit Button */}
                 <div className="flex justify-end mt-6">
                     <button
@@ -794,9 +797,6 @@ const Tables = () => {
                     </button>
                 </div>
             </form>
-
-            {/* ClinicCare Component */}
-            <ClinicCare />
         </>
     );
 };
