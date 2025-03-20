@@ -417,7 +417,7 @@ function App() {
     <AuthProvider>
       <GoogleOAuthProvider clientId="995536188022-t1bci6di33lak0lfulniv7me90mj172t.apps.googleusercontent.com">
         <RecoveryProvider>
-          <Router>
+          
             <Routes>
               {/* Authentication Routes */}
               <Route path="/" element={<LandingPage />} />
@@ -447,7 +447,7 @@ function App() {
               {/* Donation Center Route */}
               <Route path="/donation-center" element={<DonationCenter />} />
             </Routes>
-          </Router>
+          
         </RecoveryProvider>
       </GoogleOAuthProvider>
     </AuthProvider>
