@@ -37,7 +37,7 @@ const ClinicForm = () => {
 
   return (
     <div className="bg-white border-l-4 border-blue-500 p-4 rounded-lg mb-6 shadow">
-      <h1 className="text-2xl md:text-3xl font-bold text-gradient bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 mb-6 text-center bg-clip-text text-transparent">
+      <h1 className="text-2xl md:text-3xl font-bold text-blue-600 mb-6 text-center">
         Clinic Visit Details
       </h1>
       <form onSubmit={handleSubmit} className="space-y-6">
