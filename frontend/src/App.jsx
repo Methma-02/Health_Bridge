@@ -431,7 +431,8 @@ function App() {
               <Route path="/reset-password" element={<Navigate to="/forgot-password" />} />
 
               {/* Main Dashboard */}
-              <Route path="/dashboard" element={<MainDashboard />}>
+              <Route path='/MDashboard' element={<MDashboard/>} />
+              <Route path="/dashboard" element={<Dashboard />}>
                 <Route index element={<BabyDetails />} />
                 <Route path="babyDetails" element={<BabyDetails />} />
                 <Route path="weightChart" element={<WeightChart />} />

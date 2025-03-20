@@ -81,7 +81,7 @@ const Header = () => {
           
           <div className="nav-links">
             <Link to="/mothers-dashboard" className="nav-item">Mother's Dashboard</Link>
-            <Link to="/childrens-dashboard" className="nav-item">Child's Dashboard</Link>
+            <Link to="/MDashboard" className="nav-item">Child's Dashboard</Link>
             <Link to="/symptom-recorder" className="nav-item">Symptom Recorder</Link>
             <Link to="/donation-center" className="nav-item">Donation Center</Link>
             <Link to="/emergency-alert" className="nav-item emergency-link">
