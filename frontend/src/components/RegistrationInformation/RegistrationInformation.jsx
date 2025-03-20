@@ -161,7 +161,7 @@ const PregnancyRecordForm = () => {
             <div>
               <label className="block text-sm font-medium text-blue-700">BMI</label>
               <input
-                type="number"
+                type="text"
                 value={formData.bmi}
                 onChange={(e) => handleInputChange('bmi', e.target.value)}
                 className="w-full p-2 text-sm border border-blue-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-blue-50"
@@ -170,7 +170,7 @@ const PregnancyRecordForm = () => {
             <div>
               <label className="block text-sm font-medium text-blue-700">Height (cm)</label>
               <input
-                type="number"
+                type="text"
                 value={formData.height}
                 onChange={(e) => handleInputChange('height', e.target.value)}
                 className="w-full p-2 text-sm border border-blue-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-blue-50"

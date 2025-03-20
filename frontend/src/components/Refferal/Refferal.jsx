@@ -4,10 +4,6 @@ import { useFormContext } from '../../contexts/FormContext';
 const Refferal = () => {
   const { formData, setFormData } = useFormContext();
 
-  useEffect(() => {
-    console.log(formData);
-  }, [formData]);
-
   const [newReferral, setNewReferral] = useState("");
   const [isAdding, setIsAdding] = useState(false);
 

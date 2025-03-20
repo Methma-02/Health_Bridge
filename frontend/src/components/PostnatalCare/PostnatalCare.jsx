@@ -5,9 +5,6 @@ import { useFormContext } from '../../contexts/FormContext';
 
 const PostnatalCare = () => {
   const { formData, setFormData } = useFormContext();
-  useEffect(() => {
-    console.log(formData);
-  }, [formData]);
 
   const signatureRef = useRef(null);
 

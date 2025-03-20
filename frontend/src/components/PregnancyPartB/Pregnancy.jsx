@@ -83,10 +83,6 @@ const familyMedicalHistoryFields = [
 function Pregnancy() {
     const { formData, setFormData } = useForm2Context();
 
-    useEffect(() => {
-        console.log(formData);
-    }, [formData]);
-
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({

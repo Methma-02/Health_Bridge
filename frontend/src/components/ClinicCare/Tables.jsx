@@ -6,14 +6,14 @@ import ClinicCare from './ClinicCare'; // Added import
 import { useFormContext } from '../../contexts/FormContext';
 
 const Tables = () => {
-    const { formData, setFormData } = useFormContext();
-    useEffect(() => {
-        console.log(formData);
-    }, [formData]);
+    // Access form data and setter from context
+    const { formData, setFormData } = useFormContext(); 
 
+    // Define table headers and rows
     const headers = ["Session", "Date", "Husband", "Wife", "Other", "Signature"];
     const rows = ["1st T", "2nd T", "3rd T"];
 
+    // Update form data when input changes
     function updateResult(value) {
         setFormData(prev => ({
             ...prev,
@@ -21,6 +21,7 @@ const Tables = () => {
         }));
     }
 
+    // Update form data when input changes
     function chosenMethod(value) {
         setFormData(prev => ({
             ...prev,
@@ -28,6 +29,7 @@ const Tables = () => {
         }));
     }
 
+    // State to manage attendance data for the table
     const [attendanceData, setAttendanceData] = useState(
         rows.map((session) => ({
             session,
@@ -39,20 +41,25 @@ const Tables = () => {
         }))
     );
 
+    // State to manage fundal height chart points
     const [fundalHeightPoints, setFundalHeightPoints] = useState([]);
 
+    // Function to handle adding a point to the fundal height chart
     const handlePlotPoint = (x, y) => {
         setFundalHeightPoints(prev => [...prev, { x, y }]);
         console.log("Point added:", { x, y });
     };
 
+    // State to manage BMI chart points
     const [bmiPoints, setBmiPoints] = useState([]);
 
+    // Function to handle adding a point to the BMI chart
     const handleBmiPlotPoint = (x, y) => {
         setBmiPoints(prev => [...prev, { x, y }]);
         console.log("BMI Point added:", { x, y });
     };
 
+    // Function to handle changes in visit data
     const handleVisitChange = (index, field, value) => {
         console.log(field);
         console.log(value);
@@ -66,6 +73,7 @@ const Tables = () => {
         }));
     };
 
+    // Function to create a table row for a specific field
     const createTableRow = (fieldName) => {
         return formData.visits.map((visit, idx) => (
             <td key={idx}>
@@ -79,6 +87,7 @@ const Tables = () => {
         ));
     };
 
+    // Function to handle changes in auscultation data
     const handleAuscultationChange = (index, field, value) => {
         setFormData(prev => ({
             ...prev,
@@ -88,6 +97,7 @@ const Tables = () => {
         }));
     };
 
+    // Function to create a table row for auscultation data
     const createAuscultation = (fieldName) => {
         return formData.Auscultation.map((ascu, idx) => (
             <td key={idx}>
@@ -101,6 +111,7 @@ const Tables = () => {
         ));
     };
 
+    // Function to handle changes in two cell row data
     const createTwoCellRow = (fieldName) => {
         return formData.twoCell.map((twocells, idx) => (
             <td key={idx}>
@@ -114,6 +125,7 @@ const Tables = () => {
         ));
     };
 
+    // Function to handle changes in two-cell data
     const handleTwoCellChange = (index, field, value) => {
         console.log(index, field, value);
         setFormData(prev => ({
@@ -124,6 +136,7 @@ const Tables = () => {
         }));
     };
 
+    // Function to handle changes in input fields
     const handleInputChange = (index, field, value) => {
         const updatedData = [...attendanceData];
         console.log("this is index", index);
@@ -134,6 +147,7 @@ const Tables = () => {
         setAttendanceData(updatedData);
     };
 
+    // Function to handle form submission
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -159,19 +173,23 @@ const Tables = () => {
         }
     };
 
+    // Define fields for the form
     const fields = [
         'date', 'poa', 'urine', 'sugeralbumin', 'pallor', 'oedemaankle', 'oedemafacial'
     ];
 
+    // Define blood pressure levels
     const bpLevels = [
         '160', '150', '140', '130', '120', '110', '100', '90', '80', '70', '60', '50'
     ];
 
+    // Define additional fields for the form
     const fields2 = [
         'fundalheight', 'foetallie', 'presentation', 'engagement', 'fm', 'fhs',
         'iron', 'folate', 'calcium', 'vitaminc', 'supplementation', 'signature', 'designation'
     ];
 
+    // State to manage date tables data
     const [dateTablesData, setDateTablesData] = useState(
         formData.dateTablesData || [
             {
@@ -189,6 +207,7 @@ const Tables = () => {
         ]
     );
 
+    // Function to handle changes in date tables
     const handleDateChange = (tableIndex, rowIndex, colIndex, value) => {
         const updatedTablesData = [...dateTablesData];
         updatedTablesData[tableIndex].data[rowIndex][colIndex] = value;
@@ -200,6 +219,7 @@ const Tables = () => {
         }));
     };
 
+    // Function to handle changes in tetanus dates
     const handleTetanusDateChange = (index, value) => {
         const updatedDates = [...formData.immunizationData.dates];
         updatedDates[index] = value;
@@ -212,6 +232,7 @@ const Tables = () => {
         }));
     };
 
+    // Function to handle changes in batch numbers
     const handleBatchNumberChange = (index, value) => {
         const updatedBatchNumbers = [...formData.immunizationData.batchNumbers];
         updatedBatchNumbers[index] = value;
