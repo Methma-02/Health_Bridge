@@ -48,7 +48,7 @@ const Referral = () => {
     
     try {
       const response = await fetch(
-        `http://localhost:5000/api/baby/${registrationNumber}`,
+        `http://localhost:3000/api/baby/${registrationNumber}`,
         {
           headers: {
             'x-user-role': 'physician',
@@ -115,7 +115,7 @@ const Referral = () => {
         referrals: referrals.map(({ id, ...rest }) => rest)
       };
       
-      const response = await fetch('http://localhost:5000/api/baby', {
+      const response = await fetch('http://localhost:3000/api/baby', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
