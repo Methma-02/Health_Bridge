@@ -1,26 +1,27 @@
 import { useState, useEffect } from 'react';
-import { X, ChevronRight, ChevronLeft } from 'lucide-react';
+import { X, ChevronRight, ChevronLeft } from 'lucide-react'; //import icons from lucide-react
 
 const WeightGainChart = () => {
-  const [gender, setGender] = useState('boy');
-  const [formData, setFormData] = useState({
+  const [gender, setGender] = useState('boy');  // State to track selected gender (default is 'boy')
+  const [formData, setFormData] = useState({  // State to store form data, including registration number and weight data
     regNo: '',
-    chartPoints: [],
-    weightOtherData: Array(60).fill().map(() => ({
+    chartPoints: [], //store weight points
+    weightOtherData: Array(60).fill().map(() => ({ //map placeholders
       "date the phm came": '',
       "other dates": '',
       "Family planning": '',
     }))
   });
 
-  const formattedData = {
+  const formattedData = {  // Structure for formatted data to be sent or stored
     type: 'weightGain',
     data: {
       gender,
-      measurements: formData.chartPoints
+      measurements: formData.chartPoints //collected weight points
     }
   };
 
+    // State to track mouse position and crosshair visibility
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [showCrosshair, setShowCrosshair] = useState(false);
   const [hoveredPoint, setHoveredPoint] = useState(null);
@@ -37,7 +38,7 @@ const WeightGainChart = () => {
     }
   }, []);
 
-  // Make dimensions responsive
+  // Function to make chart dimensions responsive
   const useResponsiveDimensions = () => {
     const baseWidth = 1300;
     const baseHeight = 800;
