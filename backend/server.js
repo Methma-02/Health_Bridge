@@ -1,27 +1,161 @@
-
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const dotenv = require('dotenv');
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
+const morgan = require('morgan');
+const compression = require('compression');
+const { connectDB, waitForDB } = require('./config/database');
+const { validateEnv } = require('./config/env');
+const logger = require('./utils/logger');
 
+// Load environment variables
+dotenv.config();
+validateEnv();
+
+// Initialize express app
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-require('dotenv').config();
+// Security middleware
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      styleSrc: ["'self'", "'unsafe-inline'"],
+      imgSrc: ["'self'", 'data:', 'https:'],
+      scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"]
+    }
+  }
+}));
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: process.env.FRONTEND_URL,
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'x-user-role']
+}));
+app.options('*', cors());
+app.use(express.json({ limit: '10kb' }));
+app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 app.use(bodyParser.json());
+app.use(compression());
 
-// MongoDB Atlas Connection
-const MONGO_URI = process.env.MONGO_URI;
-mongoose.connect(MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-})
-.then(() => console.log('Connected to MongoDB Atlas'))
-.catch((err) => console.error('Error connecting to MongoDB:', err));
+// Rate limiting
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // limit each IP to 100 requests per windowMs
+  message: 'Too many requests from this IP, please try again after 15 minutes',
+  standardHeaders: true,
+  legacyHeaders: false
+});
 
+// Apply rate limiting to all routes
+app.use(limiter);
+
+// Logging
+if (process.env.NODE_ENV !== 'test') {
+  app.use(morgan('combined', { stream: { write: message => logger.info(message.trim()) } }));
+}
+
+// Authentication middleware
+app.use((req, res, next) => {
+  // In a real app, this would verify a token and set req.user
+  // For now, we'll just mock a user for testing
+  req.user = {
+      role: req.headers['x-user-role'] || 'guest' // Get role from header or default to guest
+  };
+  next();
+});
+
+// Access control middleware
+const canRead = (req, res, next) => {
+  const userRole = req.user.role;
+  if (['mother', 'physician', 'nurse', 'midwife', 'phm', 'admin'].includes(userRole)) {
+      next();
+  } else {
+      res.status(403).json({ message: 'Forbidden: You do not have read access' });
+  }
+};
+
+const canWrite = (req, res, next) => {
+  const userRole = req.user.role;
+  if (['physician', 'nurse', 'midwife', 'phm', 'admin'].includes(userRole)) {
+      next();
+  } else {
+      res.status(403).json({ message: 'Forbidden: You do not have write access' });
+  }
+};
+
+const canEditSensoryScreening = (req, res, next) => {
+  const userRole = req.user.role;
+  if (userRole === 'mother') {
+      next();
+  } else {
+      res.status(403).json({ message: 'Forbidden: You do not have access to edit sensory screening' });
+  }
+};
+
+// Health check endpoint
+app.get('/health', (req, res) => {
+  res.status(200).json({
+    status: 'healthy',
+    timestamp: new Date(),
+    uptime: process.uptime(),
+    environment: process.env.NODE_ENV
+  });
+});
+
+// Database connection middleware
+app.use(async (req, res, next) => {
+  try {
+    // Skip health check endpoint
+    if (req.path === '/health') {
+      return next();
+    }
+    
+    await waitForDB();
+    next();
+  } catch (error) {
+    logger.error('Database connection middleware error:', error);
+    res.status(500).json({ error: 'Database connection failed' });
+  }
+});
+
+// Default route
+app.get('/', (req, res) => {
+  res.send('API is running');
+});
+
+// Try to import routes
+try {
+  // Import routes from test/dev branch
+  const requestRoutes = require('./routes/requestRoutes');
+  const donationRoutes = require('./routes/donationRoutes');
+  const statsRoutes = require('./routes/statsRoutes');
+  const authRoutes = require('./routes/auth');
+  const userRoutes = require('./routes/users');
+  const auditRoutes = require('./routes/audit');
+  const monitorRoutes = require('./routes/monitor');
+
+  // API routes
+  app.use('/api/requests', requestRoutes);
+  app.use('/api/donations', donationRoutes);
+  app.use('/api/stats', statsRoutes);
+  app.use('/api/auth', authRoutes);
+  app.use('/api/users', userRoutes);
+  app.use('/api/audit', auditRoutes);
+  app.use('/api/monitor', monitorRoutes);
+} catch (error) {
+  logger.warn('Could not load some route modules:', error.message);
+}
+
+// ----------------- Pregnancy Schema and Routes (from HEAD) -----------------
+
+// Pregnancy Schema
 const pregnancySchema = new mongoose.Schema({
     regNo: { type: String, unique: true }, // Ensure regNo is unique
     regDate: String,
@@ -528,8 +662,8 @@ const pregnancyForm1Schema = new mongoose.Schema({
 
 const PregnancyForm1Model = mongoose.model('PregnancyForm1', pregnancyForm1Schema);
 
-// Routes for Form 2
-app.get('/api/pregnancy/:regNo', async (req, res) => {
+// Routes for Pregnancy Form 2
+app.get('/api/pregnancy/:regNo', canRead, async (req, res) => {
     try {
         const { regNo } = req.params;
         const record = await PregnancyModel.findOne({ regNo });
@@ -545,7 +679,7 @@ app.get('/api/pregnancy/:regNo', async (req, res) => {
     }
 });
 
-app.post('/api/pregnancy', async (req, res) => {
+app.post('/api/pregnancy', canWrite, async (req, res) => {
     try {
         const { regNo } = req.body;
 
@@ -572,8 +706,8 @@ app.post('/api/pregnancy', async (req, res) => {
     }
 });
 
-// Routes for Form 1
-app.get('/api/pregnancy-form1/:registrationNumber', async (req, res) => {
+// Routes for Pregnancy Form 1
+app.get('/api/pregnancy-form1/:registrationNumber', canRead, async (req, res) => {
     try {
         const { registrationNumber } = req.params;
         const record = await PregnancyForm1Model.findOne({ registrationNumber });
@@ -589,9 +723,8 @@ app.get('/api/pregnancy-form1/:registrationNumber', async (req, res) => {
     }
 });
 
-app.post('/api/pregnancy-form1', async (req, res) => {
+app.post('/api/pregnancy-form1', canWrite, async (req, res) => {
     try {
-        console.log(req);
         const { registrationNumber } = req.body;
 
         // Check if a record with the same registrationNumber exists
@@ -617,158 +750,7 @@ app.post('/api/pregnancy-form1', async (req, res) => {
     }
 });
 
-// Start the server
-app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
-});
-
-// server.js
-const express = require('express');
-const mongoose = require('mongoose');
-const cors = require('cors');
-const dotenv = require('dotenv');
-const bodyParser = require('body-parser');
-const helmet = require('helmet');
-const rateLimit = require('express-rate-limit');
-const morgan = require('morgan');
-const compression = require('compression');
-const { connectDB, waitForDB } = require('./config/database');
-const { validateEnv } = require('./config/env');
-const logger = require('./utils/logger');
-
-// Load environment variables
-dotenv.config();
-validateEnv();
-
-// Import routes
-const requestRoutes = require('./routes/requestRoutes');
-const donationRoutes = require('./routes/donationRoutes');
-const statsRoutes = require('./routes/statsRoutes');
-const authRoutes = require('./routes/auth');
-const userRoutes = require('./routes/users');
-const auditRoutes = require('./routes/audit');
-const monitorRoutes = require('./routes/monitor');
-
-
-// Security middleware
-app.use(helmet({
-  contentSecurityPolicy: {
-    directives: {
-      defaultSrc: ["'self'"],
-      styleSrc: ["'self'", "'unsafe-inline'"],
-      imgSrc: ["'self'", 'data:', 'https:'],
-      scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"]
-    }
-  }
-}));
-
-// Middleware
-app.use(cors({
-  origin: process.env.FRONTEND_URL,
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization','x-user-role']
-}));
-app.options('*', cors());
-app.use(express.json({ limit: '10kb' }));
-app.use(express.urlencoded({ extended: true, limit: '10kb' }));
-app.use(bodyParser.json());
-app.use(compression());
-
-// Rate limiting
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // limit each IP to 100 requests per windowMs
-  message: 'Too many requests from this IP, please try again after 15 minutes',
-  standardHeaders: true,
-  legacyHeaders: false
-});
-
-// Apply rate limiting to all routes
-app.use(limiter);
-
-// Logging
-if (process.env.NODE_ENV !== 'test') {
-  app.use(morgan('combined', { stream: { write: message => logger.info(message.trim()) } }));
-}
-
-// Authentication middleware (placeholder)
-app.use((req, res, next) => {
-  // In a real app, this would verify a token and set req.user
-  // For now, we'll just mock a user for testing
-  req.user = {
-      role: req.headers['x-user-role'] || 'guest' // Get role from header or default to guest
-  };
-  next();
-});
-
-// Access control middleware
-const canRead = (req, res, next) => {
-  const userRole = req.user.role;
-  if (['mother', 'physician', 'nurse', 'midwife', 'phm', 'admin'].includes(userRole)) {
-      next();
-  } else {
-      res.status(403).json({ message: 'Forbidden: You do not have read access' });
-  }
-};
-
-const canWrite = (req, res, next) => {
-  const userRole = req.user.role;
-  if (['physician', 'nurse', 'midwife', 'phm', 'admin'].includes(userRole)) {
-      next();
-  } else {
-      res.status(403).json({ message: 'Forbidden: You do not have write access' });
-  }
-};
-
-const canEditSensoryScreening = (req, res, next) => {
-  const userRole = req.user.role;
-  if (userRole === 'mother') {
-      next();
-  } else {
-      res.status(403).json({ message: 'Forbidden: You do not have access to edit sensory screening' });
-  }
-};
-
-// Health check endpoint
-app.get('/health', (req, res) => {
-  res.status(200).json({
-    status: 'healthy',
-    timestamp: new Date(),
-    uptime: process.uptime(),
-    environment: process.env.NODE_ENV
-  });
-});
-
-// Database connection middleware
-app.use(async (req, res, next) => {
-  try {
-    // Skip health check endpoint
-    if (req.path === '/health') {
-      return next();
-    }
-    
-    await waitForDB();
-    next();
-  } catch (error) {
-    logger.error('Database connection middleware error:', error);
-    res.status(500).json({ error: 'Database connection failed' });
-  }
-});
-
-// Default route
-app.get('/', (req, res) => {
-  res.send('API is running');
-});
-
-// API routes
-app.use('/api/requests', requestRoutes);
-app.use('/api/donations', donationRoutes);
-app.use('/api/stats', statsRoutes);
-app.use('/api/auth', authRoutes);
-app.use('/api/users', userRoutes);
-app.use('/api/audit', auditRoutes);
-app.use('/api/monitor', monitorRoutes);
+// ----------------- Baby Schema and Routes (from test/dev) -----------------
 
 // Baby Schema
 const BabySchema = new mongoose.Schema({
@@ -1136,8 +1118,6 @@ async function gracefulShutdown() {
 }
 
 // Start server
-
-
 async function startServer() {
   try {
     // Connect to database with retry logic
@@ -1185,4 +1165,3 @@ async function startServer() {
 startServer();
 
 module.exports = app; // For testing purposes
-
