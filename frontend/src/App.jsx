@@ -1,6 +1,6 @@
 
 import Form2 from "./components/PregnancyPartB/Pregnancy"
-import Dashboard from "./components/Dashboard/Dashboard";
+import P_Dashboard from "./components/P_Dashboard/P_Dashboard";
 import Registration from "./components/RegistrationInformation/RegistrationInformation";
 import ClinicCareTables from "./components/ClinicCare/Tables"; 
 import PostnatalCare from "./components/PostnatalCare/PostnatalCare";
@@ -452,7 +452,7 @@ function App() {
               <Route path="/studentHealthRecords" element={<StudentHealthRecords />} />
               <Route path="/referral" element={<Referral />} />
 
-              <Route path="/" element={<Dashboard />} />
+              <Route path="/P_Dashboard" element={<P_Dashboard />} />
               <Route path="/registration" element={<Registration />} />
               <Route path="/clinic-care" element={<ClinicCareTables />} />
               <Route path="/postnatal-care" element={<PostnatalCare />} />
