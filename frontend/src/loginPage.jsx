@@ -15,7 +15,11 @@ const LoginPage = () => {
   });
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+  const [passwordRequirements, setPasswordRequirements] = useState(false);
   const formRef = useRef(null);
+
+  const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+  console.log("Google Client ID:", googleClientId);
 
   useEffect(() => {
     // Card animation only - removed bubble animations
@@ -113,13 +117,15 @@ const LoginPage = () => {
   const handleGoogleSuccess = async (credentialResponse) => {
     try {
       setIsLoading(true);
+      console.log("Google login success:", credentialResponse);
       const { token } = await api.googleLogin(credentialResponse.credential);
       login(token);
       navigate('/homepage');
     } catch (error) {
+      console.error("Google login error:", error);
       setErrors(prev => ({
         ...prev,
-        submit: 'Google login failed. Please try again.'
+        submit: error.message || 'Google login failed. Please try again.'
       }));
     } finally {
       setIsLoading(false);
@@ -150,17 +156,19 @@ const LoginPage = () => {
     }
 
     try {
+      console.log("Attempting login with:", loginData);
       // API call to login
       const { token } = await api.login(loginData);
       login(token);
       navigate('/homepage');
     } catch (error) {
-      setErrors(prev => ({
-        ...prev,
-        submit: error.response?.data?.message || 'Login failed. Please try again.'
-      }));
-    } finally {
-      setIsLoading(false);
+      console.error("Login error details:", error);
+  setErrors(prev => ({
+    ...prev,
+    submit: error.message || error.data?.error || 'Login failed. Please try again.'
+  }));
+} finally {
+  setIsLoading(false);
     }
   };
 
@@ -349,7 +357,8 @@ const LoginPage = () => {
               >
                 <GoogleLogin
                   onSuccess={handleGoogleSuccess}
-                  onError={() => {
+                  onError={(error) => {
+                    console.error("Google login error:", error);
                     setErrors(prev => ({
                       ...prev,
                       submit: 'Google login failed. Please try again.'
