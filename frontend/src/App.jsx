@@ -6,7 +6,6 @@ import ClinicCareTables from "./components/ClinicCare/Tables";
 import PostnatalCare from "./components/PostnatalCare/PostnatalCare";
 import Refferal from "./components/Refferal/Refferal";
 
-
 import React, { useState, useEffect, useContext } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './authContext';
