@@ -47,11 +47,16 @@ export const register = async (userData) => {
 
 export const login = async (credentials) => {
   try {
+    console.log("Sending login request to:", `${api.defaults.baseURL}/auth/login`);
+    console.log("With credentials:", { email: credentials.email, password: "****" });
+    
     const response = await api.post('/auth/login', credentials);
+    console.log("Login response:", response.data);
     return response.data;
   } catch (error) {
+    console.error("Login error:", error);
     throw {
-      message: error.response?.data?.message || error.message || 'Login failed',
+      message: error.response?.data?.error || error.message || 'Login failed',
       status: error.response?.status,
       data: error.response?.data
     };
