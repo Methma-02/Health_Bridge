@@ -1,5 +1,9 @@
 import { useState, useEffect } from "react";
 
+/*
+     * Initial milestones data representing different stages of a baby's development.
+     * Each stage contains an age range and a list of milestones achieved during that time.
+*/
 const DevelopmentMilestones = () => {
     const initialMilestones = [
         {
@@ -45,7 +49,11 @@ const DevelopmentMilestones = () => {
         },
     ];
 
-    // Convert to the format expected by the MongoDB schema
+/**
+ * Function to convert the milestones into a structured format to match mongoDB schema
+ * Each milestone object is expanded to include month, monthProved and officer
+ * @returns 
+ */
     const createInitialData = () => {
         return initialMilestones.map(group => ({
             age: group.age,
@@ -58,18 +66,19 @@ const DevelopmentMilestones = () => {
         }));
     };
 
+    //State to manage form data with registration number and milestones
     const [formData, setFormData] = useState({
         regNo: "",
-        developmentMilestones: createInitialData()
+        developmentMilestones: createInitialData() //populate milestones with default values
     });
 
-    // Load saved data on component mount
+    // Load saved data on component mount (initial page load)
     useEffect(() => {
         // Check if there's a registration number in localStorage
         const savedRegNo = localStorage.getItem('babyRegNo');
         
         if (savedRegNo) {
-            // Set the regNo from localStorage
+            // Set the regNo from localStorage and update it
             setFormData(prev => ({
                 ...prev,
                 regNo: savedRegNo
@@ -79,12 +88,15 @@ const DevelopmentMilestones = () => {
             fetchDataByRegistrationNumber(savedRegNo);
         }
     }, []);  // Empty dependency array means this runs once on component mount
-
+    /**
+     * Handles changes in the milestone input fields.
+     * Updates the corresponding milestone field dynamically.
+     */
     const handleChange = (ageIndex, milestoneIndex, field, value) => {
         setFormData(prev => {
-            const updatedMilestones = [...prev.developmentMilestones];
+            const updatedMilestones = [...prev.developmentMilestones]; //copy the milestones array to update
             updatedMilestones[ageIndex].milestones[milestoneIndex][field] = value;
-            return { 
+            return { //updates from previous state
                 ...prev, 
                 developmentMilestones: updatedMilestones 
             };
@@ -101,7 +113,7 @@ const DevelopmentMilestones = () => {
 
     // Function to fetch existing data
     const fetchDataByRegistrationNumber = async (regNoParam) => {
-        const regNo = regNoParam || formData.regNo;
+        const regNo = regNoParam || formData.regNo; //if regNo is provided use it otherwise, fallback to formdata to get input
         
         if (!regNo) {
             alert('Please enter a registration number.');
@@ -110,7 +122,7 @@ const DevelopmentMilestones = () => {
         
         try {
             const response = await fetch(
-                `http://localhost:3000/api/baby/${regNo}`,
+                `http://localhost:3000/api/baby/${regNo}`, //API endpoint with dynamic reg no
                 {
                     headers: {
                         'x-user-role': 'physician',
@@ -122,7 +134,7 @@ const DevelopmentMilestones = () => {
                 throw new Error('No data found for this registration number.');
             }
             
-            const data = await response.json();
+            const data = await response.json(); //get data in Json format
             console.log('Fetched data:', data);
             
             // Save registration number to localStorage
@@ -133,7 +145,7 @@ const DevelopmentMilestones = () => {
                 ? data.developmentMilestones 
                 : createInitialData();
             
-            setFormData({
+            setFormData({ //updates the form with data 
                 regNo: data.regNo || regNo,
                 developmentMilestones: milestoneData
             });
@@ -154,18 +166,18 @@ const DevelopmentMilestones = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         
-        try {
+        try { //send a post request to the backend API to save milestone data
             const response = await fetch('http://localhost:3000/api/baby', {
-                method: 'POST',
+                method: 'POST', //HTTP POST method to submit new data
                 headers: {
-                    'Content-Type': 'application/json',
+                    'Content-Type': 'application/json', //initialize the data type for the server
                     'x-user-role': 'physician',
                 },
-                body: JSON.stringify(formData),
+                body: JSON.stringify(formData),//Convert formData object into a JSON string for transmission
             });
             
             if (!response.ok) {
-                const errorData = await response.json();
+                const errorData = await response.json();//Parse response error message if available
                 throw new Error(errorData.message || 'Failed to submit form');
             }
             
@@ -224,16 +236,20 @@ const DevelopmentMilestones = () => {
                             </tr>
                         </thead>
                         <tbody>
+                            {/*Iterate through each age group in the development milestones data*/}
                             {formData.developmentMilestones.map((ageGroup, ageIndex) => (
                                 ageGroup.milestones.map((milestone, milestoneIndex) => (
                                     <tr key={`${ageIndex}-${milestoneIndex}`} className="border-b border-blue-100 hover:bg-blue-50">
+{/* Display the age group only once per milestone set using rowSpan */}
                                         {milestoneIndex === 0 && (
                                             <td rowSpan={ageGroup.milestones.length} className="p-2 md:p-4 text-xs md:text-sm font-medium text-blue-700 bg-blue-50">
                                                 {ageGroup.age}
                                             </td>
                                         )}
+{/* Column displaying the specific milestone*/}
                                         <td className="p-2 md:p-4 text-xs md:text-sm text-blue-700">{milestone.milestone}</td>
                                         <td className="p-2 md:p-4">
+{/* Column for inputting the month the milestone was achieved */}
                                             <input 
                                                 type="month"  
                                                 value={milestone.month || ''}
@@ -242,6 +258,7 @@ const DevelopmentMilestones = () => {
                                             />
                                         </td>
                                         <td className="p-2 md:p-4">
+{/* Column for inputting the month the milestone was officially proved */}
                                             <input 
                                                 type="month"
                                                 value={milestone.monthProved || ''}
@@ -249,6 +266,7 @@ const DevelopmentMilestones = () => {
                                                 className="w-full p-1 md:p-2 text-xs md:text-sm border border-blue-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-blue-50"
                                             />
                                         </td>
+{/* Column for inputting the officer's designation who validated the milestone */}
                                         <td className="p-2 md:p-4">
                                             <input 
                                                 type="text"
