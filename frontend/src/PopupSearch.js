@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from "react";
 import "./PopupSearch.css"; // Import CSS for styling
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const PopupSearch = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [searchResults, setSearchResults] = useState([]);
+  const [searchResults, setSearchResults] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(""); // To store error messages
+  const navigate = useNavigate();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -14,15 +18,26 @@ const PopupSearch = () => {
     return () => clearTimeout(timer); // Cleanup on unmount
   }, []);
 
-  const handleSearch = () => {
+  const handleSearch = async () => {
     if (searchQuery.trim() !== "") {
-      // Simulate search results (Replace this with actual search logic)
-      const results = [
-        `Result 1 for "${searchQuery}"`,
-        `Result 2 for "${searchQuery}"`,
-        `Result 3 for "${searchQuery}"`,
-      ];
-      setSearchResults(results);
+      console.log(`Searching for Registration ID: ${searchQuery}`); // Log the search query
+      try {
+        const response = await axios.get(
+          `http://localhost:5000/search/${searchQuery}`
+        );
+        setSearchResults(response.data); // Store user object if found
+        setErrorMessage(""); // Clear any previous error
+      } catch (error) {
+        setSearchResults(null); // Clear results if user not found
+        setErrorMessage("User not found or an error occurred."); // Set error message
+      }
+    }
+  };
+  
+
+  const handleResultClick = () => {
+    if (searchResults) {
+      navigate(`/user/${searchResults._id}`); // Navigate to user details page
     }
   };
 
@@ -33,7 +48,7 @@ const PopupSearch = () => {
           <div className="search-box">
             <input
               type="text"
-              placeholder="Search..."
+              placeholder="Enter Registration Number..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="search-input"
@@ -42,14 +57,15 @@ const PopupSearch = () => {
               🔍
             </button>
           </div>
-          {searchResults.length > 0 && (
+          {errorMessage && <p>{errorMessage}</p>}
+          {searchResults ? (
             <div className="search-results">
-              {searchResults.map((result, index) => (
-                <div key={index} className="search-item">
-                  {result}
-                </div>
-              ))}
+              <div className="search-item" onClick={handleResultClick}>
+                {searchResults.registrationId} - {searchResults.email}
+              </div>
             </div>
+          ) : (
+            searchQuery && !errorMessage && <p>No results found.</p>
           )}
         </div>
       </div>
