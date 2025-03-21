@@ -1,6 +1,5 @@
 
 import Form2 from "./components/PregnancyPartB/Pregnancy"
-import { BrowserRouter as Router, Route, Routes, useNavigate } from "react-router-dom";
 import Dashboard from "./components/Dashboard/Dashboard";
 import Registration from "./components/RegistrationInformation/RegistrationInformation";
 import ClinicCareTables from "./components/ClinicCare/Tables"; 
