@@ -1,28 +1,33 @@
-import { useState, useEffect } from 'react';
-import { X, ChevronRight, ChevronLeft } from 'lucide-react';
+import { useState, useEffect } from 'react'; //import required hooks from react
+import { X, ChevronRight, ChevronLeft } from 'lucide-react'; //icons from lucide react library
 
-const HeightGainChart = () => {
-  const [gender, setGender] = useState('boy');
+const HeightGainChart = () => { //define the heighgainchart component
+  const [gender, setGender] = useState('boy'); //useState hook to manage the gender selection
+
+  // useState hook to manage form data, including registration number and height chart data
   const [formData, setFormData] = useState({
-    regNo:'',
-    chartPoints: [],
-    heightOtherData: Array(60).fill().map(() => ({
+    regNo:'', //store reg no
+    chartPoints: [], //stores an array of height points
+    heightOtherData: Array(60).fill().map(() => ({ //Initialize an array of 60 objects with default value
       "date the phm came": '',
       "other dates": '',
       "Family planning": '',
   }))
   });
-
+// Object to store formatted data structure for height gain tracking
   const formattedData = {
     type: 'heightGain',
     data: {
-      gender,
-      measurements: formData.chartPoints
+      gender, //stores gender selection
+      measurements: formData.chartPoints //stores height points
     }
   };
 
+  // State to track mouse position for the chart's crosshair
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  // State to control the visibility of the crosshair
   const [showCrosshair, setShowCrosshair] = useState(false);
+    // State to track the currently hovered data point
   const [hoveredPoint, setHoveredPoint] = useState(null);
 
   // Load saved data when component mounts
@@ -31,6 +36,7 @@ const HeightGainChart = () => {
     const savedRegNo = localStorage.getItem('heightChartRegNo');
     
     if (savedRegNo) {
+      // Update form data with the retrieved registration number
       setFormData(prev => ({
         ...prev,
         regNo: savedRegNo
@@ -39,37 +45,50 @@ const HeightGainChart = () => {
       // Fetch the data using the saved registration number
       fetchDataByRegistrationNumber(savedRegNo);
     }
-  }, []);
+  }, []);//Empty dependency array ensures this runs only once on mount
 
-  // Make dimensions responsive
-  const useResponsiveDimensions = () => {
-    const baseWidth = 1152;
-    const baseHeight = 800;
-    const aspectRatio = baseHeight / baseWidth;
+// Function to determine responsive chart dimensions based on a base size
+    const useResponsiveDimensions = () => {
+    const baseWidth = 1152; //chart width
+    const baseHeight = 800; //chart height
+    const aspectRatio = baseHeight / baseWidth; //aspect ratio
     
     return {
-      width: '100%',
-      height: 'auto',
-      aspectRatio: `${baseWidth} / ${baseHeight}`,
-      viewBox: `0 0 ${baseWidth} ${baseHeight}`
+      width: '100%', //full width responsiveness
+      height: 'auto', //auto adjust height based on aspect ratio
+      aspectRatio: `${baseWidth} / ${baseHeight}`, //maintain aspect ratio
+      viewBox: `0 0 ${baseWidth} ${baseHeight}` //defines the SVG viewport
     };
   };
 
-  const dimensions = useResponsiveDimensions();
-  const width = 1300;
+  const dimensions = useResponsiveDimensions(); /// Function to determine responsive chart dimensions based on a base size
+
+  //define static chart dimensions
+  const width = 1300; 
   const height = 800;
   const margin = { top: 20, right: 30, bottom: 50, left: 55 };
+
+  // Calculate the usable area of the chart after accounting for margins
   const chartWidth = width - margin.left - margin.right;
   const chartHeight = height - margin.top - margin.bottom;
 
+  // Define the max and min values for X-axis and Y-axis ranges
   const xMax = 60;
   const yMin = 40;
   const yMax = 120;
+
+  //generate tick marks for x and y axis
   const xTicks = Array.from({length: 60}, (_, i) => i + 1);
   const yTicks = Array.from({length: Math.floor((yMax - yMin) / 2) + 1}, (_, i) => yMin + (i * 2));
 
+  /*
+  data conversions to plot data points on SVG charts and to handle user clicking
+  */
+  //convert data X and Y coordinates to SVG coordinates
   const toSvgX = (x) => (x / xMax) * chartWidth + margin.left;
   const toSvgY = (y) => chartHeight - ((y - yMin) / (yMax - yMin)) * chartHeight + margin.top;
+
+  //converts SVG back to data points
   const toDataX = (x) => ((x - margin.left) / chartWidth) * xMax;
   const toDataY = (y) => ((chartHeight - (y - margin.top)) / chartHeight) * (yMax - yMin) + yMin;
 
@@ -103,12 +122,12 @@ const HeightGainChart = () => {
       };
     }
   };
-
+  // Store gender-based colors in a variable
   const colors = getGenderColors();
 
   // Zone data with gender adjustment
-  const getZones = (isGirl) => {
-    const adjustment = isGirl ? -2 : 0;
+  const getZones = (isGirl) => { 
+    const adjustment = isGirl ? -2 : 0; //subtracts to points from each path 
     return [
       {
         path: `M ${toSvgX(0)} ${toSvgY(44 + adjustment)} ,${toSvgX(6)} ${toSvgY(60 + adjustment)}
@@ -159,6 +178,7 @@ const HeightGainChart = () => {
 
   const areaPaths = getAreaPaths(gender === 'girl');
 
+    // Function to handle mouse movement for crosshair positioning
   const handleMouseMove = (e) => {
     if (!showCrosshair) return;
     const rect = e.currentTarget.getBoundingClientRect();
@@ -169,16 +189,16 @@ const HeightGainChart = () => {
     const scaleX = width / rect.width;
     const scaleY = height / rect.height;
     
-    setMousePos({ 
+    setMousePos({ //mouse position based on render size
       x: x * scaleX, 
       y: y * scaleY 
     });
   };
-
+// Function to handle click events, store clicked position
   const handleClick = (e) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
+    const rect = e.currentTarget.getBoundingClientRect(); //get element dimension
+    const x = e.clientX - rect.left; //Mouse X position
+    const y = e.clientY - rect.top; //Mouse Y position
     
     // Scale coordinates based on actual rendered size
     const scaleX = width / rect.width;
@@ -186,9 +206,11 @@ const HeightGainChart = () => {
     const scaledX = x * scaleX;
     const scaledY = y * scaleY;
     
-    const dataX = Math.round(toDataX(scaledX));
+    //convert data to X and Y points
+    const dataX = Math.round(toDataX(scaledX)); 
     const dataY = Number(toDataY(scaledY).toFixed(1));
     
+    // Ensure clicked coordinates are within valid range before storing
     if (dataX >= 0 && dataX <= xMax && dataY >= yMin && dataY <= yMax) {
       setFormData(prev => ({
         ...prev,
@@ -197,6 +219,7 @@ const HeightGainChart = () => {
     }
   };
 
+  // function to update reg number in form
   const handleRegNoChange = (value) => {
     setFormData(prev => ({
       ...prev,
