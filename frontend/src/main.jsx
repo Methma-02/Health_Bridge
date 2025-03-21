@@ -1,17 +1,22 @@
-import React from 'react';
+import React, { StrictMode } from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
+import { BrowserRouter } from 'react-router-dom';
 import App from './App';
+import './index.css';
+import './donationcenter.css';
 import { FormProvider } from './contexts/FormContext';
 import { Form2Provider } from './contexts/Form2Context';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
 root.render(
-  <React.StrictMode>
+  <StrictMode>
     <FormProvider>
-    <Form2Provider>
-    <App />
-    </Form2Provider>
+      <Form2Provider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </Form2Provider>
     </FormProvider>
-  </React.StrictMode>
+  </StrictMode>
 );
