@@ -1,271 +1,187 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-
-/* Global Styles */
-:root {
-  --primary-color: #6d5dfc; /* Modern purple */
-  --primary-dark: #5a4fcf;
-  --primary-light: #8a7ffc;
-  
-  --secondary-color: #4ad7d1; /* Teal */
-  --secondary-dark: #3abcb6;
-  --secondary-light: #6ae0da;
-  --secondary-bg: #e6f9f8;
-  
-  --accent-color: #ff6b6b; /* Coral */
-  
-  --text-color: #2c3e50; /* Dark blue-gray */
-  --text-light: #7f8c8d; /* Light gray */
-  --text-dark: #1a1a1a; /* Almost black */
-  
-  --bg-light: #f5f7fa; /* Light gray-blue */
-  --bg-dark: #121212;
-  --bg-dark-alt: #1e1e1e;
-  
-  --gradient-primary: linear-gradient(135deg, #6d5dfc, #8a7ffc);
-  --gradient-secondary: linear-gradient(135deg, #4ad7d1, #6ae0da);
-  
-  --shadow-light: rgba(0, 0, 0, 0.1);
-  --shadow-medium: rgba(0, 0, 0, 0.15);
-  --shadow-dark: rgba(0, 0, 0, 0.2);
-  --shadow-glow-primary: 0 0 20px rgba(109, 93, 252, 0.3);
-  --shadow-glow-secondary: 0 0 20px rgba(74, 215, 209, 0.3);
-}
-
+/* General Styles */
 body {
-  font-family: 'Inter', sans-serif;
-  background-color: var(--bg-light);
+  font-family: 'Arial', sans-serif;
+  background-color: #f4f4f9;
+  color: #333;
   margin: 0;
   padding: 0;
-  color: var(--text-color);
-  line-height: 1.6;
 }
 
 .symptom-tracker-container {
   max-width: 800px;
-  margin: 40px auto;
+  margin: 50px auto;
+  padding: 20px;
   background-color: #fff;
-  padding: 40px;
-  border-radius: 16px;
-  box-shadow: 0 8px 20px var(--shadow-light);
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.header-text {
+.symptom-tracker-title {
   text-align: center;
-  color: var(--primary-color);
-  font-weight: 700;
-  font-size: 28px;
-  margin-bottom: 30px;
-  letter-spacing: -0.5px;
+  color: #4a90e2;
+  margin-bottom: 20px;
 }
 
-/* Calendar */
+/* Calendar Styles */
 .calendar-container {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 }
 
 .react-calendar {
-  border: none;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px var(--shadow-light);
-  overflow: hidden;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.react-calendar__tile--active {
+  background-color: #4a90e2;
+  color: white;
 }
 
 .react-calendar__tile--now {
-  background-color: var(--secondary-bg);
-  color: var(--primary-color);
-  font-weight: 600;
+  background-color: #ffeb3b;
+  color: #333;
 }
 
-.react-calendar__tile.highlighted-date {
-  background-color: var(--accent-color);
-  color: white;
-  border-radius: 50%;
-  font-weight: bold;
+/* Highlighted Dates in Calendar */
+.intensity-1-2 {
+  background-color: #d4edda; /* Green for low intensity */
+  color: #155724; /* Dark green text */
+  border: 2px solid #155724; /* Dark green border */
+  border-radius: 4px; /* Slightly rounded corners */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  font-weight: bold; /* Bold text */
 }
 
-.react-calendar__tile.highlighted-date:hover {
-  background-color: var(--primary-light);
+.intensity-3 {
+  background-color: #fff3cd; /* Yellow for moderate intensity */
+  color: #856404; /* Dark yellow text */
+  border: 2px solid #856404; /* Dark yellow border */
+  border-radius: 4px; /* Slightly rounded corners */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  font-weight: bold; /* Bold text */
 }
 
-/* Symptoms List */
-.date-title {
-  font-size: 20px;
-  color: var(--primary-color);
-  font-weight: 600;
-  margin-bottom: 15px;
+.intensity-4-5 {
+  background-color: #f8d7da; /* Red for high intensity */
+  color: #721c24; /* Dark red text */
+  border: 2px solid #721c24; /* Dark red border */
+  border-radius: 4px; /* Slightly rounded corners */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  font-weight: bold; /* Bold text */
 }
 
-.symptom-items {
-  list-style: none;
-  padding: 0;
-}
-
-.symptom-item {
-  padding: 12px;
-  border-radius: 8px;
-  margin-bottom: 10px;
-  font-size: 16px;
-  font-weight: 500;
-  transition: all 0.3s ease;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: var(--bg-light);
-  border: 1px solid var(--shadow-light);
-}
-
-.symptom-item:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px var(--shadow-light);
-}
-
-/* Intensity Levels */
-.intensity-1 { background-color: var(--secondary-light); }
-.intensity-2 { background-color: #f7f7a7; }
-.intensity-3 { background-color: #f7d6a7; }
-.intensity-4 { background-color: #f7a7a7; }
-.intensity-5 { background-color: #f75a5a; color: white; }
-
-/* Input Section */
-.input-section {
+/* Input Container Styles */
+.input-container {
   display: flex;
   flex-direction: column;
+  gap: 10px;
   align-items: center;
-  margin-top: 30px;
 }
 
-.input-field {
+.symptom-input {
   width: 100%;
-  padding: 12px;
-  border: 2px solid var(--shadow-medium);
-  border-radius: 8px;
+  max-width: 300px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
   font-size: 16px;
-  margin-bottom: 15px;
-  transition: border-color 0.3s ease;
 }
 
-.input-field:focus {
-  border-color: var(--primary-color);
-  outline: none;
-}
-
-/* Intensity Selector */
-.intensity-container {
-  width: 100%;
-  text-align: center;
-  margin-bottom: 15px;
-}
-
-.intensity-label {
-  font-size: 16px;
-  color: var(--primary-color);
-  font-weight: 600;
-  display: block;
-  margin-bottom: 10px;
-}
-
-.intensity-slider {
-  width: 100%;
-  -webkit-appearance: none;
-  appearance: none;
-  height: 8px;
-  background: var(--bg-light);
-  border-radius: 4px;
-  outline: none;
-  opacity: 0.7;
-  transition: opacity 0.2s ease;
-}
-
-.intensity-slider:hover {
-  opacity: 1;
-}
-
-.intensity-slider::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 20px;
-  height: 20px;
-  background: var(--primary-color);
-  border-radius: 50%;
-  cursor: pointer;
-}
-
-.intensity-slider::-moz-range-thumb {
-  width: 20px;
-  height: 20px;
-  background: var(--primary-color);
-  border-radius: 50%;
-  cursor: pointer;
-}
-
-.intensity-levels {
+/* Intensity Bar */
+.intensity-bar {
   display: flex;
-  justify-content: space-between;
-  font-size: 14px;
-  color: var(--text-light);
-  width: 100%;
-  margin-top: 5px;
+  gap: 5px;
 }
 
-/* Add Button */
-.add-button {
-  background: var(--gradient-primary);
-  color: white;
-  padding: 12px 24px;
-  font-size: 16px;
-  font-weight: 600;
-  border: none;
-  border-radius: 8px;
+.intensity-button {
+  padding: 10px 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
   cursor: pointer;
-  transition: all 0.3s ease;
-  width: 100%;
+  transition: background-color 0.3s ease;
+  font-weight: bold;
+  color: #333; /* Default text color */
 }
 
-.add-button:hover {
-  background: var(--gradient-secondary);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px var(--shadow-glow-primary);
+.intensity-button.active {
+  border: 2px solid #333; /* Highlight the selected button */
 }
 
-.add-button:disabled {
-  background: #ccc;
-  cursor: not-allowed;
-  transform: none;
-  box-shadow: none;
+/* Intensity-specific colors */
+.intensity-button[style*="background-color: #d4edda"] { /* Green for 1-2 */
+  border-color: #155724; /* Dark green border */
 }
 
-/* All Symptoms List */
-.all-symptoms-container {
-  margin-top: 40px;
+.intensity-button[style*="background-color: #fff3cd"] { /* Yellow for 3 */
+  border-color: #856404; /* Dark yellow border */
 }
 
-.all-symptoms-title {
-  font-size: 22px;
-  color: var(--primary-color);
-  font-weight: 600;
-  margin-bottom: 20px;
+.intensity-button[style*="background-color: #f8d7da"] { /* Red for 4-5 */
+  border-color: #721c24; /* Dark red border */
 }
 
-.all-symptoms-list {
-  list-style: none;
+/* Add Symptom Button */
+.add-symptom-button {
+  padding: 10px 20px;
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.add-symptom-button:hover {
+  background-color: #357abd;
+}
+
+/* Symptoms List Styles */
+.symptoms-list {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.symptoms-list h3 {
+  margin-bottom: 10px;
+  color: #4a90e2;
+}
+
+.symptoms-list ul {
+  list-style-type: none;
   padding: 0;
 }
 
-.symptoms-group {
-  margin-bottom: 20px;
+.symptoms-list li {
+  padding: 8px;
+  margin-bottom: 5px;
+  border-radius: 5px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-.symptoms-group-date {
-  font-size: 18px;
-  color: var(--primary-color);
-  font-weight: 600;
-  margin-bottom: 10px;
-}
-
-.no-symptoms-text {
-  color: var(--text-light);
-  text-align: center;
+.symptoms-list p {
+  color: #666;
   font-style: italic;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .symptom-tracker-container {
+    padding: 10px;
+  }
+
+  .input-container {
+    flex-direction: column;
+  }
+
+  .symptom-input {
+    width: 100%;
+  }
 }
