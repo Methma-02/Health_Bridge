@@ -249,11 +249,11 @@ const HeightGainChart = () => { //define the heighgainchart component
         const data = await response.json();
         localStorage.setItem('heightChartRegNo', regNo);
         
-        // Check if weight gain data exists and is properly formatted
+        // Initialize height data with defaults if missing
         let heightGainData = { gender: 'boy', measurements: [] };
         let heightOtherData = defaultHeightOtherData;
         
-        // Handle WeightGainData
+        // Initialize height data with defaults if missing
         if (data.HeightGainData && data.HeightGainData.length > 0) {
           if (data.HeightGainData[0].gender) {
             heightGainData.gender = data.HeightGainData[0].gender;
@@ -264,7 +264,7 @@ const HeightGainChart = () => { //define the heighgainchart component
           }
         }
         
-        // Handle weightOtherData as a separate top-level array
+        // Handle heightOtherData and ensure proper structure
         if (data.heightOtherData && Array.isArray(data.heightOtherData)) {
           // Make sure we maintain the structure even if some entries are missing
           heightOtherData = defaultHeightOtherData.map((defaultItem, index) => {
@@ -366,9 +366,14 @@ const HeightGainChart = () => { //define the heighgainchart component
     }
   };
 
+// State to manage the current page index  
   const [currentPage, setCurrentPage] = useState(0);
-  const CELLS_PER_PAGE = 12;
+  const CELLS_PER_PAGE = 12; // Number of items displayed per page  
 
+  /**
+ * Handles changes in the heightOtherData field.
+ * Updates the respective field in the heightOtherData array.
+ */
   const handleHeightOtherDataChange = (index, field, value) => {
     setFormData(prev => ({
       ...prev,
@@ -378,19 +383,27 @@ const HeightGainChart = () => { //define the heighgainchart component
     }));
   };
 
+// Calculate starting and ending indices for paginated data  
   const startIdx = currentPage * CELLS_PER_PAGE;
   const endIdx = startIdx + CELLS_PER_PAGE;
-  const totalPages = Math.ceil(60 / CELLS_PER_PAGE);
+  const totalPages = Math.ceil(60 / CELLS_PER_PAGE);// Determine total pages (assuming 60 records in total)  
 
+
+  /**
+ * Moves to the next page if not already at the last page.
+ */
   const nextPage = () => {
     if (currentPage < totalPages - 1) setCurrentPage(prev => prev + 1);
   };
 
+/**
+ * Moves to the previous page if not already at the first page.
+ */
   const prevPage = () => {
     if (currentPage > 0) setCurrentPage(prev => prev - 1);
   };
 
-  // Ensure weightOtherData exists with default fields
+  // Ensure weightOtherData exists with default fields if its undefined or empty, initialize a 60 row dataset
   const ensureHeightOtherData = () => {
     if (!formData.heightOtherData || !Array.isArray(formData.heightOtherData) || formData.heightOtherData.length === 0) {
       return Array(60).fill().map(() => ({
