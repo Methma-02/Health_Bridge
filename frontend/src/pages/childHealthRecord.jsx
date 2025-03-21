@@ -135,20 +135,21 @@ const ChildHealthRecords = () => {
         ));
     };
 
+    //fetches child health records based on the entered reg no
     const fetchDataByRegistrationNumber = async (regNoParam) => {
-        const regNo = regNoParam || formData.regNo;
+        const regNo = regNoParam || formData.regNo; //if regNo is provided use it otherwise, fallback to formdata
     
         if (!regNo) {
             alert('Please enter a registration number.');
             return;
         }
     
-        try {
+        try { //sending a request to fetch baby data based on the regno
             const response = await fetch(
-                `http://localhost:3000/api/baby/${regNo}`,
+                `http://localhost:3000/api/baby/${regNo}`, //API endpoint with dynamic reg no
                 {
                     headers: {
-                        'x-user-role': 'physician',
+                        'x-user-role': 'physician', //user role as customer header
                     }
                 }
             );
@@ -157,7 +158,7 @@ const ChildHealthRecords = () => {
                 throw new Error('No data found for this registration number.');
             }
     
-            const data = await response.json();
+            const data = await response.json(); //convert the reponse into json
             console.log('Data fetched:', data);
             
             // Save registration number to localStorage
@@ -168,12 +169,12 @@ const ChildHealthRecords = () => {
                 ? data.childHealthRecords 
                 : ageStages.map(age => ({ age, clinicDate: '', head: '', disabilities: '', eyes: '', sight: '', nightBlindness: '', dental: '', issues: '', growth: '', heartDiseases: '', sandiya: '', other: '', signature: '', designation: '' }));
             
-            setFormData({
-                regNo: data.regNo || regNo,
-                childHealthRecords: healthRecords
+            setFormData({ //updates the form state with fetched data
+                regNo: data.regNo || regNo, //use fetched regno if available, or fallback to regno input
+                childHealthRecords: healthRecords //store the data
             });
             
-            // Don't show alert when loading automatically on page refresh
+            
             if (regNoParam === undefined) {
                 alert('Data loaded successfully!');
             }
@@ -186,7 +187,7 @@ const ChildHealthRecords = () => {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit}> {/*Form element that triggers handlesubmit */}
         <div className="w-full max-w-4xl mx-auto p-4 bg-gradient-to-br from-white to-blue-50 shadow-lg rounded-lg">
             <h1 className="text-2xl md:text-3xl font-bold text-blue-600 mb-6 text-center">Child Health Records</h1>
 
@@ -217,13 +218,16 @@ const ChildHealthRecords = () => {
 
             <div className="overflow-x-auto bg-white rounded-lg shadow-md">
                 <table className="w-full border-collapse">
-                    <tbody>
+                    <tbody> 
+                        {/* Dynamically created table rows based on Object keys */}
                         {Object.keys(formData.childHealthRecords[0]).map((field) => (
                             <tr key={field} className="border-b border-blue-100 hover:bg-blue-50">
                                 <td className="p-1 text-sm font-medium text-blue-700 whitespace-nowrap">
+                                    {/* Converts camelcase fields to readable format */}
                                     {field.charAt(0).toUpperCase() + field.slice(1).replace(/([A-Z])/g, " $1").trim()}
                                 </td>
-                                {createTableRow(field)}
+                                {createTableRow(field)} 
+                                {/* function to render data for each field */}
                             </tr>
                         ))}
                     </tbody>
