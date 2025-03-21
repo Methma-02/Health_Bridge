@@ -415,7 +415,7 @@ Your donation has been recorded in your donation history.`);
 function App() {
   return (
     <AuthProvider>
-      <GoogleOAuthProvider clientId="995536188022-t1bci6di33lak0lfulniv7me90mj172t.apps.googleusercontent.com">
+      <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
         <RecoveryProvider>
           
             <Routes>
