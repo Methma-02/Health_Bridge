@@ -1,11 +1,11 @@
-// backend/models/Emergency.js
-const mongoose = require('mongoose');
+const mongoose = require('mongoose'); 
 
 const EmergencySchema = new mongoose.Schema({
+  // Remove userId or make it optional
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
-    required: true
+    required: false // Make it optional
   },
   location: {
     type: {
@@ -51,8 +51,3 @@ const EmergencySchema = new mongoose.Schema({
     default: Date.now
   }
 }, { timestamps: true });
-
-// Index for geospatial queries
-EmergencySchema.index({ location: '2dsphere' });
-
-module.exports = mongoose.model('Emergency', EmergencySchema);
