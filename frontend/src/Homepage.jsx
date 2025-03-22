@@ -46,13 +46,13 @@ const Homepage = () => {
       name: 'Pregnancy Form', 
       icon: <FileText size={40} color="#60a5fa" />,
       description: 'Comprehensive digital form for tracking pregnancy progress',
-      path: '/pregnancy-form'
+      path: '/p-dashboard'
     },
     { 
       name: 'Child Health Development Record', 
       icon: <Calendar size={40} color="#60a5fa" />,
       description: 'Detailed health tracking for children',
-      path: '/child-health'
+      path: '/MDashboard'
     },
     { 
       name: 'Symptom Recorder', 
