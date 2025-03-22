@@ -1,6 +1,7 @@
+//import necessary hooks from react and icons from lucide
 import { useState, useEffect } from "react";
 import { Plus, Trash2, Search } from "lucide-react";
-
+// Define the main functional component for Referral
 const Referral = () => {
   // Registration number state
   const [regNo, setRegNo] = useState("");
@@ -16,7 +17,7 @@ const Referral = () => {
     }
   ]);
   
-  const [referrals, setReferrals] = useState([
+  const [referrals, setReferrals] = useState([// State to manage referrals data
     {
       id: Date.now(),
       date: "",
@@ -31,22 +32,22 @@ const Referral = () => {
     // Check if there's a registration number in localStorage
     const savedRegNo = localStorage.getItem('babyRegNo');
     
-    if (savedRegNo) {
+    if (savedRegNo) { // If a saved registration number exists, set it in state and fetch data
       setRegNo(savedRegNo);
       fetchDataByRegistrationNumber(savedRegNo);
     }
-  }, []);
+  }, []);// Empty dependency array ensures this runs only once on mount
 
   // Fetch data from the server based on registration number
   const fetchDataByRegistrationNumber = async (regNoParam) => {
-    const registrationNumber = regNoParam || regNo;
+    const registrationNumber = regNoParam || regNo;// Use the provided registration number or fallback to state
     
     if (!registrationNumber) {
       alert('Please enter a registration number.');
       return;
     }
     
-    try {
+    try {// Fetch data from the API using the registration number
       const response = await fetch(
         `http://localhost:3000/api/baby/${registrationNumber}`,
         {
@@ -60,7 +61,7 @@ const Referral = () => {
         throw new Error('No data found for this registration number.');
       }
       
-      const data = await response.json();
+      const data = await response.json();// Parse the response data as JSON
       
       // Save registration number to localStorage
       localStorage.setItem('babyRegNo', registrationNumber);
@@ -84,13 +85,11 @@ const Referral = () => {
         setReferrals(referralsWithIds);
       }
       
-      // Only show alert if manually fetching (not on page load)
       if (!regNoParam) {
         alert('Data loaded successfully!');
       }
     } catch (error) {
       console.error('Error fetching data:', error);
-      // Only show alert if manually fetching (not on page load)
       if (!regNoParam) {
         alert('No data found for this registration number or there was an error.');
       }
@@ -101,7 +100,7 @@ const Referral = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    if (!regNo) {
+    if (!regNo) {// If no registration number is provided, show an alert and return
       alert('Please enter a registration number.');
       return;
     }
@@ -154,13 +153,13 @@ const Referral = () => {
       }
     ]);
   };
-
+// Function to handle changes in hospitalization fields
   const handleHospitalizationChange = (id, field, value) => {
     setHospitalizations(hospitalizations.map(hospitalization => 
       hospitalization.id === id ? { ...hospitalization, [field]: value } : hospitalization
     ));
   };
-
+ // Function to delete a hospitalization entry
   const deleteHospitalization = (id) => {
     if (hospitalizations.length > 1) {
       setHospitalizations(hospitalizations.filter(hospitalization => hospitalization.id !== id));
@@ -172,7 +171,7 @@ const Referral = () => {
     setReferrals([
       ...referrals,
       {
-        id: Date.now() + Math.random(),
+        id: Date.now() + Math.random(),// Generate a unique ID
         date: "",
         reason: "",
         place: "",
@@ -180,7 +179,7 @@ const Referral = () => {
       }
     ]);
   };
-
+  //Function to handle changes in referral fields
   const handleReferralChange = (id, field, value) => {
     setReferrals(referrals.map(referral => 
       referral.id === id ? { ...referral, [field]: value } : referral
@@ -195,11 +194,11 @@ const Referral = () => {
 
   // Generic tracker table component to avoid duplication
   const TrackerTable = ({ 
-    items, 
-    onChangeHandler, 
-    onDeleteHandler, 
-    columns, 
-    placeholders 
+    items,  //Array of items to display
+    onChangeHandler, //Function to handle input changes
+    onDeleteHandler,  //Function to handle deletion
+    columns, //array of column headers
+    placeholders  //array of input placeholders
   }) => (
     <div className="overflow-hidden rounded-lg border border-blue-200">
       <div className="overflow-x-auto">

@@ -1,10 +1,11 @@
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';// Import necessary hooks from React
 
-const ImmunizationForm = () => {
+const ImmunizationForm = () => {// Define the main functional component for Immunization Form
+  // Default structure for a vaccine object
   const defaultVaccine = { date: '', batchNo: '', bcgScar: '', adverseEffects: false };
   
-  const initialVaccineSchedule = [
+  const initialVaccineSchedule = [//Initial vaccine schedule with age groups and corresponding vaccines
     { age: 'At Birth', vaccines: ['B.C.G'], bcgScar: 'absent' },
     { age: '2 Months', vaccines: ['DPT 1', 'OPV 1', 'Hepatitis B1'] },
     { age: '4 Months', vaccines: ['DPT 2', 'OPV 2', 'Hepatitis B2'] },
@@ -18,13 +19,13 @@ const ImmunizationForm = () => {
     { age: '14-17', vaccines: ['Other'] },
   ].map((entry) => ({
     age: entry.age,
-    vaccines: entry.vaccines.map((name) => ({ name, ...defaultVaccine }))
+    vaccines: entry.vaccines.map((name) => ({ name, ...defaultVaccine })) // Map vaccines to include default structure
   }));
   
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState({ //State to manage form data, including registration number and immunization records
     regNo: '',
     immunizationRecords: {
-      vaccineSchedule: initialVaccineSchedule
+      vaccineSchedule: initialVaccineSchedule // Initial vaccine schedule
     }
   });
 
@@ -44,43 +45,44 @@ const ImmunizationForm = () => {
       fetchDataByRegistrationNumber(savedRegNo);
     }
   }, []); // Empty dependency array means this runs once on component mount
-  
+  // Function to handle input changes for vaccine details
   const handleInputChange = (ageIndex, vaccineIndex, field, value) => {
     const updatedSchedule = [...formData.immunizationRecords.vaccineSchedule];
-    updatedSchedule[ageIndex].vaccines[vaccineIndex][field] = value;
+    updatedSchedule[ageIndex].vaccines[vaccineIndex][field] = value;// Function to handle input changes for vaccine details
     setFormData({
       ...formData,
       immunizationRecords: {
-        vaccineSchedule: updatedSchedule
+        vaccineSchedule: updatedSchedule// Update the state with the modified schedule
       }
     });
   };
   
+  // Function to handle form submission
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault();// Prevent the default form submission behavior
     
-    try {
+    try {// Send a POST request to the API with the form data
       const response = await fetch('http://localhost:3000/api/baby', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'x-user-role': 'physician', // Add this header to pass the middleware check
+          'x-user-role': 'physician', 
         },
         body: JSON.stringify(formData),
       });
       
       if (!response.ok) {
-        const errorData = await response.json();
+        const errorData = await response.json();//Send the form data as JSON
         throw new Error(errorData.message || 'Failed to submit form');
       }
       
       // Save registration number to localStorage after successful submission
       localStorage.setItem('immunizationRegNo', formData.regNo);
-      
+      // Log the successful submission and show an alert
       const result = await response.json();
       console.log('Form submitted successfully:', result);
       alert('Form submitted successfully!');
-    } catch (error) {
+    } catch (error) {// Log and handle any errors that occur during submission
       console.error('Error submitting form:', error);
       alert(`Failed to submit form: ${error.message}`);
     }
@@ -90,14 +92,14 @@ const ImmunizationForm = () => {
   const handleRegNoChange = (value) => {
     setFormData(prev => ({
       ...prev,
-      regNo: value
+      regNo: value //Update the registration number in state
     }));
   };
-  
+  // Function to fetch data by registration number
   const fetchDataByRegistrationNumber = async (regNoParam) => {
-    const regNo = regNoParam || formData.regNo;
+    const regNo = regNoParam || formData.regNo;// Use the provided registration number or fallback to state to get input
     
-    if (!regNo) {
+    if (!regNo) { // If no registration number is provided, show an alert and return
       alert('Please enter a registration number.');
       return;
     }

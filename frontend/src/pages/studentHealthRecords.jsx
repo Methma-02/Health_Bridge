@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect } from "react"; // Import necessary hooks from React
 
 // Constants for field mappings
 const FIELD_MAPPINGS = {
@@ -43,116 +43,118 @@ const FIELD_MAPPINGS = {
 
 // Helper function to initialize table rows
 const initializeTable = () => {
-    return Array(10).fill().map(() => {
+    return Array(10).fill().map(() => { //map 10 input rows
         const row = {};
         Object.values(FIELD_MAPPINGS).forEach(field => {
-            row[field] = '';
+            row[field] = ''; //initialize each field with an empty string
         });
         return row;
     });
 };
 
-const StudentHealthRecords = () => {
+// Define the main functional component for Student Health Records
+const StudentHealthRecords = () => {    // State to manage form data, including registration number and table rows
     const [formData, setFormData] = useState({
         regNo: "",
-        table: initializeTable()
+        table: initializeTable() //call the initilizeTable function
     });
 
     // Load data on component mount
-    useEffect(() => {
+    useEffect(() => { 
         const savedRegNo = localStorage.getItem('studentHealthRegNo');
-        if (savedRegNo) {
+        if (savedRegNo) { // Check if there's a registration number in localStorage
             setFormData(prev => ({ ...prev, regNo: savedRegNo }));
             fetchDataByRegistrationNumber(savedRegNo);
         }
-    }, []);
-
+    }, []); // Empty dependency array ensures this runs only once on mount
+// Function to handle changes in table fields
     const handleTableChange = (index, field, value) => {
         setFormData(prev => ({
             ...prev,
             table: prev.table.map((row, i) =>
-                i === index ? { ...row, [field]: value } : row
+                i === index ? { ...row, [field]: value } : row// Update the specific field in the row
             )
         }));
     };
-
+// Function to handle changes in registration number
     const handleRegNoChange = (value) => {
-        setFormData(prev => ({ ...prev, regNo: value }));
+        setFormData(prev => ({ ...prev, regNo: value })); // Use the provided registration number or fallback to state
     };
 
     const fetchDataByRegistrationNumber = async (regNoParam) => {
         const regNo = regNoParam || formData.regNo;
-        if (!regNo) {
+        if (!regNo) {// If no registration number is provided, show an alert and return
             alert('Please enter a registration number.');
             return;
         }
 
-        try {
+        try {// Fetch data from the API using the registration number
             const response = await fetch(`http://localhost:3000/api/baby/${regNo}`, {
-                headers: { 'x-user-role': 'physician' }
+                headers: { 'x-user-role': 'physician' }// Set the user role in the request headers
             });
-
+// If the response is not OK, throw an error
             if (!response.ok) throw new Error('No data found for this registration number.');
 
-            const data = await response.json();
-            localStorage.setItem('studentHealthRegNo', regNo);
-
+            const data = await response.json();// Parse the response data as JSON
+            localStorage.setItem('studentHealthRegNo', regNo); 
+// Use fetched data if available, otherwise use the initialized table
             const healthRecordsData = data.studentHealthRecords?.length > 0
                 ? data.studentHealthRecords
                 : formData.table;
-
+// Map fetched data to the table structure
             const tableData = initializeTable().map((row, i) => {
                 if (i < healthRecordsData.length) {
                     Object.keys(FIELD_MAPPINGS).forEach(key => {
-                        row[FIELD_MAPPINGS[key]] = healthRecordsData[i][key] || '';
+                        row[FIELD_MAPPINGS[key]] = healthRecordsData[i][key] || '';// Populate fields with fetched data
                     });
                 }
                 return row;
             });
-
+// Update the form data with the fetched data
             setFormData({
                 regNo: data.regNo || regNo,
                 table: tableData
             });
-
+// Show a success alert if manually fetching data
             if (regNoParam === undefined) alert('Data loaded successfully!');
-        } catch (error) {
+        } catch (error) { // Log and handle any errors that occur during fetching
             console.error('Error fetching data:', error);
             if (regNoParam === undefined) alert('No data found for this registration number.');
         }
     };
-
+    // Function to handle form submission
     const handleSubmit = async (e) => {
-        e.preventDefault();
-        if (!formData.regNo) {
+        e.preventDefault();// Prevent the default form submission behavior
+        if (!formData.regNo) {// If no registration number is provided, show an alert and return
             alert('Please enter a registration number.');
             return;
         }
 
-        try {
+        try { // Filter out empty rows and map table data to the required format
             const studentHealthRecords = formData.table
-                .filter(row => row.Date || row.age || row.weight)
+                .filter(row => row.Date || row.age || row.weight)// Filter rows with at least one non-empty field
                 .map(row => {
                     const record = {};
                     Object.keys(FIELD_MAPPINGS).forEach(key => {
-                        record[key] = row[FIELD_MAPPINGS[key]];
+                        record[key] = row[FIELD_MAPPINGS[key]];// Map fields to their corresponding keys
+
                     });
                     return record;
                 });
-
+// Fetch existing data for the registration number
             const getResponse = await fetch(`http://localhost:3000/api/baby/${formData.regNo}`, {
                 headers: { 'x-user-role': 'physician' }
             });
 
             let existingData = {};
             if (getResponse.ok) existingData = await getResponse.json();
-
+// Prepare data for submission
             const dataToSend = {
                 regNo: formData.regNo,
                 ...existingData,
                 studentHealthRecords
             };
-
+// Send a POST request to the API with the form data
             const response = await fetch('http://localhost:3000/api/baby', {
                 method: 'POST',
                 headers: {
@@ -161,9 +163,9 @@ const StudentHealthRecords = () => {
                 },
                 body: JSON.stringify(dataToSend)
             });
-
+// If the response is not OK, throw an error
             if (!response.ok) throw new Error('Failed to submit form');
-
+// Save the registration number to localStorage after successful submission
             localStorage.setItem('studentHealthRegNo', formData.regNo);
             alert('Student health records submitted successfully!');
         } catch (error) {
@@ -171,21 +173,21 @@ const StudentHealthRecords = () => {
             alert(`Failed to submit form: ${error.message}`);
         }
     };
-
+// Function to create table rows for a specific field
     const createTableRow = (fieldName) => {
         return formData.table.map((row, idx) => (
             <td key={idx} className="p-1">
                 <input
-                    type={fieldName === 'Date' || fieldName === 'date given' ? 'date' : 'text'}
+                    type={fieldName === 'Date' || fieldName === 'date given' ? 'date' : 'text'}// Use date input for specific fields
                     value={row[fieldName]}
-                    onChange={(e) => handleTableChange(idx, fieldName, e.target.value)}
+                    onChange={(e) => handleTableChange(idx, fieldName, e.target.value)}// Handle input changes
                     className="w-full p-1 text-xs border border-blue-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-blue-50"
-                    style={{ maxWidth: '100px' }}
+                    style={{ maxWidth: '100px' }}// Set a smaller width for inputs
                 />
             </td>
         ));
     };
-
+// Render the form
     return (
         <form onSubmit={handleSubmit}>
             <div className="w-full max-w-4xl mx-auto p-4 bg-gradient-to-br from-white to-blue-50 shadow-lg rounded-lg">
@@ -222,9 +224,9 @@ const StudentHealthRecords = () => {
                             {Object.values(FIELD_MAPPINGS).map((field) => (
                                 <tr key={field} className="border-b border-blue-100 hover:bg-blue-50">
                                     <td className="p-2 text-sm font-medium text-blue-700 whitespace-nowrap">
-                                        {field.replace(/([A-Z])/g, " $1").trim()}
+                                        {field.replace(/([A-Z])/g, " $1").trim()} {/* Format field name for display */}
                                     </td>
-                                    {createTableRow(field)}
+                                    {createTableRow(field)}{/* Render input cells for the field */}
                                 </tr>
                             ))}
                         </tbody>
