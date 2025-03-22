@@ -1,8 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect } from "react"; //import hooks from react
 
-export default function SensoryScreening() {
-  const [regNo, setRegNo] = useState("");
-  const [answers, setAnswers] = useState({});
+// Define the main functional component for Sensory Screening
+export default function SensoryScreening() { 
+  const [regNo, setRegNo] = useState("");   // State to store the registration number
+  const [answers, setAnswers] = useState({}); 
 
   const questions = {
     vision: {
