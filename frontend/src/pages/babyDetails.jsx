@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect } from "react"; //import hooks from react
 
-const BabyDetails = () => {
-    const [formData, setFormData] = useState({
+const BabyDetails = () => {// Define the main functional component for Baby Details
+    const [formData, setFormData] = useState({    // State to manage the form data, initialized with default values
         regNo: '', // Added regNo field at the top level
         birthData: [{
             healthDivision: '',
@@ -50,7 +50,7 @@ const BabyDetails = () => {
             Other: '',
             "": "",
         }],
-        clinicDays: [], // Changed to an array instead of empty string
+        clinicDays: [], // Array to store clinic days
     });
     
     // Add useEffect to load data on page load
@@ -58,7 +58,7 @@ const BabyDetails = () => {
         // Check if there's a registration number in localStorage
         const savedRegNo = localStorage.getItem('babyRegNo');
         
-        if (savedRegNo) {
+        if (savedRegNo) {        // If a saved registration number exists, set it in state and fetch data
             // Set the regNo from localStorage
             setFormData(prev => ({
                 ...prev,
@@ -68,39 +68,38 @@ const BabyDetails = () => {
             // Fetch the data using the saved registration number
             fetchDataByRegistrationNumber(savedRegNo);
         }
-    }, []);
+    }, []);// Empty dependency array ensures this runs only once on mount
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        
+    const handleSubmit = async (e) => {  // Function to handle form submission
+        e.preventDefault();// Prevent the default form submission behavior
         try {
-            const response = await fetch('http://localhost:3000/api/baby', {
+            const response = await fetch('http://localhost:3000/api/baby', {// Send a POST request to the API with the form data
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
-                    'x-user-role': 'physician', // Add this header to pass the middleware check
+                    'Content-Type': 'application/json',// Send the form data as JSON
+                    'x-user-role': 'physician', 
                 },
                 body: JSON.stringify(formData),
             });
             
-            if (!response.ok) {
+            if (!response.ok) {//If the response is not OK, throw an error
                 const errorData = await response.json();
                 throw new Error(errorData.message || 'Failed to submit form');
             }
             
             // Save registration number to localStorage after successful submission
             localStorage.setItem('babyRegNo', formData.regNo);
-            
+            //Log the successful submission and show an alert
             const result = await response.json();
             console.log('Form submitted successfully:', result);
             alert('Form submitted successfully!');
-        } catch (error) {
+        } catch (error) {// Log and handle any errors that occur during submission
             console.error('Error submitting form:', error);
             alert(`Failed to submit form: ${error.message}`);
         }
     };
 
-    // New handler for regNo
+    // New handler for regNo change
     const handleRegNoChange = (value) => {
         setFormData(prev => ({
             ...prev,
@@ -108,7 +107,7 @@ const BabyDetails = () => {
         }));
     };
 
-    const handleBirthDataChange = (index, field, value) => {
+    const handleBirthDataChange = (index, field, value) => {/// Handler for birth data change
         setFormData(prev => ({
             ...prev,
             birthData: prev.birthData.map((cell, i) =>
@@ -182,9 +181,11 @@ const BabyDetails = () => {
         }));
     };
 
+    // Function to create health details input cells
     const createHealthDetailsCell = (index, fieldName) => {
-        const details = formData.healthDetails[0];  // We only need the template from the first item
+        const details = formData.healthDetails[0];  //use the first item template
 
+        // If the field is an object, render inputs for each subfield
         if (typeof details[fieldName] === "object") {
             return Object.keys(details[fieldName]).map((subField) => (
                 <input
@@ -205,7 +206,7 @@ const BabyDetails = () => {
             ));
         }
 
-        return (
+        return (// Render a single input for non-object fields
             <input
                 type="text"
                 value={formData.healthDetails[index]?.[fieldName] || ""}
@@ -221,7 +222,7 @@ const BabyDetails = () => {
             />
         );
     };
-
+// Function to ensure health details array has at least 4 items
     const ensureHealthDetails = () => {
         if (formData.healthDetails.length < 4) {
             const template = formData.healthDetails[0];
@@ -234,12 +235,12 @@ const BabyDetails = () => {
             }));
         }
     };
-
+// useEffect to ensure health details are populated on mount
     useEffect(() => {
         ensureHealthDetails();
     }, []);
 
-    const createBirthDataRow = (fieldName) => {
+    const createBirthDataRow = (fieldName) => {// Function to create birth data input rows
         return formData.birthData.map((birthData, idx) => (
             <td key={idx} className="p-2">
                 <input
@@ -275,16 +276,17 @@ const BabyDetails = () => {
         ));
     };
 
+    // Function to fetch data by registration number
     const fetchDataByRegistrationNumber = async (regNoParam) => {
         const regNo = regNoParam || formData.regNo;
-    
+    // If no registration number is provided, show an alert and return
         if (!regNo) {
             alert('Please enter a registration number.');
             return;
         }
     
         try {
-            const response = await fetch(
+            const response = await fetch(// Fetch data from the API using the registration number
                 `http://localhost:3000/api/baby/${regNo}`,
                 {
                     headers: {
@@ -293,22 +295,22 @@ const BabyDetails = () => {
                 }
             );
     
-            if (!response.ok) {
+            if (!response.ok) {// If the response is not OK, throw an error
                 throw new Error('No data found for this registration number.');
             }
-    
+            // Parse the response data as JSON
             const data = await response.json();
             console.log('Fetched data:', data);
             
             // Save registration number to localStorage
             localStorage.setItem('babyRegNo', regNo);
-            
+            // Update the form data with the fetched data
             setFormData(prevFormData => ({
                 ...prevFormData,
                 ...data
             }));
             
-            // Don't show alert when loading automatically on page refresh
+            // Show a success alert if manually fetching data
             if (regNoParam === undefined) {
                 alert('Data loaded successfully!');
             }
