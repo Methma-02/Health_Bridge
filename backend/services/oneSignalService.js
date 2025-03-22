@@ -6,9 +6,9 @@ const ONE_SIGNAL_API_KEY = process.env.ONE_SIGNAL_API_KEY;
 
 const sendEmergencyAlertToHospitals = async (emergency, hospitals) => {
   try {
-    // Create segments or tags for these specific hospitals
     const externalIds = hospitals.map(hospital => hospital.placeId);
     
+    // Create the payload that would be sent
     const payload = {
       app_id: ONE_SIGNAL_APP_ID,
       include_external_user_ids: externalIds,
@@ -33,6 +33,14 @@ const sendEmergencyAlertToHospitals = async (emergency, hospitals) => {
       priority: 10
     };
 
+    // Log the notification information instead of sending
+    console.log("[SIMULATION] Emergency alert would be sent to hospitals:");
+    console.log("- Hospitals to notify:", externalIds.join(", "));
+    console.log("- Emergency ID:", emergency._id.toString());
+    console.log("- Additional Info:", emergency.additionalInfo);
+    
+    // For real implementation, uncomment this code:
+    /*
     const response = await axios.post(
       'https://onesignal.com/api/v1/notifications',
       payload,
@@ -43,8 +51,15 @@ const sendEmergencyAlertToHospitals = async (emergency, hospitals) => {
         }
       }
     );
-
     return response.data;
+    */
+    
+    // Return simulated success response
+    return { 
+      id: `simulated-notification-${Date.now()}`,
+      recipients: hospitals.length,
+      success: true
+    };
   } catch (error) {
     console.error('Error sending OneSignal notification:', error);
     throw error;
@@ -55,34 +70,17 @@ const sendCancellationToHospitals = async (emergency, hospitals) => {
   try {
     const externalIds = hospitals.map(hospital => hospital.placeId);
     
-    const payload = {
-      app_id: ONE_SIGNAL_APP_ID,
-      include_external_user_ids: externalIds,
-      contents: { 
-        en: "Emergency Alert Canceled: No further action needed." 
-      },
-      headings: { 
-        en: "ALERT CANCELED" 
-      },
-      data: {
-        emergencyId: emergency._id.toString(),
-        status: 'canceled'
-      },
-      priority: 10
+    // Log the cancellation notification
+    console.log("[SIMULATION] Cancellation alert would be sent to hospitals:");
+    console.log("- Hospitals to notify:", externalIds.join(", "));
+    console.log("- Emergency ID:", emergency._id.toString());
+    
+    // Return simulated success response
+    return { 
+      id: `simulated-cancel-notification-${Date.now()}`,
+      recipients: hospitals.length,
+      success: true
     };
-
-    const response = await axios.post(
-      'https://onesignal.com/api/v1/notifications',
-      payload,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Basic ${ONE_SIGNAL_API_KEY}`
-        }
-      }
-    );
-
-    return response.data;
   } catch (error) {
     console.error('Error sending OneSignal notification:', error);
     throw error;
@@ -91,40 +89,18 @@ const sendCancellationToHospitals = async (emergency, hospitals) => {
 
 const sendAcceptNotificationToMother = async (emergency, hospital, userId) => {
   try {
-    const payload = {
-      app_id: ONE_SIGNAL_APP_ID,
-      include_external_user_ids: [userId],
-      contents: { 
-        en: `${hospital.name} has accepted your emergency alert and is sending help.` 
-      },
-      headings: { 
-        en: "HELP IS ON THE WAY" 
-      },
-      data: {
-        emergencyId: emergency._id.toString(),
-        hospitalId: hospital._id.toString(),
-        hospitalName: hospital.name,
-        hospitalLocation: {
-          latitude: hospital.location.coordinates[1],
-          longitude: hospital.location.coordinates[0]
-        },
-        status: 'accepted'
-      },
-      priority: 10
+    // Log the mother notification
+    console.log("[SIMULATION] Acceptance notification would be sent to mother:");
+    console.log(`- Hospital ${hospital.name} has accepted the emergency`);
+    console.log("- User ID:", userId);
+    console.log("- Emergency ID:", emergency._id.toString());
+    
+    // Return simulated success response
+    return { 
+      id: `simulated-mother-notification-${Date.now()}`,
+      recipients: 1,
+      success: true
     };
-
-    const response = await axios.post(
-      'https://onesignal.com/api/v1/notifications',
-      payload,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Basic ${ONE_SIGNAL_API_KEY}`
-        }
-      }
-    );
-
-    return response.data;
   } catch (error) {
     console.error('Error sending OneSignal notification:', error);
     throw error;
@@ -137,36 +113,22 @@ const sendNotificationToOtherHospitals = async (emergency, acceptingHospital, ot
       .filter(hospital => hospital.placeId !== acceptingHospital.placeId)
       .map(hospital => hospital.placeId);
     
-    if (externalIds.length === 0) return null;
+    if (externalIds.length === 0) {
+      console.log("[SIMULATION] No other hospitals to notify about acceptance");
+      return null;
+    }
     
-    const payload = {
-      app_id: ONE_SIGNAL_APP_ID,
-      include_external_user_ids: externalIds,
-      contents: { 
-        en: `Emergency Alert has been accepted by ${acceptingHospital.name}. No further action needed.` 
-      },
-      headings: { 
-        en: "ALERT ACCEPTED" 
-      },
-      data: {
-        emergencyId: emergency._id.toString(),
-        status: 'accepted by other'
-      },
-      priority: 10
+    // Log the other hospitals notification
+    console.log("[SIMULATION] Notification to other hospitals about acceptance:");
+    console.log(`- Accepting Hospital: ${acceptingHospital.name}`);
+    console.log("- Other Hospitals to notify:", externalIds.join(", "));
+    
+    // Return simulated success response
+    return { 
+      id: `simulated-others-notification-${Date.now()}`,
+      recipients: externalIds.length,
+      success: true
     };
-
-    const response = await axios.post(
-      'https://onesignal.com/api/v1/notifications',
-      payload,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Basic ${ONE_SIGNAL_API_KEY}`
-        }
-      }
-    );
-
-    return response.data;
   } catch (error) {
     console.error('Error sending OneSignal notification:', error);
     throw error;
