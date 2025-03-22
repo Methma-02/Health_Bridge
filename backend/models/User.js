@@ -50,12 +50,24 @@ const userSchema = new mongoose.Schema({
   resetPasswordOtpExpires: Date
 });
 
+// userSchema.pre('save', async function(next) {
+//   if (this.isModified('password')) {
+//     this.password = await bcrypt.hash(this.password, 10);
+//   }
+//   next();
+// });
+
 userSchema.pre('save', async function(next) {
   if (this.isModified('password')) {
-    this.password = await bcrypt.hash(this.password, 10);
+    const isHashed = this.password.startsWith('$2b$') || this.password.startsWith('$2a$');
+    if (!isHashed) {
+      this.password = await bcrypt.hash(this.password, 10);
+    }
   }
   next();
 });
+
+
 
 userSchema.methods.comparePassword = async function(candidatePassword) {
   return bcrypt.compare(candidatePassword, this.password);
