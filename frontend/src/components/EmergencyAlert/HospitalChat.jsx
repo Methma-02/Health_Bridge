@@ -1,4 +1,3 @@
-// frontend/src/components/EmergencyAlert/HospitalChat.jsx
 import React, { useState, useEffect, useRef } from 'react';
 import { useEmergency } from '../context/EmergencyContext';
 
