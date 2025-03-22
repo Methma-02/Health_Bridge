@@ -1,42 +1,45 @@
-// frontend/src/App.jsx
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { EmergencyProvider } from './components/context/EmergencyContext';
 import FloatingWidget from './components/EmergencyAlert/FloatingWidget';
-import { initializeOneSignal, setUserExternalId } from './components/services/notificationService';
-import EmergencyForm from './components/EmergencyAlert/EnergencyForm';
-import EmergencyTracker from './components/EmergencyAlert/EmergencyTracker';
+import { initializeOneSignal } from './components/services/notificationService';
+import EmergencyForm from './components/EmergencyAlert/EmergencyForm'; 
+import EmergencyTracker from './components/EmergencyAlert/EmergencyTracker'; 
 import HospitalChat from './components/EmergencyAlert/HospitalChat';
 import './emergency-alert-system.css';
-//import { useAuth } from './components/context/AuthContext';
 
 const App = () => {
-  
-  const userId = 'user123'; // Replace with actual user ID
-  //const { user } = useAuth();
+  const [notificationsInitialized, setNotificationsInitialized] = useState(false);
 
   useEffect(() => {
-    // Initialize OneSignal when the app loads
-    initializeOneSignal();
-    
-    // Set user ID for OneSignal
-    if (userId) {
-      setUserExternalId(userId);
+    // Only initialize OneSignal once
+    if (!notificationsInitialized) {
+      const setupNotifications = async () => {
+        try {
+          await initializeOneSignal();
+          setNotificationsInitialized(true);
+        } catch (error) {
+          console.error("Failed to initialize notifications:", error);
+        }
+      };
+      
+      setupNotifications();
     }
-  }, [userId]);
+  }, [notificationsInitialized]);
 
   return (
     <BrowserRouter>
-      <EmergencyProvider userId={userId}>
+      <EmergencyProvider>
         <div className="App">
           <Routes>
-          <Route path="/emergency-form" element={<EmergencyForm />} />
-             <Route path="/emergency-tracker" element={<EmergencyTracker />} />
-             <Route path="/hospital-chat" element={<HospitalChat />} />
+            <Route path="/" element={<EmergencyForm />}/>
+            <Route path="/emergency-form" element={<EmergencyForm />} />
+            <Route path="/emergency-tracker" element={<EmergencyTracker />} />
+            <Route path="/hospital-chat" element={<HospitalChat />} />
           </Routes>
           
           {/* Emergency Alert Widget - visible on all pages */}
-          <FloatingWidget userId={userId} />
+          <FloatingWidget />
         </div>
       </EmergencyProvider>
     </BrowserRouter>
