@@ -3,7 +3,7 @@ import { createEmergencyAlert } from '../services/emergencyService';
 import { getCurrentPosition } from '../services/locationService';
 import { useEmergency } from '../context/EmergencyContext';
 
-const EmergencyForm = ({ userId, onClose }) => {
+const EmergencyForm = ({ onClose }) => {
   const [isConfirming, setIsConfirming] = useState(false);
   const [additionalInfo, setAdditionalInfo] = useState('');
   const [loading, setLoading] = useState(false);
