@@ -452,7 +452,7 @@ function App() {
               <Route path="/studentHealthRecords" element={<StudentHealthRecords />} />
               <Route path="/referral" element={<Referral />} />
 
-              <Route path="/P_Dashboard" element={<P_Dashboard />} />
+              <Route path="/p-dashboard" element={<P_Dashboard />} />
               <Route path="/registration" element={<Registration />} />
               <Route path="/clinic-care" element={<ClinicCareTables />} />
               <Route path="/postnatal-care" element={<PostnatalCare />} />
