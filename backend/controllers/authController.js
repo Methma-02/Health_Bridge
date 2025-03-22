@@ -76,11 +76,33 @@ class AuthController {
   static async login(req, res) {
     try {
       const { email, password } = req.body;
+      console.log('email',email);
+      console.log('password',password);
+      
       const user = await User.findOne({ email });
+      console.log('user',user);
+      
 
-      if (!user || !(await user.comparePassword(password))) {
+      // if (!user || !(await user.comparePassword(password))) {
+      //   return res.status(401).json({ error: 'Invalid credentials' });
+      // }
+
+      if (!user) {
         return res.status(401).json({ error: 'Invalid credentials' });
       }
+      console.log("STep 01");
+      
+      console.log('Input password:', password);
+      console.log('Stored hash:', user.password);
+      
+      // const isMatch = await user.comparePassword(password);
+      const isMatch = await bcrypt.compare(password, user.password);
+      console.log("isMatch : ", isMatch);
+
+      if (!isMatch) {
+        return res.status(401).json({ error: 'Invalid credentials' });
+      }
+
 
       if (!user.isActive) {
         return res.status(401).json({ error: 'Account is deactivated' });
