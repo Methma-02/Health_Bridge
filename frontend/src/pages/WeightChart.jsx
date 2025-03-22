@@ -16,7 +16,7 @@ const WeightGainChart = () => {
   const formattedData = {  // Structure for formatted data to be sent or stored
     type: 'weightGain',
     data: {
-      gender,
+      gender,// Selected gender
       measurements: formData.chartPoints //collected weight points
     }
   };
@@ -32,37 +32,39 @@ const WeightGainChart = () => {
     if (savedRegNo) {
       setFormData(prev => ({
         ...prev,
-        regNo: savedRegNo
+        regNo: savedRegNo// Set the registration number from localStorage
       }));
-      fetchDataByRegistrationNumber(savedRegNo);
+      fetchDataByRegistrationNumber(savedRegNo);// Fetch data using the saved registration number
     }
   }, []);
 
   // Function to make chart dimensions responsive
   const useResponsiveDimensions = () => {
+    //Base width and height
     const baseWidth = 1300;
     const baseHeight = 800;
-    const aspectRatio = baseHeight / baseWidth;
-    return {
+    const aspectRatio = baseHeight / baseWidth;// Calculate aspect ratio
+    return {//responsive width and height
       width: '100%',
       height: 'auto',
-      aspectRatio: `${baseWidth} / ${baseHeight}`,
-      viewBox: `0 0 ${baseWidth} ${baseHeight}`
+      aspectRatio: `${baseWidth} / ${baseHeight}`, //Maintain aspect ratio
+      viewBox: `0 0 ${baseWidth} ${baseHeight}` //SVG view box for adaptive behavior
     };
   };
-
+// Get responsive dimensions for the chart
   const dimensions = useResponsiveDimensions();
-  const width = 1300;
-  const height = 800;
-  const margin = { top: 20, right: 30, bottom: 50, left: 55 };
-  const chartWidth = width - margin.left - margin.right;
-  const chartHeight = height - margin.top - margin.bottom;
+  const width = 1300; //fixed width for calculations
+  const height = 800; // fixed height for calculations
+  const margin = { top: 20, right: 30, bottom: 50, left: 55 }; //margins
+  const chartWidth = width - margin.left - margin.right; //Calculate chart width
+  const chartHeight = height - margin.top - margin.bottom; //Calculate height
 
-  const xMax = 60;
-  const yMax = 28;
-  const xTicks = Array.from({ length: 60 }, (_, i) => i + 1);
-  const yTicks = Array.from({ length: 29 }, (_, i) => i + 1);
+  const xMax = 60;//max value for x axis (weeks)
+  const yMax = 28; //max value for y axis (weight)
+  const xTicks = Array.from({ length: 60 }, (_, i) => i + 1); //calculation to get x ticks
+  const yTicks = Array.from({ length: 29 }, (_, i) => i + 1); //calculation to get y ticks
 
+  //convert data coordinates to SVG coordinates
   const toSvgX = (x) => (x / xMax) * chartWidth + margin.left;
   const toSvgY = (y) => chartHeight - ((y + 2) / (yMax + 2)) * chartHeight + margin.top;
   const toDataX = (x) => ((x - margin.left) / chartWidth) * xMax;
@@ -99,12 +101,12 @@ const WeightGainChart = () => {
     }
   };
 
-  const colors = getGenderColors();
+  const colors = getGenderColors();// Get colors based on gender
 
   // Zone data with gender adjustment
   const getZones = (isGirl) => {
-    const adjustment = isGirl ? -2 : 0;
-    return [
+    const adjustment = isGirl ? -2 : 0; // Adjust Y-values for girls
+    return [ //pathways to plot the weight colored areas
       {
         path: `M ${toSvgX(0)} ${toSvgY(1.4 + adjustment)} ,${toSvgX(6)} ${toSvgY(4 + adjustment)},
                Q ${toSvgX(12)} ${toSvgY(6 + adjustment)}, ${toSvgX(24)} ${toSvgY(7.2 + adjustment)} 
@@ -144,8 +146,8 @@ const WeightGainChart = () => {
     ];
   };
 
-  const zones = getZones(gender === 'girl');
-
+  const zones = getZones(gender === 'girl'); //get zones based on gender
+  // Function to get area paths for the chart
   const getAreaPaths = (isGirl) => {
     const adjustment = isGirl ? -2 : 0;
     return {
@@ -173,7 +175,7 @@ const WeightGainChart = () => {
   };
 
   const areaPaths = getAreaPaths(gender === 'girl');
-
+  // Handle mouse movement on the chart
   const handleMouseMove = (e) => {
     if (!showCrosshair) return;
     const rect = e.currentTarget.getBoundingClientRect();
@@ -181,9 +183,9 @@ const WeightGainChart = () => {
     const y = e.clientY - rect.top;
     const scaleX = width / rect.width;
     const scaleY = height / rect.height;
-    setMousePos({ x: x * scaleX, y: y * scaleY });
+    setMousePos({ x: x * scaleX, y: y * scaleY });// Update mouse position
   };
-
+  // Handle click on the chart to add a point
   const handleClick = (e) => {
     const rect = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - rect.left;
@@ -192,20 +194,20 @@ const WeightGainChart = () => {
     const scaleY = height / rect.height;
     const scaledX = x * scaleX;
     const scaledY = y * scaleY;
-    const dataX = Math.round(toDataX(scaledX));
-    const dataY = Number(toDataY(scaledY).toFixed(1));
+    const dataX = Math.round(toDataX(scaledX));// Convert to data X-coordinate
+    const dataY = Number(toDataY(scaledY).toFixed(1));// Convert to data Y-coordinate
     if (dataX >= 0 && dataX <= xMax && dataY >= -2 && dataY <= yMax) {
       setFormData(prev => ({
         ...prev,
-        chartPoints: [...prev.chartPoints, { x: dataX, y: dataY }]
+        chartPoints: [...prev.chartPoints, { x: dataX, y: dataY }]// Add new point to chartPoints
       }));
     }
   };
-
+// Handle registration number change
   const handleRegNoChange = (value) => {
     setFormData(prev => ({
       ...prev,
-      regNo: value
+      regNo: value// Update registration number in state
     }));
   };
 
@@ -286,7 +288,7 @@ const WeightGainChart = () => {
       if (!regNoParam) alert('Error fetching data. Please try again.');
     }
   };
-
+//handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.regNo) {
@@ -337,10 +339,10 @@ const WeightGainChart = () => {
       alert(`Failed to submit form: ${error.message}`);
     }
   };
-
+  // Pagination state and handlers
   const [currentPage, setCurrentPage] = useState(0);
   const CELLS_PER_PAGE = 12;
-
+  // Handle changes in additional weight data
   const handleWeightOtherDataChange = (index, field, value) => {
     setFormData(prev => ({
       ...prev,
@@ -353,7 +355,7 @@ const WeightGainChart = () => {
   const startIdx = currentPage * CELLS_PER_PAGE;
   const endIdx = startIdx + CELLS_PER_PAGE;
   const totalPages = Math.ceil(60 / CELLS_PER_PAGE);
-
+  // Go to the next page
   const nextPage = () => {
     if (currentPage < totalPages - 1) setCurrentPage(prev => prev + 1);
   };

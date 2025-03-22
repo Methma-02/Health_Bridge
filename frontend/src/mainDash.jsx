@@ -1,27 +1,31 @@
+// Import React and the useNavigate hook from react-router-dom
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-
+// Define the SquareCard component for rendering clickable cards
 const SquareCard = ({ icon, title, route }) => {
-  const navigate = useNavigate();
+  const navigate = useNavigate();// Define the SquareCard component for rendering clickable cards
 
-  const handleClick = () => {
+  const handleClick = () => {  // Function to handle card click and navigate to the specified route
     navigate(route); // Navigate to the specified route
   };
 
   return (
+        // Card container with hover effects and styling
     <div
       className="bg-white rounded-lg shadow-md flex flex-col items-center justify-center text-center cursor-pointer hover:bg-blue-50 transition-colors duration-200 w-40 h-40 sm:w-48 sm:h-48 md:w-56 md:h-56"
-      onClick={handleClick}
+      onClick={handleClick}// Trigger navigation on click
     >
-      <div className="text-blue-600 text-2xl md:text-3xl mb-2 md:mb-3">{icon}</div>
-      <div className="text-gray-700 font-medium text-sm md:text-base">{title}</div>
+      <div className="text-blue-600 text-2xl md:text-3xl mb-2 md:mb-3">{icon}</div>{/* Icon for the card */}
+      <div className="text-gray-700 font-medium text-sm md:text-base">{title}</div>{/* Title for the card */}
     </div>
   );
 };
-
+// Define the main dashboard component
 const MDashboard = () => {
   return (
+        // Main container for the dashboard with responsive padding
     <div className="min-h-screen bg-gray-50 p-2 md:p-4 lg:p-6">
+      {/* Inner container with a light blue background and rounded corners */}
       <div className="bg-blue-50 rounded-lg p-4 md:p-6 h-full">
         {/* Header */}
         <h1 className="text-blue-600 text-xl md:text-2xl font-bold flex items-center justify-center mb-4 md:mb-6">
@@ -44,5 +48,5 @@ const MDashboard = () => {
     </div>
   );
 };
-
+// Export the MDashboard component as the default export
 export default MDashboard;
