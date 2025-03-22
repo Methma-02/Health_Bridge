@@ -7,15 +7,14 @@ const oneSignalService = require('../services/oneSignalService');
 // Create a new emergency alert
 const createEmergency = async (req, res) => {
   try {
-    const { userId, latitude, longitude, additionalInfo } = req.body;
+    const { latitude, longitude, additionalInfo } = req.body;
 
     console.log('[SIMULATION] Creating emergency with data:', {
-      userId, latitude, longitude, additionalInfo
+      latitude, longitude, additionalInfo
     });
 
-    // Create new emergency
+    // Create new emergency without userId
     const emergency = new Emergency({
-      userId,
       location: {
         type: 'Point',
         coordinates: [longitude, latitude] // MongoDB uses [longitude, latitude]
@@ -243,36 +242,25 @@ const cancelEmergency = async (req, res) => {
 };
 
 // Get active emergency for a user
-const getUserActiveEmergency = async (req, res) => {
+const getActiveEmergencies = async (req, res) => {
   try {
-    const { userId } = req.params;
-    
-    const emergency = await Emergency.findOne({
-      userId,
+    const emergencies = await Emergency.find({
       status: { $in: ['pending', 'accepted'] }
     }).populate('acceptedBy');
     
-    if (!emergency) {
-      return res.status(404).json({
-        success: false,
-        message: 'No active emergency found for this user'
-      });
-    }
-
     res.status(200).json({
       success: true,
-      data: emergency
+      data: emergencies
     });
   } catch (error) {
-    console.error('Error fetching user emergency:', error);
+    console.error('Error fetching active emergencies:', error);
     res.status(500).json({
       success: false,
-      message: 'Error fetching active emergency',
+      message: 'Error fetching active emergencies',
       error: error.message
     });
   }
 };
-
 // Mark emergency as completed
 const completeEmergency = async (req, res) => {
   try {
@@ -323,6 +311,6 @@ module.exports = {
   getEmergency,
   acceptEmergency,
   cancelEmergency,
-  getUserActiveEmergency,
+  getActiveEmergencies,
   completeEmergency
 };
