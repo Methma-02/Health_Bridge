@@ -43,7 +43,8 @@ export const initializeOneSignal = async () => {
     });
     
     // Only show the prompt if initialization was successful
-    await OneSignal.showSlidedownPrompt();
+    // await OneSignal.showSlideDownPrompt();
+    await OneSignal.Slidedown.promptPush();
     console.log('OneSignal successfully initialized');
     
   } catch (error) {
