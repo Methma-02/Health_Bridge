@@ -4,6 +4,7 @@ import { getActiveEmergencies } from '../services/emergencyService';
 
 const EmergencyContext = createContext();
 
+
 export const useEmergency = () => useContext(EmergencyContext);
 
 export const EmergencyProvider = ({ children }) => {
@@ -14,7 +15,15 @@ export const EmergencyProvider = ({ children }) => {
 
   // Initialize socket connection
   useEffect(() => {
-    const socketInstance = io(import.meta.env.VITE_API_URL || 'http://localhost:3000', {
+    // const socketInstance = io(import.meta.env.VITE_API_URL || 'http://localhost:3000', {
+    //   transports: ['websocket'], // Force WebSocket transport
+    //   withCredentials: true, // Include credentials if needed
+    // });
+    // const socketInstance = io(`${import.meta.env.VITE_API_URL}/emergency`, {
+    //   transports: ['websocket'],
+    //   withCredentials: true,
+    // });
+      const socketInstance = io( 'http://localhost:3000', {
       transports: ['websocket'], // Force WebSocket transport
       withCredentials: true, // Include credentials if needed
     });
