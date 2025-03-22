@@ -1,5 +1,6 @@
 const mongoose = require('mongoose'); 
 
+
 const EmergencySchema = new mongoose.Schema({
   // Remove userId or make it optional
   userId: {
@@ -51,3 +52,6 @@ const EmergencySchema = new mongoose.Schema({
     default: Date.now
   }
 }, { timestamps: true });
+
+const Emergency = mongoose.model('Emergency', EmergencySchema);
+module.exports = Emergency;
