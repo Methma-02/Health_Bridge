@@ -39,8 +39,8 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization', 'x-user-role']
 }));
 app.options('*', cors());
-app.use(express.json({ limit: '10kb' }));
-app.use(express.urlencoded({ extended: true, limit: '10kb' }));
+app.use(express.json({ limit: '250kb' }));
+app.use(express.urlencoded({ extended: true, limit: '250kb' }));
 app.use(bodyParser.json());
 app.use(compression());
 
