@@ -663,7 +663,7 @@ const pregnancyForm1Schema = new mongoose.Schema({
 const PregnancyForm1Model = mongoose.model('PregnancyForm1', pregnancyForm1Schema);
 
 // Routes for Pregnancy Form 2
-app.get('/api/pregnancy/:regNo', canRead, async (req, res) => {
+app.get('/api/pregnancy/:regNo' ,async (req, res) => {
     try {
         const { regNo } = req.params;
         const record = await PregnancyModel.findOne({ regNo });
@@ -679,7 +679,7 @@ app.get('/api/pregnancy/:regNo', canRead, async (req, res) => {
     }
 });
 
-app.post('/api/pregnancy', canWrite, async (req, res) => {
+app.post('/api/pregnancy', async (req, res) => {
     try {
         const { regNo } = req.body;
 
@@ -707,7 +707,7 @@ app.post('/api/pregnancy', canWrite, async (req, res) => {
 });
 
 // Routes for Pregnancy Form 1
-app.get('/api/pregnancy-form1/:registrationNumber', canRead, async (req, res) => {
+app.get('/api/pregnancy-form1/:registrationNumber', async (req, res) => {
     try {
         const { registrationNumber } = req.params;
         const record = await PregnancyForm1Model.findOne({ registrationNumber });
@@ -723,7 +723,7 @@ app.get('/api/pregnancy-form1/:registrationNumber', canRead, async (req, res) =>
     }
 });
 
-app.post('/api/pregnancy-form1', canWrite, async (req, res) => {
+app.post('/api/pregnancy-form1', async (req, res) => {
     try {
         const { registrationNumber } = req.body;
 
