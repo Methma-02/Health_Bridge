@@ -1,13 +1,12 @@
-// frontend/src/contexts/EmergencyContext.jsx
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import { io } from 'socket.io-client';
-import { getUserActiveEmergency } from '../services/emergencyService';
+import { getActiveEmergencies } from '../services/emergencyService';
 
 const EmergencyContext = createContext();
 
 export const useEmergency = () => useContext(EmergencyContext);
 
-export const EmergencyProvider = ({ children, userId }) => {
+export const EmergencyProvider = ({ children }) => {
   const [activeEmergency, setActiveEmergency] = useState(null);
   const [loading, setLoading] = useState(true);
   const [socket, setSocket] = useState(null);
@@ -15,28 +14,46 @@ export const EmergencyProvider = ({ children, userId }) => {
 
   // Initialize socket connection
   useEffect(() => {
-    const socketInstance = io(import.meta.env.VITE_API_URL || 'http://localhost:3000');
+    const socketInstance = io(import.meta.env.VITE_API_URL || 'http://localhost:3000', {
+      transports: ['websocket'], // Force WebSocket transport
+      withCredentials: true, // Include credentials if needed
+    });
+
+    // Log socket connection status
+    socketInstance.on('connect', () => {
+      console.log('Connected to WebSocket server');
+    });
+
+    socketInstance.on('connect_error', (error) => {
+      console.error('WebSocket connection error:', error);
+    });
+
+    socketInstance.on('disconnect', () => {
+      console.log('Disconnected from WebSocket server');
+    });
+
     setSocket(socketInstance);
 
+    // Cleanup function to disconnect the socket when the component unmounts
     return () => {
-      if (socketInstance) socketInstance.disconnect();
+      if (socketInstance) {
+        socketInstance.disconnect();
+      }
     };
   }, []);
 
   // Check for active emergencies when component mounts
   useEffect(() => {
-    if (!userId) return;
-
     const checkActiveEmergency = async () => {
       try {
         setLoading(true);
-        const response = await getUserActiveEmergency(userId);
+        const response = await getActiveEmergencies(); // Fetch all active emergencies
         if (response.success && response.data) {
-          setActiveEmergency(response.data);
+          setActiveEmergency(response.data[0]); // Set the first active emergency (or handle multiple)
           
           // If there's an active emergency, join the socket room
-          if (socket && response.data._id) {
-            socket.emit('joinEmergencyRoom', response.data._id);
+          if (socket && response.data[0]?._id) {
+            socket.emit('joinEmergencyRoom', response.data[0]._id);
           }
         }
       } catch (error) {
@@ -47,22 +64,22 @@ export const EmergencyProvider = ({ children, userId }) => {
     };
 
     checkActiveEmergency();
-  }, [userId, socket]);
+  }, [socket]);
 
   // Set up socket event listeners
   useEffect(() => {
     if (!socket) return;
 
-    socket.on('emergencyStatusUpdate', (data) => {
+    const handleEmergencyStatusUpdate = (data) => {
       if (data.emergencyId === (activeEmergency?._id)) {
         setActiveEmergency(prev => ({
           ...prev,
           ...data.updates
         }));
       }
-    });
+    };
 
-    socket.on('emergencyAccepted', (data) => {
+    const handleEmergencyAccepted = (data) => {
       if (data.emergencyId === (activeEmergency?._id)) {
         setActiveEmergency(prev => ({
           ...prev,
@@ -73,26 +90,33 @@ export const EmergencyProvider = ({ children, userId }) => {
           }
         }));
       }
-    });
+    };
 
-    socket.on('emergencyCanceled', (data) => {
+    const handleEmergencyCanceled = (data) => {
       if (data.emergencyId === (activeEmergency?._id)) {
         setActiveEmergency(prev => ({
           ...prev,
           status: 'canceled'
         }));
       }
-    });
+    };
 
-    socket.on('newMessage', (data) => {
+    const handleNewMessage = (data) => {
       setMessages(prev => [...prev, data]);
-    });
+    };
 
+    // Add event listeners
+    socket.on('emergencyStatusUpdate', handleEmergencyStatusUpdate);
+    socket.on('emergencyAccepted', handleEmergencyAccepted);
+    socket.on('emergencyCanceled', handleEmergencyCanceled);
+    socket.on('newMessage', handleNewMessage);
+
+    // Cleanup function to remove event listeners when the component unmounts
     return () => {
-      socket.off('emergencyStatusUpdate');
-      socket.off('emergencyAccepted');
-      socket.off('emergencyCanceled');
-      socket.off('newMessage');
+      socket.off('emergencyStatusUpdate', handleEmergencyStatusUpdate);
+      socket.off('emergencyAccepted', handleEmergencyAccepted);
+      socket.off('emergencyCanceled', handleEmergencyCanceled);
+      socket.off('newMessage', handleNewMessage);
     };
   }, [socket, activeEmergency]);
 
