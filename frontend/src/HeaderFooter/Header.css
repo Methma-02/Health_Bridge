@@ -16,6 +16,12 @@
   z-index: 1000; /* Ensures the header appears above other content */
   height: 100px;
 }
+.header-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 
 .logo-container {
   display: flex;
