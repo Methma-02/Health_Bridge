@@ -15,9 +15,8 @@ router.post('/accept', emergencyController.acceptEmergency);
 // Cancel emergency
 router.post('/cancel/:emergencyId', emergencyController.cancelEmergency);
 
-// Get active emergency for a user
-router.get('/user/:userId', emergencyController.getUserActiveEmergency);
 
 router.post('/complete/:emergencyId', emergencyController.completeEmergency);
 
+router.get('/active', emergencyController.getActiveEmergencies); 
 module.exports = router;
