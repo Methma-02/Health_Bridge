@@ -1,4 +1,3 @@
-// frontend/src/components/EmergencyAlert/EmergencyTracker.jsx
 import React, { useState, useEffect } from 'react';
 import { cancelEmergency } from '../services/emergencyService';
 import { useEmergency } from '../context/EmergencyContext';
