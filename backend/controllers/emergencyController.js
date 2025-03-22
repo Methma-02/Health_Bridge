@@ -244,9 +244,11 @@ const cancelEmergency = async (req, res) => {
 // Get active emergency for a user
 const getActiveEmergencies = async (req, res) => {
   try {
-    const emergencies = await Emergency.find({
-      status: { $in: ['pending', 'accepted'] }
-    }).populate('acceptedBy');
+    // const emergencies = await Emergency.find({
+    //   status: { $in: ['pending', 'accepted'] }
+    // }).populate('acceptedBy');
+
+    const emergencies = []
     
     res.status(200).json({
       success: true,
