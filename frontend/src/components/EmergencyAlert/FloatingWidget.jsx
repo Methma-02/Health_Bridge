@@ -1,11 +1,10 @@
-// frontend/src/components/EmergencyAlert/FloatingWidget.jsx
 import React, { useState } from 'react';
 import { useEmergency } from '../context/EmergencyContext';
-import EmergencyForm from './EnergencyForm';
+import EmergencyForm from './EmergencyForm';
 import EmergencyTracker from './EmergencyTracker';
 import '../../emergency-alert-system.css';
 
-const FloatingWidget = ({ userId }) => {
+const FloatingWidget = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { activeEmergency, loading } = useEmergency();
 
@@ -26,7 +25,7 @@ const FloatingWidget = ({ userId }) => {
               {activeEmergency ? (
                 <EmergencyTracker emergency={activeEmergency} onClose={() => setIsOpen(false)} />
               ) : (
-                <EmergencyForm userId={userId} onClose={() => setIsOpen(false)} />
+                <EmergencyForm onClose={() => setIsOpen(false)} />
               )}
             </>
           )}
