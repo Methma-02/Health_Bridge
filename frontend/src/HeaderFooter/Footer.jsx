@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Phone, Mail, Facebook, Linkedin, Instagram, ArrowUp, ArrowDown } from "lucide-react";
 import './Footer.css';
 
@@ -63,9 +64,9 @@ const Footer = () => {
           <div className="footer-column">
             <h3>Quick Links</h3>
             <div className="footer-links">
-              <a href="/about" className="quick-link">How To Use</a>
-              <a href="https://healthbridgemarketing.netlify.app/" className="quick-link">Marketing Website</a>
-              <a href="/privacy-policy" className="quick-link">Privacy Policy</a>
+              <a href="https://youtu.be/your-unlisted-video-id" className="quick-link" target="_blank" rel="noopener noreferrer">How To Use</a>
+              <a href="https://healthbridgemarketing.netlify.app/" className="quick-link" target="_blank" rel="noopener noreferrer">Marketing Website</a>
+              <Link to="/privacy-policy" className="quick-link">Privacy Policy</Link>
             </div>
           </div>
         </div>
