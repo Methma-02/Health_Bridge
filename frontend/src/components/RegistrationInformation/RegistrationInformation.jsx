@@ -69,7 +69,7 @@ const PregnancyRecordForm = () => {
 
     try {
       // Send a POST request to the backend API
-      const response = await fetch('http://localhost:5000/api/pregnancy-form1', {
+      const response = await fetch('http://localhost:3000/api/pregnancy-form1', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -102,7 +102,7 @@ const PregnancyRecordForm = () => {
 
     try {
       const response = await fetch(
-        `http://localhost:5000/api/pregnancy-form1/${registrationNumber}`
+        `http://localhost:3000/api/pregnancy-form1/${registrationNumber}`
       );
 
       if (!response.ok) {

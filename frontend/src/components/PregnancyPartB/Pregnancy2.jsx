@@ -8,7 +8,7 @@ const ClinicForm = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch('http://localhost:5000/api/pregnancy', {
+      const response = await fetch('http://localhost:3000/api/pregnancy', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
