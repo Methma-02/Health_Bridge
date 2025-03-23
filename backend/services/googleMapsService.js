@@ -14,13 +14,13 @@ const MOCK_HOSPITALS = [
     rating: 4.5
   },
   {
-    name: "City Medical Center",
+    name: "Asiri Central Hospital",
     placeId: "city_medical_02",
     location: {
       type: 'Point',
-      coordinates: [-73.932242, 40.732610] // Different location
+      coordinates: [6.920618, 79.865789] // Different location
     },
-    address: "456 Medicine Blvd, New York, NY",
+    address: "114 Norris Canal Rd, Colombo 01000",
     rating: 4.2
   },
   {
