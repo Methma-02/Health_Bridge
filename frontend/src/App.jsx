@@ -1,18 +1,20 @@
-
-import Form2 from "./components/PregnancyPartB/Pregnancy"
-import P_Dashboard from "./components/P_Dashboard/P_Dashboard";
-import Registration from "./components/RegistrationInformation/RegistrationInformation";
-import ClinicCareTables from "./components/ClinicCare/Tables"; 
-import PostnatalCare from "./components/PostnatalCare/PostnatalCare";
-import Refferal from "./components/Refferal/Refferal";
-
 import React, { useState, useEffect, useContext } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { EmergencyProvider } from './components/context/EmergencyContext';
+import FloatingWidget from './components/EmergencyAlert/FloatingWidget';
+import { initializeOneSignal } from './components/services/notificationService';
+import EmergencyTracker from './components/EmergencyAlert/EmergencyTracker'; 
+import HospitalChat from './components/EmergencyAlert/HospitalChat';
+import EmergencyDemoController from './components/Demo/EmergencyDemoController';
+import './emergency-alert-system.css';
+
+// Import from test/dev branch
 import { AuthProvider } from './authContext';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { RecoveryContext, RecoveryProvider } from './RecoveryContext';
 import axios from 'axios';
 import './index.css'; 
+
 // Import components from donation center
 import Title from './components/Title';
 import Dashboard from './components/Dashboard';
@@ -29,7 +31,6 @@ import { isUserRegistered, saveUserRegistration, getUserRegistration } from './u
 
 // Import pages from test/dev
 import MDashboard from './mainDash';
-//import MainDashboard from './pages/dashboard';
 import BabyDetails from './pages/babyDetails';
 import WeightChart from './pages/WeightChart';
 import HeightChart from './pages/HeightChart';
@@ -47,8 +48,15 @@ import ForgotPasswordPage from './ForgotPasswordPage';
 import OTPInput from './OTPInput';
 import Homepage from './Homepage';
 import SymptomTracker from "./text";
-
 import PrivacyPolicy from "./PrivacyPolicy";
+
+// Import pregnancy components
+import Form2 from "./components/PregnancyPartB/Pregnancy";
+import P_Dashboard from "./components/P_Dashboard/P_Dashboard";
+import Registration from "./components/RegistrationInformation/RegistrationInformation";
+import ClinicCareTables from "./components/ClinicCare/Tables"; 
+import PostnatalCare from "./components/PostnatalCare/PostnatalCare";
+import Refferal from "./components/Refferal/Refferal";
 // API base URL
 const API_URL = 'http://localhost:3000/api';
 
@@ -62,8 +70,10 @@ function PasswordRecoveryFlow() {
       {page === "otp" && <OTPInput />}
       {page === "resetPassword" && <ResetPasswordPage />}
     </>
+
   );
-}
+};
+
 
 // Donation Center component
 function DonationCenter() {
@@ -421,58 +431,84 @@ Your donation has been recorded in your donation history.`);
     </div>
   );
 }
+const App = () => {
+  const [notificationsInitialized, setNotificationsInitialized] = useState(false);
 
-function App() {
+  useEffect(() => {
+    // Only initialize OneSignal once
+    if (!notificationsInitialized) {
+      const setupNotifications = async () => {
+        try {
+          await initializeOneSignal();
+          setNotificationsInitialized(true);
+        } catch (error) {
+          console.error("Failed to initialize notifications:", error);
+        }
+      };
+      
+      setupNotifications();
+    }
+  }, [notificationsInitialized]);
+
   return (
     <AuthProvider>
       <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
         <RecoveryProvider>
-          
-            <Routes>
-              {/* Authentication Routes */}
-              <Route path="/" element={<LandingPage />} />
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/register" element={<RegistrationPage />} />
-              <Route path="/homepage" element={<Homepage />} />
+          <BrowserRouter>
+            <EmergencyProvider>
+              <div className="App">
+                <Routes>
+                  {/* Authentication Routes */}
+                  <Route path="/" element={<LandingPage />} />
+                  <Route path="/login" element={<LoginPage />} />
+                  <Route path="/register" element={<RegistrationPage />} />
+                  <Route path="/homepage" element={<Homepage />} />
 
-              {/* Password Recovery Routes */}
-              <Route path="/forgot-password" element={<PasswordRecoveryFlow />} />
-              <Route path="/otp" element={<Navigate to="/forgot-password" />} />
-              <Route path="/reset-password" element={<Navigate to="/forgot-password" />} />
+                  {/* Password Recovery Routes */}
+                  <Route path="/forgot-password" element={<PasswordRecoveryFlow />} />
+                  <Route path="/otp" element={<Navigate to="/forgot-password" />} />
+                  <Route path="/reset-password" element={<Navigate to="/forgot-password" />} />
 
-              {/* Main Dashboard */}
-              <Route path="/MDashboard" element={<MDashboard />} />
+                  {/* Main Dashboard */}
+                  <Route path="/MDashboard" element={<MDashboard />} />
 
-              {/* Dashboard Components */}
-              <Route path="/babyDetails" element={<BabyDetails />} />
-              <Route path="/weightChart" element={<WeightChart />} />
-              <Route path="/heightChart" element={<HeightChart />} />
-              <Route path="/immunization" element={<Immunization />} />
-              <Route path="/sensoryScreening" element={<SensoryScreening />} />
-              <Route path="/developmentMilestones" element={<DevelopmentMilestones />} />
-              <Route path="/childHealthRecord" element={<ChildHealthRecord />} />
-              <Route path="/studentHealthRecords" element={<StudentHealthRecords />} />
-              <Route path="/referral" element={<Referral />} />
+                  {/* Dashboard Components */}
+                  <Route path="/babyDetails" element={<BabyDetails />} />
+                  <Route path="/weightChart" element={<WeightChart />} />
+                  <Route path="/heightChart" element={<HeightChart />} />
+                  <Route path="/immunization" element={<Immunization />} />
+                  <Route path="/sensoryScreening" element={<SensoryScreening />} />
+                  <Route path="/developmentMilestones" element={<DevelopmentMilestones />} />
+                  <Route path="/childHealthRecord" element={<ChildHealthRecord />} />
+                  <Route path="/studentHealthRecords" element={<StudentHealthRecords />} />
+                  <Route path="/referral" element={<Referral />} />
 
-              <Route path="/p-dashboard" element={<P_Dashboard />} />
-              <Route path="/registration" element={<Registration />} />
-              <Route path="/clinic-care" element={<ClinicCareTables />} />
-              <Route path="/postnatal-care" element={<PostnatalCare />} />
-              <Route path="/refferal" element={<Refferal />} />
-              <Route path="/PartB" element={<Form2 />} />
-              
+                  {/* Pregnancy Components */}
+                  <Route path="/p-dashboard" element={<P_Dashboard />} />
+                  <Route path="/registration" element={<Registration />} />
+                  <Route path="/clinic-care" element={<ClinicCareTables />} />
+                  <Route path="/postnatal-care" element={<PostnatalCare />} />
+                  <Route path="/refferal" element={<Refferal />} />
+                  <Route path="/PartB" element={<Form2 />} />
 
-              {/* Donation Center Route */}
-              <Route path="/donation-center" element={<DonationCenter />} />
-              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-            </Routes>
-          
+                  {/* Donation Center Route */}
+                  <Route path="/donation-center" element={<DonationCenter />} />
+                  <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                  
+                  {/* Emergency Alert Routes */}
+                  <Route path="/" element={<EmergencyDemoController />} />
+                  <Route path="/dashboard" element={<EmergencyDemoController />} />
+                  <Route path="/emergency-tracker" element={<EmergencyTracker />} />
+                  <Route path="/hospital-chat" element={<HospitalChat />} />
+                </Routes>
+                <FloatingWidget/>
+              </div>
+            </EmergencyProvider>
+          </BrowserRouter>
         </RecoveryProvider>
       </GoogleOAuthProvider>
     </AuthProvider>
-
-
   );
-}
+};
 
 export default App;
