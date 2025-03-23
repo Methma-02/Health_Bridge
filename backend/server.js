@@ -1,18 +1,55 @@
-const http = require("http");
+require("dotenv").config();
+const express = require("express");
+const cors = require("cors");
+const mongoose = require("mongoose");
 
-const PORT = process.env.PORT || 5000;
+const app = express();
+app.use(cors());
+app.use(express.json());
 
-const server = http.createServer((req, res) => {
-  res.writeHead(200, { "Content-Type": "application/json" });
+// Connect to MongoDB
+mongoose
+  .connect(process.env.MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => console.log("✅ MongoDB connected"))
+  .catch((err) => console.error("❌ MongoDB connection error:", err));
 
-  if (req.url === "/" && req.method === "GET") {
-    res.end(JSON.stringify({ message: "Backend is running!" }));
-  } else {
-    res.writeHead(404, { "Content-Type": "application/json" });
-    res.end(JSON.stringify({ message: "Route not found" }));
+// Define Symptom Schema
+const symptomSchema = new mongoose.Schema({
+  date: String,
+  symptoms: [
+    {
+      symptom: String,
+      time: String,
+      intensity: Number,
+    },
+  ],
+});
+
+const Symptom = mongoose.model("Symptom", symptomSchema);
+
+// Route to save symptoms
+app.post("/symptoms", async (req, res) => {
+  try {
+    const { date, symptoms } = req.body;
+
+    if (!date || !symptoms) {
+      return res.status(400).json({ msg: "Invalid input" });
+    }
+
+    // Save symptoms to MongoDB
+    const newSymptomEntry = new Symptom({ date, symptoms });
+    await newSymptomEntry.save();
+
+    res.status(201).json({ msg: "✅ Symptom added successfully!" });
+  } catch (error) {
+    console.error("❌ Error saving symptom:", error);
+    res.status(500).json({ msg: "Server error" });
   }
 });
 
-server.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
-});
+// Start the server
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
