@@ -8,33 +8,6 @@ import Footer from "../../HeaderFooter/Footer";
 const PostnatalCare = () => {
   const { formData, setFormData } = useFormContext();
 
-  const signatureRef = useRef(null);
-
-  // Load signature when form data changes
-  useEffect(() => {
-    if (signatureRef.current && formData.signature) {
-      // Clear existing signature first
-      signatureRef.current.clear();
-      
-      // Need to wait for the clear operation to complete
-      setTimeout(() => {
-        // Now load the signature from the dataURL
-        signatureRef.current.fromDataURL(formData.signature);
-      }, 0);
-    }
-  }, [formData.signature]);
-
-  const handleClearSignature = () => {
-    signatureRef.current.clear();
-  };
-
-  const handleSaveSignature = () => {
-    const signatureData = signatureRef.current
-      .getTrimmedCanvas()
-      .toDataURL("image/png");
-    setFormData((prev) => ({ ...prev, signature: signatureData }));
-  };
-
   const handleInputChange = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
@@ -217,29 +190,6 @@ const PostnatalCare = () => {
         </div>
       </div>
     </div>
-
-      {/* Signature Section */}
-      <div className="bg-white border-l-4 border-blue-500 p-4 rounded-lg mb-6 shadow">
-        <h2 className="text-xl font-semibold text-blue-700 mb-4">Signature</h2>
-        <SignatureCanvas
-          ref={signatureRef}
-          canvasProps={{ width: 500, height: 200, className: "border p-2 bg-blue-50" }}
-        />
-        <div className="flex space-x-4 mt-2">
-          <button
-            className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500"
-            onClick={handleClearSignature}
-          >
-            Clear
-          </button>
-          <button
-            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            onClick={handleSaveSignature}
-          >
-            Save Signature
-          </button>
-        </div>
-      </div>
 
       {/* Other Notes */}
       <div className="bg-white border-l-4 border-blue-500 p-4 rounded-lg mb-6 shadow">
