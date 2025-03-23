@@ -1,13 +1,24 @@
 
-// backend/server.js
-require('dotenv').config();
+
 const express = require('express');
 const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
 const cors = require('cors');
 const http = require('http');
+const dotenv = require('dotenv');
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
+const morgan = require('morgan');
+const compression = require('compression');
+const { connectDB, waitForDB } = require('./config/database');
+const { validateEnv } = require('./config/env');
+const logger = require('./utils/logger');
 const { setupSocket } = require("./socket/socketHandlers");
 const emergencyRoutes = require('./routes/emergencyRoutes');
 const testRoutes = require('./routes/testRoutes');
+// Load environment variables
+dotenv.config();
+validateEnv();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -33,31 +44,8 @@ const io = setupSocket(server);
 // Make io globally available for other modules
 global.io = io;
 
-// Start server
-server.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
-=======
-const express = require('express');
-const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const dotenv = require('dotenv');
-const helmet = require('helmet');
-const rateLimit = require('express-rate-limit');
-const morgan = require('morgan');
-const compression = require('compression');
-const { connectDB, waitForDB } = require('./config/database');
-const { validateEnv } = require('./config/env');
-const logger = require('./utils/logger');
 
-// Load environment variables
-dotenv.config();
-validateEnv();
 
-// Initialize express app
-const app = express();
-const PORT = process.env.PORT || 3000;
 
 // Security middleware
 app.use(helmet({
