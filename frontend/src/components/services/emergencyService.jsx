@@ -78,6 +78,24 @@ export const getActiveEmergencies = async () => {
   }
 };
 
+export const completeEmergency = async (emergencyId) => {
+  try {
+    const response = await fetch(`${API_URL}/api/emergencies/${emergencyId}/complete`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      credentials: 'include'
+    });
+    
+    return await response.json();
+  } catch (error) {
+    console.error('Error completing emergency:', error);
+    return { success: false, error: error.message };
+  }
+};
+
+
 export const getUserActiveEmergency = async (userId) => {
   try {
     const response = await apiClient.get(`/emergency/user/${userId}`);
@@ -96,5 +114,6 @@ export const getUserActiveEmergency = async (userId) => {
     return { success: false, data: null };
   }
 
+  
   
 };
