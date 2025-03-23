@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react"; //import hooks from react
+import Header from "../HeaderFooter/Header";
+import Footer from "../HeaderFooter/Footer";
 
 const BabyDetails = () => {// Define the main functional component for Baby Details
     const [formData, setFormData] = useState({    // State to manage the form data, initialized with default values
@@ -324,7 +326,9 @@ const BabyDetails = () => {// Define the main functional component for Baby Deta
     
 
     return (
+        <>
         <form onSubmit={handleSubmit}>
+            <Header/>
         <div className="w-full max-w-4xl mx-auto p-4 bg-gradient-to-br from-white to-blue-50 shadow-lg rounded-lg">
             <h1 className="text-2xl md:text-3xl font-bold text-blue-600 mb-6 text-center">Baby Details</h1>
 
@@ -552,7 +556,10 @@ const BabyDetails = () => {// Define the main functional component for Baby Deta
   </button>
 </div>
         </div>
+        
         </form>
+        <Footer/>
+        </>
     );
 };
 
