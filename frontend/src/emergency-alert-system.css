@@ -29,11 +29,12 @@
 /* Floating Widget */
 .emergency-widget {
   position: fixed;
-  bottom: 2rem;
-  right: 2rem;
+  bottom: 0.5rem;
+  right: 5.5rem;
   z-index: 1000;
   font-family: 'Inter', system-ui, sans-serif;
 }
+
 
 .emergency-widget-button {
   display: flex;
