@@ -12,6 +12,7 @@ import logo from "./images/logo.png";
 import landingPageVideo from "./videos/logingPage.mp4";
 import landingPage from "./images/landingPage3.png";
 import homePage from "./images/homePage.png";
+import video from "./videos/Demo.mp4";
 
 const LandingPage = () => {
   const navigate = useNavigate();
@@ -387,10 +388,11 @@ const LandingPage = () => {
                   transition={{ delay: 0.2, duration: 0.8 }}
                 >
                   <img
-                    src="/api/placeholder/600/400"
+                    src={logo}
                     alt="Health Bridge app interface"
-                    className="w-full h-auto rounded-xl"
+                    className="w-3/4 h-auto mx-auto rounded-xl"
                   />
+
                   {/* Animated pulse indicator to draw attention */}
                   <div className="absolute top-1/2 right-8 transform -translate-y-1/2">
                     <span className="absolute w-4 h-4 rounded-full bg-[#4f46e5]"></span>
