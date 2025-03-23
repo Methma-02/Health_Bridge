@@ -4,7 +4,6 @@ import { getActiveEmergencies } from '../services/emergencyService';
 
 const EmergencyContext = createContext();
 
-
 export const useEmergency = () => useContext(EmergencyContext);
 
 export const EmergencyProvider = ({ children }) => {
@@ -23,7 +22,7 @@ export const EmergencyProvider = ({ children }) => {
     //   transports: ['websocket'],
     //   withCredentials: true,
     // });
-      const socketInstance = io( 'http://localhost:3000', {
+    const socketInstance = io('http://localhost:3000', {
       transports: ['websocket'], // Force WebSocket transport
       withCredentials: true, // Include credentials if needed
     });
@@ -110,6 +109,15 @@ export const EmergencyProvider = ({ children }) => {
       }
     };
 
+    const handleEmergencyCompleted = (data) => {
+      if (data.emergencyId === (activeEmergency?._id)) {
+        setActiveEmergency(prev => ({
+          ...prev,
+          status: 'completed'
+        }));
+      }
+    };
+
     const handleNewMessage = (data) => {
       setMessages(prev => [...prev, data]);
     };
@@ -118,6 +126,7 @@ export const EmergencyProvider = ({ children }) => {
     socket.on('emergencyStatusUpdate', handleEmergencyStatusUpdate);
     socket.on('emergencyAccepted', handleEmergencyAccepted);
     socket.on('emergencyCanceled', handleEmergencyCanceled);
+    socket.on('emergencyCompleted', handleEmergencyCompleted);
     socket.on('newMessage', handleNewMessage);
 
     // Cleanup function to remove event listeners when the component unmounts
@@ -125,6 +134,7 @@ export const EmergencyProvider = ({ children }) => {
       socket.off('emergencyStatusUpdate', handleEmergencyStatusUpdate);
       socket.off('emergencyAccepted', handleEmergencyAccepted);
       socket.off('emergencyCanceled', handleEmergencyCanceled);
+      socket.off('emergencyCompleted', handleEmergencyCompleted);
       socket.off('newMessage', handleNewMessage);
     };
   }, [socket, activeEmergency]);
@@ -139,12 +149,37 @@ export const EmergencyProvider = ({ children }) => {
     });
   };
 
+  // Complete emergency function
+  const completeEmergency = (emergencyId) => {
+    if (!socket || !emergencyId) return;
+    
+    // Emit socket event to complete the emergency
+    socket.emit('completeEmergency', { emergencyId });
+    
+    // You could also make an API call here if needed
+    fetch(`/api/emergencies/${emergencyId}/complete`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log('Emergency completed:', data);
+      // The socket listener will update the state when the server emits the completed event
+    })
+    .catch(error => {
+      console.error('Error completing emergency:', error);
+    });
+  };
+
   const value = {
     activeEmergency,
     setActiveEmergency,
     loading,
     messages,
-    sendMessage
+    sendMessage,
+    completeEmergency
   };
 
   return (
