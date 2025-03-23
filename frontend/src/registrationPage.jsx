@@ -235,11 +235,16 @@ const RegistrationPage = () => {
 
   // Get input element style based on error state
   const getInputStyle = (fieldName) => {
-    const baseStyle = "mt-1 block w-full border rounded-md shadow-sm py-2 px-3 focus:ring-indigo-500 focus:border-indigo-500";
-    return errors[fieldName] 
-      ? `${baseStyle} border-red-300 text-red-900 placeholder-red-300 focus:ring-red-500 focus:border-red-500` 
-      : `${baseStyle} border-gray-300`;
-  };
+  const baseStyle = "mt-1 block w-full border rounded-md shadow-sm py-2 px-3 focus:ring-indigo-500 focus:border-indigo-500";
+  const errorStyle = errors[fieldName] 
+    ? `${baseStyle} border-red-300 text-red-900 placeholder-red-300 focus:ring-red-500 focus:border-red-500` 
+    : `${baseStyle} border-gray-300`;
+
+  // Add text-black when the field has a value
+  return formData[fieldName] 
+    ? `${errorStyle} text-black` 
+    : errorStyle;
+};
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-blue-100 flex items-center justify-center px-4 py-12">
@@ -289,7 +294,7 @@ const RegistrationPage = () => {
             <h3 className="text-md font-medium text-gray-700 mb-3">Personal Information</h3>
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
                   Full Name <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -305,7 +310,7 @@ const RegistrationPage = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
                   Email <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -321,7 +326,7 @@ const RegistrationPage = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
                   Phone Number <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -343,7 +348,7 @@ const RegistrationPage = () => {
             <h3 className="text-md font-medium text-gray-700 mb-3">Create Password</h3>
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
                   Password <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -374,7 +379,7 @@ const RegistrationPage = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
                   Confirm Password <span className="text-red-500">*</span>
                 </label>
                 <input
