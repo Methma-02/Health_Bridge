@@ -46,31 +46,36 @@ const Homepage = () => {
       name: 'Pregnancy Form', 
       icon: <FileText size={40} color="#60a5fa" />,
       description: 'Comprehensive digital form for tracking pregnancy progress',
-      path: '/p-dashboard'
+      path: '/p-dashboard',
+      isExternal: false
     },
     { 
       name: 'Child Health Development Record', 
       icon: <Calendar size={40} color="#60a5fa" />,
       description: 'Detailed health tracking for children',
-      path: '/MDashboard'
+      path: '/MDashboard',
+      isExternal: false
     },
     { 
       name: 'Symptom Recorder', 
       icon: <Heart size={40} color="#60a5fa" />,
       description: 'Monitor and log health symptoms easily',
-      path: '/symptom-recorder'
+      path: 'https://healthbridgemarketing.netlify.app/',
+      isExternal: true
     },
     { 
       name: 'Donation Center', 
       icon: <Gift size={40} color="#60a5fa" />,
       description: 'Support maternal and child health initiatives',
-      path: '/donation-center'
+      path: '/donation-center',
+      isExternal: false
     },
     { 
       name: 'Emergency Alert', 
       icon: <AlertCircle size={40} color="#f472b6" />,
       description: 'Instant emergency support and notifications',
-      path: '/emergency-alert'
+      path: '/emergency-demo',
+      isExternal: false
     }
   ];
 
@@ -126,6 +131,17 @@ const Homepage = () => {
   const handleScroll = () => {
     if (servicesContainerRef.current) {
       setScrollPosition(servicesContainerRef.current.scrollLeft);
+    }
+  };
+
+  // Handle service card clicks - either navigate internally or to external link
+  const handleServiceClick = (service) => {
+    if (service.isExternal) {
+      // Navigate to external link in the same tab
+      window.location.href = service.path;
+    } else {
+      // Use react-router for internal navigation
+      navigate(service.path);
     }
   };
 
@@ -198,7 +214,9 @@ const Homepage = () => {
                 {service.icon}
                 <h3>{service.name}</h3>
                 <p>{service.description}</p>
-                <button onClick={() => navigate(service.path)}>Learn More</button>
+                <button onClick={() => handleServiceClick(service)}>
+                  {service.isExternal ? 'Visit Site' : 'Learn More'}
+                </button>
               </div>
             ))}
           </div>
@@ -285,8 +303,6 @@ const Homepage = () => {
       <Footer />
     </div>
   );
-
-  
 };
 
 export default Homepage;

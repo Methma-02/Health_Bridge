@@ -64,7 +64,7 @@ const Footer = () => {
           <div className="footer-column">
             <h3>Quick Links</h3>
             <div className="footer-links">
-              <a href="https://youtu.be/your-unlisted-video-id" className="quick-link" target="_blank" rel="noopener noreferrer">How To Use</a>
+              <a href="https://youtu.be/8CClXi8zzGc" className="quick-link" target="_blank" rel="noopener noreferrer">How To Use</a>
               <a href="https://healthbridgemarketing.netlify.app/" className="quick-link" target="_blank" rel="noopener noreferrer">Marketing Website</a>
               <Link to="/privacy-policy" className="quick-link" target="_blank" rel="noopener noreferrer">Privacy Policy</Link>
             </div>

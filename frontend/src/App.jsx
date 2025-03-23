@@ -367,6 +367,8 @@ function DonationCenter() {
   };
 
   return (
+    <>
+    <Header />
     <div className="app-container">
       <main className="main-content">
         <Title />
@@ -420,6 +422,8 @@ function DonationCenter() {
         )}
       </main>
     </div>
+    <Footer />
+    </>
   );
 }
 function App() {
