@@ -119,7 +119,7 @@ Header, Footer {
   align-items: center;
   justify-content: center;
   text-align: center;
-  transform: translate(48%, 10%);
+  transform: translate(47%, 0%);
 }
 
 .hero-content h2 {
@@ -982,15 +982,38 @@ a:hover {
   }
 }
 
-/* Dark mode support */
+/* Dark mode support - Enhanced version */
 @media (prefers-color-scheme: dark) {
   :root {
-    --text-color: #f0f0f0;
-    --text-light: #d0d0d0;
-    --text-dark: #ffffff;
-    --bg-light: #121212;
-    --bg-dark: #000000;
-    --secondary-bg: #1a2c4c;
+    /* Enhanced color palette for dark mode */
+    --primary-color: #6366f1; /* Slightly brighter indigo for better visibility */
+    --primary-dark: #4f46e5;
+    --primary-light: #a5b4fc;
+    --secondary-color: #10b981; /* Keeping teal but might appear brighter on dark bg */
+    --secondary-dark: #059669;
+    --secondary-bg: #111827; /* Darker blue-gray for background */
+    --accent-color: #f97316; /* Keeping vibrant orange for accents */
+    
+    /* Text colors */
+    --text-color: #f3f4f6; /* Light gray for main text */
+    --text-light: #d1d5db; /* Mid gray for secondary text */
+    --text-dark: #ffffff; /* Pure white for important text */
+    
+    /* Background colors */
+    --bg-light: #0f172a; /* Dark blue-gray for main background */
+    --bg-dark: #020617; /* Even darker for contrast areas */
+    
+    /* Updated shadows for dark mode */
+    --shadow-sm: 0 5px 15px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 10px 20px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 15px 30px rgba(0, 0, 0, 0.5);
+    --shadow-glow: 0 0 20px rgba(99, 102, 241, 0.25);
+    --shadow-glow-secondary: 0 0 20px rgba(16, 185, 129, 0.25);
+    
+    /* Additional dark mode variables */
+    --card-bg: #1e1e2d; /* Slightly blue-tinted dark for cards */
+    --border-color: #2e2e3f; /* Subtle border color */
+    --hover-bg: #252536; /* Slightly lighter background for hover states */
   }
   
   body {
@@ -998,37 +1021,136 @@ a:hover {
     color: var(--text-color);
   }
   
+  /* Improved card styling */
   .mission-box, .vision-box, .service-card, .step-card {
-    background-color: #1e1e1e;
-    border-color: #333;
+    background-color: var(--card-bg);
+    border-color: var(--border-color);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
   }
   
-  .how-it-works-section, .services-section {
-    background-color: #121212;
+  /* Section backgrounds */
+  .how-it-works-section {
+    background-color: var(--bg-dark);
+  }
+  
+  .services-section {
+    background: linear-gradient(to bottom, var(--bg-light), var(--bg-dark));
+  }
+  
+  .about-section {
+    background-color: var(--bg-light);
+  }
+  
+  .mission-vision-section {
+    background-color: #131836; /* Slightly blue-tinted dark background */
+  }
+  
+  /* Enhanced glass morphism for Sri Lanka section */
+  .sri-lanka-section {
+    background-color: var(--bg-dark);
   }
   
   .sri-lanka-content {
-    background-color: rgba(30, 30, 30, 0.8);
+    background-color: rgba(30, 30, 45, 0.7);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(80, 80, 120, 0.2);
   }
   
+  /* Navigation buttons */
   .carousel-nav-button {
-    background-color: #333;
-    color: white;
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
   }
   
+  .carousel-nav-button:hover {
+    background-color: var(--primary-color);
+    color: var(--text-dark);
+  }
+  
+  /* Button styles */
   .secondary-button {
-    color: #f0f0f0;
-    border-color: #f0f0f0;
+    color: var(--text-color);
+    border-color: var(--primary-light);
+  }
+  
+  .secondary-button:hover {
+    background-color: rgba(99, 102, 241, 0.15);
+    border-color: var(--primary-color);
+  }
+  
+  .primary-button:hover {
+    background-color: var(--primary-dark);
+    box-shadow: 0 5px 15px rgba(99, 102, 241, 0.4);
+  }
+  
+  /* Benefit items */
+  .benefit-item:hover {
+    background-color: rgba(99, 102, 241, 0.1);
   }
   
   .benefit-icon {
     background: var(--gradient-primary);
-    box-shadow: 0 4px 10px rgba(79, 70, 229, 0.5);
+    box-shadow: 0 4px 10px rgba(99, 102, 241, 0.4);
   }
   
+  /* Hero content with improved text shadow */
   .hero-content h2, .hero-content p {
     color: white;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.7);
+  }
+  
+  /* Service cards enhanced hover effect */
+  .service-card:hover {
+    transform: translateY(-15px) scale(1.02);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3), 0 0 0 1px var(--border-color);
+  }
+  
+  .service-card:hover::before {
+    opacity: 0.1;
+  }
+  
+  /* Card headers and text */
+  .mission-box h2, .vision-box h2, .service-card h3, .step-content h3 {
+    color: var(--primary-light);
+  }
+  
+  .step-content p, .service-card p, .about-text p {
+    color: var(--text-light);
+  }
+  
+  /* Step cards in How It Works */
+  .step-card {
+    border: 1px solid var(--border-color);
+  }
+  
+  .step-card:hover {
+    box-shadow: var(--shadow-lg), 0 0 0 1px var(--primary-color);
+  }
+  
+  .step-icon {
+    color: var(--primary-light);
+  }
+  
+  /* Highlight text */
+  .highlight-text {
+    color: var(--primary-light);
+  }
+  
+  /* Focus states */
+  :focus {
+    outline: 3px solid var(--primary-color);
+    outline-offset: 2px;
+  }
+  
+  /* Enhanced decorative elements */
+  .mission-vision-section::before,
+  .mission-vision-section::after {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(16, 185, 129, 0.2));
+  }
+  
+  .about-section::before {
+    background: radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, transparent 70%);
   }
 }
 

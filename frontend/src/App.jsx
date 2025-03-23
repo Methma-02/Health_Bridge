@@ -54,6 +54,9 @@ import SymptomTracker from "./text";
 
 import PrivacyPolicy from "./PrivacyPolicy";
 
+import Header from './HeaderFooter/Header';
+import Footer from './HeaderFooter/Footer';
+
 // API base URL
 const API_URL = 'http://localhost:3000/api';
 
@@ -251,6 +254,8 @@ function DonationCenter() {
   };
 
   return (
+    <>
+    <Header />
     <div className="app-container">
       <main className="main-content">
         <Title />
@@ -279,6 +284,8 @@ function DonationCenter() {
         </Modal>
       )}
     </div>
+    <Footer />
+    </>
   );
 }
 
@@ -330,6 +337,8 @@ function App() {
               <Route path="/emergency-tracker" element={<EmergencyTracker />} />
               <Route path="/hospital-chat" element={<HospitalChat />} />
               <Route path="/emergency-demo" element={<EmergencyDemoController />} />
+
+              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             </Routes>
             <FloatingWidget/>
           </EmergencyProvider>
