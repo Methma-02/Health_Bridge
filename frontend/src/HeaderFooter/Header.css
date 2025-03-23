@@ -172,6 +172,23 @@ body.header-scrolled {
   display: none;
 }
 
+/* Override general link styles for nav items */
+.nav-links .nav-item:hover {
+  text-decoration: none !important; /* Override the general link hover style */
+}
+
+/* Ensure this gets loaded after the main CSS */
+.health-bridge-header a:hover {
+  text-decoration: none;
+}
+
+/* For extra safety */
+.nav-item.profile-link:hover,
+.nav-item.emergency-link:hover,
+.nav-links a:hover {
+  text-decoration: none !important;
+}
+
 /* Menu Toggle Button */
 .menu-toggle {
   display: none;

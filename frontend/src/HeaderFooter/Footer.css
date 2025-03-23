@@ -8,7 +8,7 @@
   text-align: center;
 }
 
-.container {
+.footer .container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 2rem;
@@ -83,7 +83,7 @@
   transform: translateX(-50%);
 }
 
-/* Footer links styling */
+/* Footer links styling - Added more specific selectors */
 .footer-links {
   display: flex;
   flex-direction: column;
@@ -91,16 +91,26 @@
   align-items: center;
 }
 
-.footer-link {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #e5e7eb;
+/* Override the global link styling for footer links */
+.footer a {
   text-decoration: none;
   transition: color 0.2s ease;
 }
 
-.footer-link:hover, .quick-link:hover {
+/* Prevent the underline from the global styles */
+.footer a:hover {
+  text-decoration: none;
+}
+
+.footer .footer-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #e5e7eb;
+}
+
+.footer .footer-link:hover, 
+.footer .quick-link:hover {
   color: #f9a8d4;
 }
 
@@ -109,16 +119,14 @@
   flex-shrink: 0;
 }
 
-.quick-link {
+.footer .quick-link {
   color: #e5e7eb;
-  text-decoration: none;
-  transition: color 0.2s ease;
   display: inline-block;
   position: relative;
   text-align: center;
 }
 
-.quick-link:after {
+.footer .quick-link:after {
   content: '';
   position: absolute;
   width: 0;
@@ -130,7 +138,7 @@
   transform: translateX(-50%);
 }
 
-.quick-link:hover:after {
+.footer .quick-link:hover:after {
   width: 100%;
 }
 
@@ -141,7 +149,7 @@
   justify-content: center;
 }
 
-.social-links a {
+.footer .social-links a {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -153,10 +161,11 @@
   transition: all 0.3s ease;
 }
 
-.social-links a:hover {
+.footer .social-links a:hover {
   background-color: #f9a8d4;
   color: #1f2937;
   transform: translateY(-3px);
+  text-decoration: none;
 }
 
 /* Center column adjustments */

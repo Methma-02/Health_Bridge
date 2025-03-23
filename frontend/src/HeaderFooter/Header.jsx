@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { User, AlertCircle, Menu, X } from 'lucide-react';
+import { AlertCircle, Menu, X } from 'lucide-react';
 import './Header.css';
 
 const Header = () => {
@@ -63,7 +63,7 @@ const Header = () => {
     <header className={`health-bridge-header ${scrolled ? 'scrolled' : ''}`}>
       <div className="header-container">
         <div className="logo-container">
-          <Link to="/" className="logo-link" aria-label="Health Bridge Home">
+          <Link to="/homepage" className="logo-link" aria-label="Health Bridge Home">
             <img src="/src/HeaderFooter/1.png" alt="" className="logo-image" />
             <span className="logo-text">Health Bridge</span>
           </Link>
@@ -80,16 +80,13 @@ const Header = () => {
           </button>
           
           <div className="nav-links">
-            <Link to="/mothers-dashboard" className="nav-item">Mother's Dashboard</Link>
-            <Link to="/childrens-dashboard" className="nav-item">Child's Dashboard</Link>
+            <Link to="/p-dashboard" className="nav-item">Mother's Dashboard</Link>
+            <Link to="/Mdashboard" className="nav-item">Child's Dashboard</Link>
             <Link to="/symptom-recorder" className="nav-item">Symptom Recorder</Link>
             <Link to="/donation-center" className="nav-item">Donation Center</Link>
             <Link to="/emergency-alert" className="nav-item emergency-link">
               <AlertCircle size={16} />
               <span>Emergency Alert</span>
-            </Link>
-            <Link to="/profile" className="nav-item profile-link" aria-label="User profile">
-              <User size={20} />
             </Link>
           </div>
         </nav>

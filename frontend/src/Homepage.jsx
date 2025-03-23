@@ -178,7 +178,7 @@ const Homepage = () => {
 
       {/* Services Section with Carousel Navigation */}
       <section ref={servicesRef} className="services-section">
-        <h2><b>Our Services</b></h2>
+        <h2>Our Services</h2>
         <div className="services-carousel-container">
           <button 
             className="carousel-nav-button carousel-prev"
