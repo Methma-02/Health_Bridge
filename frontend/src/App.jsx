@@ -48,6 +48,7 @@ import OTPInput from './OTPInput';
 import Homepage from './Homepage';
 import SymptomTracker from "./text";
 
+import PrivacyPolicy from "./PrivacyPolicy";
 // API base URL
 const API_URL = 'http://localhost:3000/api';
 
@@ -463,6 +464,7 @@ function App() {
 
               {/* Donation Center Route */}
               <Route path="/donation-center" element={<DonationCenter />} />
+              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             </Routes>
           <SymptomTracker/>
         </RecoveryProvider>
