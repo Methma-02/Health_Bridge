@@ -253,42 +253,175 @@ function DonationCenter() {
     }
   };
 
+ // Complete a request
+  const completeRequest = async (requestId) => {
+    try {
+      await axios.patch(`${API_URL}/requests/${requestId}/status`, { status: 'Fulfilled' });
+
+      // Refresh requests
+      const requestsResponse = await axios.get(`${API_URL}/requests`);
+      setRequests(requestsResponse.data);
+
+      // Refresh user requests
+      const userRequestsResponse = await axios.get(`${API_URL}/requests/user/${registrationNumber}`);
+      setUserRequests(userRequestsResponse.data);
+
+      // Refresh stats
+      const statsResponse = await axios.get(`${API_URL}/stats`);
+      setStats(statsResponse.data);
+
+      alert('Request marked as complete!');
+    } catch (error) {
+      console.error('Error completing request:', error);
+      alert('Failed to mark request as complete. Please try again.');
+    }
+  };
+
+  // Edit a request
+  const editRequest = async (requestId, updatedData) => {
+    try {
+      const response = await axios.patch(`${API_URL}/requests/${requestId}`, updatedData);
+      const updatedRequest = response.data;
+
+      // Refresh requests
+      const requestsResponse = await axios.get(`${API_URL}/requests`);
+      setRequests(requestsResponse.data);
+
+      // Refresh user requests
+      const userRequestsResponse = await axios.get(`${API_URL}/requests/user/${registrationNumber}`);
+      setUserRequests(userRequestsResponse.data);
+
+      closeModal();
+      alert('Request updated successfully!');
+    } catch (error) {
+      console.error('Error updating request:', error);
+      alert('Failed to update request. Please try again.');
+    }
+  };
+
+  // Render content based on active tab
+  const renderContent = () => {
+    switch (activeTab) {
+      case 'active':
+        return <RequestList
+          requests={requests}
+          onViewDetails={(request) => openModal('requestDetails', request)}
+          onDonate={(request) => openModal('donate', request)}
+        />;
+      case 'myRequests':
+        return isRegistered ? (
+          <MyRequests
+            requests={userRequests}
+            onEdit={(request) => openModal('editRequest', request)}
+            onComplete={completeRequest}
+          />
+        ) : (
+          <div className="not-registered-message">
+            <p>Please register to see your requests.</p>
+            <button onClick={() => openModal('registration')}>Register</button>
+          </div>
+        );
+      case 'myDonations':
+        return isRegistered ? (
+          <MyDonations donations={userDonations} />
+        ) : (
+          <div className="not-registered-message">
+            <p>Please register to see your donations.</p>
+            <button onClick={() => openModal('registration')}>Register</button>
+          </div>
+        );
+      default:
+        return <RequestList requests={requests} />;
+    }
+  };
+
+  // Render modal content based on selected type
+  const renderModalContent = () => {
+    switch (modalContent) {
+      case 'registration':
+        return <RegistrationModal onRegister={handleRegister} />;
+      case 'newRequest':
+        return <NewRequestForm onSubmit={handleCreateRequest} onCancel={closeModal} />;
+      case 'donate':
+        return <DonationForm
+          request={selectedRequest}
+          onSubmit={handleDonate}
+          onCancel={closeModal}
+        />;
+      case 'requestDetails':
+        return <RequestDetails
+          request={selectedRequest}
+          onDonate={() => setModalContent('donate')}
+          onClose={closeModal}
+        />;
+      case 'editRequest':
+        return <NewRequestForm
+          request={selectedRequest}
+          isEditing={true}
+          onSubmit={(data) => editRequest(selectedRequest._id, data)}
+          onCancel={closeModal}
+        />;
+      default:
+        return null;
+    }
+  };
+
   return (
-    <>
-    <Header />
     <div className="app-container">
       <main className="main-content">
         <Title />
+
+        {/* User registration status */}
+        {isRegistered && (
+          <div className="user-registration-status">
+            <p>Registered with number: {registrationNumber}</p>
+            <button onClick={handleLogout} className="logout-button">
+              Logout
+            </button>
+          </div>
+        )}
+
         <Dashboard stats={stats} />
+
         <div className="content-container">
           <div className="content-header">
             <TabNavigation activeTab={activeTab} setActiveTab={setActiveTab} />
+            {activeTab === 'myRequests' && isRegistered && (
+              <button
+                className="new-request-button"
+                onClick={() => openModal('newRequest')}
+              >
+                New Request
+              </button>
+            )}
+            {!isRegistered && (
+              <button
+                className="register-button"
+                onClick={() => openModal('registration')}
+              >
+                Register
+              </button>
+            )}
           </div>
-          {activeTab === 'active' && <RequestList requests={requests} />}
-          {activeTab === 'myRequests' && isRegistered && <MyRequests requests={userRequests} />}
-          {activeTab === 'myDonations' && isRegistered && <MyDonations donations={userDonations} />}
+
+          {renderContent()}
         </div>
+
+        {/* First-time visitor registration modal */}
+        {!isRegistered && !modalOpen && (
+          <RegistrationModal onRegister={handleRegister} />
+        )}
+
+        {/* Regular modal for other content */}
+        {modalOpen && (
+          <Modal onClose={closeModal}>
+            {renderModalContent()}
+          </Modal>
+        )}
       </main>
-
-      Emergency alert system
-      <EmergencyProvider>
-        <FloatingWidget />
-      </EmergencyProvider>
-
-      {/* Donation center modal */}
-      {modalOpen && (
-        <Modal onClose={closeModal}>
-          {modalContent === 'registration' && <RegistrationModal onRegister={handleRegister} />}
-          {modalContent === 'newRequest' && <NewRequestForm onSubmit={handleCreateRequest} onCancel={closeModal} />}
-          {modalContent === 'donate' && <DonationForm request={selectedRequest} onSubmit={handleDonate} onCancel={closeModal} />}
-        </Modal>
-      )}
     </div>
-    <Footer />
-    </>
   );
 }
-
 function App() {
   return (
     <AuthProvider>
