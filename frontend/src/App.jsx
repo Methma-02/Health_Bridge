@@ -466,7 +466,7 @@ function App() {
               <Route path="/donation-center" element={<DonationCenter />} />
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             </Routes>
-          <SymptomTracker/>
+          
         </RecoveryProvider>
       </GoogleOAuthProvider>
     </AuthProvider>
