@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useEmergency } from '../context/EmergencyContext';
 
 const HospitalChat = ({ emergencyId }) => {
-  const { messages, sendMessage } = useEmergency();
+  // Local state for messages instead of relying solely on context
+  const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
   const messagesEndRef = useRef(null);
 
@@ -17,8 +17,21 @@ const HospitalChat = ({ emergencyId }) => {
   const handleSendMessage = (e) => {
     e.preventDefault();
     if (newMessage.trim()) {
-      sendMessage(newMessage);
+      // Create a new message object
+      const messageObj = {
+        sender: 'user',
+        message: newMessage,
+        timestamp: new Date().toISOString()
+      };
+      
+      // Update local messages state
+      setMessages([...messages, messageObj]);
+      
+      // Clear input field
       setNewMessage('');
+      
+      // You can still use context if it's available
+      // if (sendMessage) sendMessage(newMessage);
     }
   };
 
