@@ -84,7 +84,7 @@ const Header = () => {
             <Link to="/Mdashboard" className="nav-item">Child's Dashboard</Link>
             <Link to="/symptom-recorder" className="nav-item">Symptom Recorder</Link>
             <Link to="/donation-center" className="nav-item">Donation Center</Link>
-            <Link to="/emergency-alert" className="nav-item emergency-link">
+            <Link to="/emergency-demo" className="nav-item emergency-link">
               <AlertCircle size={16} />
               <span>Emergency Alert</span>
             </Link>
