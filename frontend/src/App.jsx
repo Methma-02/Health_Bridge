@@ -46,6 +46,7 @@ import ResetPasswordPage from './ResetPasswordPage';
 import ForgotPasswordPage from './ForgotPasswordPage';
 import OTPInput from './OTPInput';
 import Homepage from './Homepage';
+import SymptomTracker from "./text";
 
 // API base URL
 const API_URL = 'http://localhost:3000/api';
@@ -463,10 +464,11 @@ function App() {
               {/* Donation Center Route */}
               <Route path="/donation-center" element={<DonationCenter />} />
             </Routes>
-          
+          <SymptomTracker/>
         </RecoveryProvider>
       </GoogleOAuthProvider>
     </AuthProvider>
+
 
   );
 }

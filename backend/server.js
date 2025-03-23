@@ -1,22 +1,23 @@
-require("dotenv").config();
-const express = require("express");
-const mongoose = require("mongoose");
-const bodyParser = require("body-parser");
-const cors = require("cors");
-const helmet = require("helmet");
-const rateLimit = require("express-rate-limit");
-const morgan = require("morgan");
-const compression = require("compression");
-const { connectDB, waitForDB } = require("./config/database");
-const { validateEnv } = require("./config/env");
-const logger = require("./utils/logger");
+const express = require('express');
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const dotenv = require('dotenv');
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
+const morgan = require('morgan');
+const compression = require('compression');
+const { connectDB, waitForDB } = require('./config/database');
+const { validateEnv } = require('./config/env');
+const logger = require('./utils/logger');
 
 // Load environment variables
+dotenv.config();
 validateEnv();
 
 // Initialize express app
 const app = express();
-const PORT = process.env.PORT || 3000; // Keep the port from test/dev branch
+const PORT = process.env.PORT || 3000;
 
 // Security middleware
 app.use(helmet({
