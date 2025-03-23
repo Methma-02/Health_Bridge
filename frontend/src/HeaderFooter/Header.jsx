@@ -80,12 +80,12 @@ const Header = () => {
           </button>
           
           <div className="nav-links">
-            <Link to="/p-dashboard" className="nav-item">Mother's Dashboard</Link>
-            <Link to="/MDashboard" className="nav-item">Child's Dashboard</Link>
+            <Link to="/mothers-dashboard" className="nav-item">Mother's Dashboard</Link>
+            <Link to="/childrens-dashboard" className="nav-item">Child's Dashboard</Link>
             <Link to="/symptom-recorder" className="nav-item">Symptom Recorder</Link>
             <Link to="/donation-center" className="nav-item">Donation Center</Link>
             <Link to="/emergency-alert" className="nav-item emergency-link">
-              
+              <AlertCircle size={16} />
               <span>Emergency Alert</span>
             </Link>
             <Link to="/profile" className="nav-item profile-link" aria-label="User profile">
