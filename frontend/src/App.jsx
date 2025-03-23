@@ -265,7 +265,7 @@ function DonationCenter() {
         </div>
       </main>
 
-      {/* Emergency alert system */}
+      Emergency alert system
       <EmergencyProvider>
         <FloatingWidget />
       </EmergencyProvider>
@@ -287,6 +287,7 @@ function App() {
     <AuthProvider>
       <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
         <RecoveryProvider>
+        <EmergencyProvider>
             <Routes>
               {/* Authentication Routes */}
               <Route path="/" element={<LandingPage />} />
@@ -325,10 +326,13 @@ function App() {
               <Route path="/donation-center" element={<DonationCenter />} />
 
               {/* Emergency Routes */}
+              <Route path="/e-controller" element={<EmergencyDemoController />} />
               <Route path="/emergency-tracker" element={<EmergencyTracker />} />
               <Route path="/hospital-chat" element={<HospitalChat />} />
               <Route path="/emergency-demo" element={<EmergencyDemoController />} />
             </Routes>
+            <FloatingWidget/>
+          </EmergencyProvider>
         </RecoveryProvider>
       </GoogleOAuthProvider>
     </AuthProvider>
