@@ -10,17 +10,32 @@ const EmergencyTracker = ({ emergency, onClose }) => {
   const { setActiveEmergency } = useEmergency();
   const [map, setMap] = useState(null);
   const [directionsRenderer, setDirectionsRenderer] = useState(null);
+  const [emergencyHospital, setEmergencyHospital] = useState({
+    name: "Asiri Central Hospital",
+    placeId: "city_medical_02",
+    location: {
+      type: 'Point',
+      coordinates: [79.865789, 6.920618] // Different location
+    },
+    address: "114 Norris Canal Rd, Colombo 01000",
+    rating: 4.2
+  })
 
   // Initialize Google Maps
   useEffect(() => {
+
+    console.log("Emergency :", emergency);
+
     const loadMap = () => {
+
+      console.log("loading map...");
       const mapElement = document.getElementById('emergency-map');
       if (!mapElement) return;
 
       const newMap = new window.google.maps.Map(mapElement, {
         center: { 
-          lat: emergency.location.coordinates[1], 
-          lng: emergency.location.coordinates[0] 
+          lat: emergencyHospital.location.coordinates[1], 
+          lng: emergencyHospital.location.coordinates[0] 
         },
         zoom: 13,
       });
@@ -28,8 +43,8 @@ const EmergencyTracker = ({ emergency, onClose }) => {
       // Add marker for user location
       new window.google.maps.Marker({
         position: { 
-          lat: emergency.location.coordinates[1], 
-          lng: emergency.location.coordinates[0] 
+          lat: emergencyHospital.location.coordinates[1], 
+          lng: emergencyHospital.location.coordinates[0] 
         },
         map: newMap,
         title: 'Your Location',
@@ -49,7 +64,8 @@ const EmergencyTracker = ({ emergency, onClose }) => {
     };
 
     // Load Google Maps API
-    if (!window.google) {
+    if (!window.google || !window.google.maps) {
+      console.log("Not google");
       const script = document.createElement('script');
       script.src = `https://maps.googleapis.com/maps/api/js?key=${import.meta.env.VITE_GOOGLE_MAPS_API_KEY}&libraries=places`;
       script.async = true;
