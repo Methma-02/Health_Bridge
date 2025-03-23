@@ -38,6 +38,7 @@ const App = () => {
             <Route path="/emergency-tracker" element={<EmergencyTracker />} />
             <Route path="/hospital-chat" element={<HospitalChat />} />
           </Routes>
+          <FloatingWidget/>
         </div>
       </EmergencyProvider>
     </BrowserRouter>
