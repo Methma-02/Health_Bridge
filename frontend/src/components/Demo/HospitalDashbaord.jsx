@@ -1,10 +1,9 @@
-// components/Demo/HospitalDashboard.jsx
 import React, { useState, useEffect } from 'react';
 import { useEmergency } from '../context/EmergencyContext';
 import HospitalChat from '../EmergencyAlert/HospitalChat';
 
 const HospitalDashboard = () => {
-  const { activeEmergency, setActiveEmergency, messages, sendMessage } = useEmergency();
+  const { activeEmergency, setActiveEmergency, messages, sendMessage, completeEmergency } = useEmergency();
   const [emergencyView, setEmergencyView] = useState('list'); // 'list' or 'detail'
   const [hospitalName] = useState('University Medical Center');
   const [hospitalInfo] = useState({
@@ -36,6 +35,23 @@ const HospitalDashboard = () => {
     }, 1000);
     
     setEmergencyView('detail');
+  };
+
+  // Handle completing an emergency
+  const handleCompleteEmergency = () => {
+    if (!activeEmergency) return;
+    
+    // Send final message to patient
+    sendMessage("Emergency response has been completed. We hope you're feeling better. Please don't hesitate to reach out if you need any follow-up care.");
+    
+    // Call the complete emergency function from context
+    completeEmergency(activeEmergency._id);
+    
+    // Optional: Return to the empty state or list view after a short delay
+    setTimeout(() => {
+      setActiveEmergency(null);
+      setEmergencyView('list');
+    }, 3000);
   };
   
   // Calculate estimated arrival time (demo purposes)
@@ -180,7 +196,10 @@ const HospitalDashboard = () => {
                 </svg>
                 Call Patient
               </button>
-              <button className="hospital-action-btn complete">
+              <button 
+                className="hospital-action-btn complete"
+                onClick={handleCompleteEmergency}
+              >
                 Complete Emergency
               </button>
             </div>
