@@ -1,8 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import Header from "../../HeaderFooter/Header";
+import Footer from "../../HeaderFooter/Footer";
 
 const Dashboard = () => {
   return (
+    <>
+    <Header/>
     <div className="min-h-screen bg-gray-50 p-2 md:p-4 lg:p-6 flex flex-col items-center">
       <div className="bg-blue-50 rounded-lg p-4 md:p-6 w-full max-w-4xl">
         {/* Header */}
@@ -59,6 +63,8 @@ const Dashboard = () => {
         </div>
       </div>
     </div>
+    <Footer/>
+    </>
   );
 };
 
