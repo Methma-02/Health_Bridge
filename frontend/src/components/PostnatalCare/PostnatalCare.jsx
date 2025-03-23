@@ -2,6 +2,8 @@ import React, { useState, useRef, useEffect } from "react";
 import SignatureCanvas from "react-signature-canvas";
 import PostnatalPage8 from "./PostnatalPage8"; // Ensure this import is included
 import { useFormContext } from '../../contexts/FormContext';
+import Header from "../../HeaderFooter/Header";
+import Footer from "../../HeaderFooter/Footer";
 
 const PostnatalCare = () => {
   const { formData, setFormData } = useFormContext();
@@ -38,6 +40,8 @@ const PostnatalCare = () => {
   };
 
   return (
+    <>
+    <Header/>
     <div className="w-full max-w-6xl mx-auto p-4 bg-gradient-to-br from-white to-blue-50 shadow-lg rounded-lg">
       {/* Header */}
       <h1 className="text-2xl md:text-3xl font-bold text-blue-600 mb-6 text-center">
@@ -275,6 +279,8 @@ const PostnatalCare = () => {
       {/* PostnatalPage8 Component */}
       <PostnatalPage8 />
     </div>
+    <Footer/>
+    </>
   );
 };
 

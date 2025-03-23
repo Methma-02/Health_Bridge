@@ -4,6 +4,8 @@ import GrowthChart from './BMI';
 import FundalHeightChart from './FundalHeightChart';
 import ClinicCare from './ClinicCare'; // Added import
 import { useFormContext } from '../../contexts/FormContext';
+import Header from '../../HeaderFooter/Header';
+import Footer from '../../HeaderFooter/Footer';
 
 const Tables = () => {
     // Access form data and setter from context
@@ -247,6 +249,7 @@ const Tables = () => {
 
     return (
         <>
+            <Header />
             <form onSubmit={handleSubmit} className="bg-white border-l-4 border-blue-500 p-4 rounded-lg mb-6 shadow">
                 <h1 className="text-2xl md:text-3xl font-bold text-blue-600 mb-6 text-center">
                     Clinic Visit Details
@@ -818,6 +821,7 @@ const Tables = () => {
                     </button>
                 </div>
             </form>
+            <Footer/>
         </>
     );
 };
