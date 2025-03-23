@@ -14,6 +14,8 @@ export const EmergencyProvider = ({ children }) => {
 
   // Initialize socket connection
   useEffect(() => {
+
+    console.log("emergency context");
     // const socketInstance = io(import.meta.env.VITE_API_URL || 'http://localhost:3000', {
     //   transports: ['websocket'], // Force WebSocket transport
     //   withCredentials: true, // Include credentials if needed
