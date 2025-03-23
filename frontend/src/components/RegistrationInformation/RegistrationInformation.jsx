@@ -208,7 +208,7 @@ const PregnancyRecordForm = () => {
                 <div>
                   <label className="block text-sm font-medium text-blue-700">Age</label>
                   <input
-                    type="number"
+                    type="text"
                     value={formData.ageOfMother}
                     onChange={(e) => handleInputChange('ageOfMother', e.target.value)}
                     className="w-full p-2 text-sm border border-blue-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-blue-50"
