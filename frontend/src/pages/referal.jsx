@@ -1,6 +1,9 @@
 //import necessary hooks from react and icons from lucide
 import { useState, useEffect } from "react";
 import { Plus, Trash2, Search } from "lucide-react";
+import Header from "../HeaderFooter/Header";
+import Footer from "../HeaderFooter/Footer";
+
 // Define the main functional component for Referral
 const Referral = () => {
   // Registration number state
@@ -280,6 +283,8 @@ const Referral = () => {
   );
 
   return (
+    <>
+    <Header/>
     <form onSubmit={handleSubmit}>
       <div className="space-y-8">
         {/* Registration Number Section */}
@@ -367,7 +372,12 @@ const Referral = () => {
           </button>
         </div>
       </div>
+      <br></br>
     </form>
+    <br></br>
+    <Footer/>
+    
+    </>
   );
 };
 

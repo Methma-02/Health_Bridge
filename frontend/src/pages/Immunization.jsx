@@ -1,5 +1,7 @@
 
 import { useState, useEffect } from 'react';// Import necessary hooks from React
+import Header from "../HeaderFooter/Header";
+import Footer from "../HeaderFooter/Footer";
 
 const ImmunizationForm = () => {// Define the main functional component for Immunization Form
   // Default structure for a vaccine object
@@ -147,6 +149,8 @@ const ImmunizationForm = () => {// Define the main functional component for Immu
   };
   
   return (
+    <>
+    <Header/>
     <form onSubmit={handleSubmit}>
       <div className="w-full max-w-6xl mx-auto p-4 bg-gradient-to-br from-white to-blue-50 shadow-lg rounded-lg">
         <h1 className="text-2xl md:text-3xl font-bold text-blue-600 mb-6 text-center">Immunization Record</h1>
@@ -256,6 +260,10 @@ const ImmunizationForm = () => {// Define the main functional component for Immu
         </div>
       </div>
     </form>
+    <br></br>
+
+    <Footer/>
+    </>
   );
 };
 

@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react"; //Import react hooks for managing state and lifecycle effects
+import Header from "../HeaderFooter/Header";
+import Footer from "../HeaderFooter/Footer";
 
 const ChildHealthRecords = () => {
     const ageStages = [
@@ -187,8 +189,10 @@ const ChildHealthRecords = () => {
     };
 
     return (
+        <>
+        <Header/>
         <form onSubmit={handleSubmit}> {/*Form element that triggers handlesubmit */}
-        <div className="w-full max-w-4xl mx-auto p-4 bg-gradient-to-br from-white to-blue-50 shadow-lg rounded-lg">
+        <div className="w-full max-w-5xl mx-auto p-4 bg-gradient-to-br from-white to-blue-50 shadow-lg rounded-lg">
             <h1 className="text-2xl md:text-3xl font-bold text-blue-600 mb-6 text-center">Child Health Records</h1>
 
             <div className="mb-6 bg-white border-l-4 border-blue-500 p-4 rounded-lg shadow">
@@ -243,6 +247,9 @@ const ChildHealthRecords = () => {
             </div>
         </div>
         </form>
+        <br></br>
+        <Footer/>
+        </>
     );
 };
 

@@ -1,5 +1,6 @@
 import { useState } from 'react';
-
+import Header from './HeaderFooter/Header';
+import Footer from './HeaderFooter/Footer';
 const PrivacyPolicy = () => {
   const [activeSection, setActiveSection] = useState(null);
   
@@ -8,6 +9,8 @@ const PrivacyPolicy = () => {
   };
   
   return (
+    <>
+    <Header/>
     <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-md">
       <div className="mb-8 text-center">
         <h1 className="text-3xl font-bold mb-4">Privacy Policy</h1>
@@ -228,6 +231,9 @@ const PrivacyPolicy = () => {
         <p className="text-sm text-gray-600">Thank you for trusting Health Bridge with your personal information. We are committed to protecting your privacy and ensuring the security of your data. If you have any questions or concerns, please do not hesitate to contact us.</p>
       </div>
     </div>
+    <br></br>
+    <Footer/>
+    </>
   );
 };
 

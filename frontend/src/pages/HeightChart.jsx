@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react'; //import required hooks from react
 import { X, ChevronRight, ChevronLeft } from 'lucide-react'; //icons from lucide react library
+import Header from "../HeaderFooter/Header";
+import Footer from "../HeaderFooter/Footer";
 
 const HeightGainChart = () => { //define the heighgainchart component
   const [gender, setGender] = useState('boy'); //useState hook to manage the gender selection
@@ -422,6 +424,8 @@ const HeightGainChart = () => { //define the heighgainchart component
   };
 
   return (
+    <>
+    <Header/>
     <form onSubmit={handleSubmit}>
     <div className="w-full max-w-4xl mx-auto p-4 bg-gradient-to-br from-white to-blue-50 shadow-lg rounded-lg">
        <h1 className="text-2xl md:text-3xl font-bold text-blue-600 mb-6 text-center" >Height Gain Chart</h1>
@@ -835,6 +839,9 @@ const HeightGainChart = () => { //define the heighgainchart component
 </div>
       </div>
       </form>
+      <br></br>
+      <Footer/>
+      </>
     );
   };
   

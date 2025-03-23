@@ -558,6 +558,8 @@ const BabyDetails = () => {// Define the main functional component for Baby Deta
         </div>
         
         </form>
+        <br></br>
+
         <Footer/>
         </>
     );

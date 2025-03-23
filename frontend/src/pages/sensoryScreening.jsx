@@ -1,5 +1,7 @@
 // Import necessary hooks from React
 import { useState, useEffect } from "react";
+import Header from "../HeaderFooter/Header";
+import Footer from "../HeaderFooter/Footer";
 
 // Define the main functional component for Sensory Screening
 export default function SensoryScreening() {
@@ -243,12 +245,12 @@ export default function SensoryScreening() {
               {/* Map through each question in the age range */}
               {questionList.map((question, index) => (
                 <div key={index} className="flex items-start space-x-4">
-                  <p className="flex-grow text-gray-700">{question}</p>
+                  <p className="flex-grow text-gray-700 mr-4">{question}</p>
                   {/* Button to toggle the answer for the question */}
                   <button
                     type="button"
                     onClick={() => handleToggle(question)}
-                    className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                    className={`px-4 py-2 rounded-lg font-medium transition-colors min-w-16 mb-6 ${
                       answers[question]
                         ? "bg-green-500 text-white hover:bg-green-600"
                         : "bg-red-500 text-white hover:bg-red-600"
@@ -265,6 +267,8 @@ export default function SensoryScreening() {
 
   // Render the form
   return (
+    <>
+    <Header/>
     <form onSubmit={handleSubmit}>
       <div className="w-full max-w-6xl mx-auto p-4 bg-gradient-to-br from-white to-blue-50 shadow-lg rounded-lg">
         <h1 className="text-2xl md:text-3xl font-bold text-blue-600 mb-6 text-center">Sensory Screening</h1>
@@ -311,5 +315,8 @@ export default function SensoryScreening() {
         </div>
       </div>
     </form>
+    <br></br>
+    <Footer/>
+    </>
   );
 }

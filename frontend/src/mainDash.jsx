@@ -1,6 +1,8 @@
 // Import React and the useNavigate hook from react-router-dom
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import Header from './HeaderFooter/Header';
+import Footer from './HeaderFooter/Footer';
 // Define the SquareCard component for rendering clickable cards
 const SquareCard = ({ icon, title, route }) => {
   const navigate = useNavigate();// Define the SquareCard component for rendering clickable cards
@@ -22,8 +24,10 @@ const SquareCard = ({ icon, title, route }) => {
 };
 // Define the main dashboard component
 const MDashboard = () => {
+ 
   return (
-        // Main container for the dashboard with responsive padding
+    <>
+<Header/>
     <div className="min-h-screen bg-gray-50 p-2 md:p-4 lg:p-6">
       {/* Inner container with a light blue background and rounded corners */}
       <div className="bg-blue-50 rounded-lg p-4 md:p-6 h-full">
@@ -46,6 +50,8 @@ const MDashboard = () => {
         </div>
       </div>
     </div>
+    <Footer/>
+    </>
   );
 };
 // Export the MDashboard component as the default export

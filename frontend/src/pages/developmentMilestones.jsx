@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import Header from "../HeaderFooter/Header";
+import Footer from "../HeaderFooter/Footer";
 
 /*
      * Initial milestones data representing different stages of a baby's development.
@@ -194,6 +196,8 @@ const DevelopmentMilestones = () => {
     };
 
     return (
+        <>
+        <Header/>
         <form onSubmit={handleSubmit}>
             <div className="w-full max-w-6xl mx-auto p-4 bg-gradient-to-br from-white to-blue-50 shadow-lg rounded-lg">
                 <h1 className="text-2xl md:text-3xl font-bold text-blue-600 mb-6 text-center">Development Milestones Tracker</h1>
@@ -293,6 +297,8 @@ const DevelopmentMilestones = () => {
                 </div>
             </div>
         </form>
+        <br></br>
+        <Footer/></>
     );
 };
 
