@@ -44,9 +44,6 @@ const io = setupSocket(server);
 // Make io globally available for other modules
 global.io = io;
 
-
-
-
 // Security middleware
 app.use(helmet({
   contentSecurityPolicy: {
