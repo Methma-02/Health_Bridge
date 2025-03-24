@@ -508,29 +508,28 @@ const LandingPage = () => {
                 </ul>
               </div>
               <div className="mt-12 lg:mt-0 lg:w-1/2 flex justify-center">
-                <motion.div 
-                  className="w-full max-w-md bg-white p-2 rounded-2xl shadow-xl overflow-hidden relative"
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8 }}
-                >
-                  {/* Video placeholder - would be actual video in production */}
-                  <div className="aspect-w-16 aspect-h-9 bg-[#eef2ff] rounded-xl flex items-center justify-center">
-                    <div className="text-[#4f46e5] text-lg">Demo Video (30 sec)</div>
-                    {/* Play button overlay */}
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="h-16 w-16 rounded-full bg-white/90 flex items-center justify-center shadow-lg cursor-pointer">
-                        <svg className="h-8 w-8 text-[#4f46e5]" fill="currentColor" viewBox="0 0 24 24">
-                          <path d="M8 5v14l11-7z" />
-                        </svg>
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-              </div>
-            </div>
+              <motion.div 
+          className="w-full max-w-md bg-white p-2 rounded-2xl shadow-xl overflow-hidden relative"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+        >
+          {/* Embedded YouTube Video */}
+          <div className="aspect-w-16 aspect-h-10 bg-[#eef2ff] rounded-xl flex items-center justify-center overflow-hidden">
+            <iframe 
+              className="w-full h-full rounded-xl"
+              src="https://www.youtube.com/embed/8CClXi8zzGc" 
+              title="Health Bridge Demo Video"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
           </div>
-        </section>
+        </motion.div>
+      </div>
+    </div>
+  </div>
+</section>
 
         {/* Testimonials */}
         <section id="testimonials" className="py-20 bg-white">
