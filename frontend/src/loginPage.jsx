@@ -9,19 +9,30 @@ import { motion, AnimatePresence } from 'framer-motion';
 const LoginPage = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
+
+  // State to manage form inputs
   const [loginData, setLoginData] = useState({
     email: '',
     password: ''
   });
-  const [errors, setErrors] = useState({});
-  const [isLoading, setIsLoading] = useState(false);
-  const [passwordRequirements, setPasswordRequirements] = useState(false);
-  const formRef = useRef(null);
 
-  const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+  // State for validation errors
+  const [errors, setErrors] = useState({});
+
+   // State to manage loading status during login
+  const [isLoading, setIsLoading] = useState(false);
+
+  // State to track password validation requirements
+  const [passwordRequirements, setPasswordRequirements] = useState(false);
+
+  const formRef = useRef(null);  // Reference to the form element for animation
+
+  const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;    // Load Google Client ID from environment variables
   console.log("Google Client ID:", googleClientId);
 
-  useEffect(() => {
+
+  // Apply animation effect when component mounts
+  useEffect(() => { 
     // Card animation only - removed bubble animations
     const formElement = formRef.current;
     if (formElement) {
@@ -42,7 +53,7 @@ const LoginPage = () => {
     };
   }, []);
 
-  // Enhanced password validation
+  // Function to validate password against security criteria
   const validatePassword = (password) => {
     const errors = [];
     
@@ -74,6 +85,7 @@ const LoginPage = () => {
       }
     ];
   
+     // Add any failed validation messages to errors array
     requirements.forEach(({ test, message }) => {
       if (test) {
         errors.push(message);
