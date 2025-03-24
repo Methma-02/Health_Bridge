@@ -7,6 +7,8 @@ import * as api from './api';
 const RegistrationPage = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
+
+  // State for handling form data
   const [formData, setFormData] = useState({
     role: '',
     fullName: '',
@@ -19,11 +21,12 @@ const RegistrationPage = () => {
     workPlace: ''
   });
 
+  // State for handling form validation errors
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [passwordStrength, setPasswordStrength] = useState(0);
 
-  // Password validation function
+  // Function to validate password strength and format
   const validatePassword = (password) => {
     const errors = [];
     let strength = 0;
@@ -76,7 +79,7 @@ const RegistrationPage = () => {
     };
   };
 
-  // Form validation function
+  // Function to validate the entire form
   const validateForm = (data) => {
     const errors = {};
 
@@ -107,6 +110,7 @@ const RegistrationPage = () => {
       errors.password = passwordValidation.errors;
     }
 
+    // Ensure passwords match
     if (data.password !== data.confirmPassword) {
       errors.confirmPassword = "Passwords do not match";
     }
@@ -133,7 +137,7 @@ const RegistrationPage = () => {
     return errors;
   };
 
-  // Handle input changes
+  // Handle input changes and clear errors when user starts typing
   const handleChange = (e) => {
     const { name, value } = e.target;
     
@@ -142,7 +146,7 @@ const RegistrationPage = () => {
       [name]: value
     }));
 
-    // Clear the specific error when user starts typing
+    // Clear error message for current input field
     if (errors[name]) {
       setErrors(prev => {
         const newErrors = { ...prev };
@@ -151,7 +155,7 @@ const RegistrationPage = () => {
       });
     }
 
-    // Special handling for password
+    // Handle password strength update
     if (name === 'password') {
       const passwordValidation = validatePassword(value);
       if (!passwordValidation.isValid) {
