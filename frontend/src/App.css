@@ -1,42 +1,190 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+
+
+/* General Styles */
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f4f4f9;
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
+
+.symptom-tracker-container {
+  max-width: 800px;
+  margin: 50px auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.symptom-tracker-title {
   text-align: center;
+  color: #4a90e2;
+  margin-bottom: 20px;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+/* Calendar Styles */
+.calendar-container {
+  margin-bottom: 20px;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
+.react-calendar {
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.react-calendar__tile--active {
+  background-color: #4a90e2;
+  color: white;
+}
+
+.react-calendar__tile--now {
+  background-color: #ffeb3b;
+  color: #333;
+}
+
+/* Highlighted Dates in Calendar */
+.intensity-1-2 {
+  background-color: #d4edda; /* Green for low intensity */
+  color: #155724; /* Dark green text */
+  border: 2px solid #155724; /* Dark green border */
+  border-radius: 4px; /* Slightly rounded corners */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  font-weight: bold; /* Bold text */
+}
+
+.intensity-3 {
+  background-color: #fff3cd; /* Yellow for moderate intensity */
+  color: #856404; /* Dark yellow text */
+  border: 2px solid #856404; /* Dark yellow border */
+  border-radius: 4px; /* Slightly rounded corners */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  font-weight: bold; /* Bold text */
+}
+
+.intensity-4-5 {
+  background-color: #f8d7da; /* Red for high intensity */
+  color: #721c24; /* Dark red text */
+  border: 2px solid #721c24; /* Dark red border */
+  border-radius: 4px; /* Slightly rounded corners */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  font-weight: bold; /* Bold text */
+}
+
+/* Input Container Styles */
+.input-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+
+.symptom-input {
+  width: 100%;
+  max-width: 300px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+/* Intensity Bar */
+.intensity-bar {
+  display: flex;
+  gap: 5px;
+}
+
+.intensity-button {
+  padding: 10px 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-weight: bold;
+  color: #333; /* Default text color */
+}
+
+.intensity-button.active {
+  border: 2px solid #333; /* Highlight the selected button */
+}
+
+/* Intensity-specific colors */
+.intensity-button[style*="background-color: #d4edda"] { /* Green for 1-2 */
+  border-color: #155724; /* Dark green border */
+}
+
+.intensity-button[style*="background-color: #fff3cd"] { /* Yellow for 3 */
+  border-color: #856404; /* Dark yellow border */
+}
+
+.intensity-button[style*="background-color: #f8d7da"] { /* Red for 4-5 */
+  border-color: #721c24; /* Dark red border */
+}
+
+/* Add Symptom Button */
+.add-symptom-button {
+  padding: 10px 20px;
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.add-symptom-button:hover {
+  background-color: #357abd;
+}
+
+/* Symptoms List Styles */
+.symptoms-list {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.symptoms-list h3 {
+  margin-bottom: 10px;
+  color: #4a90e2;
+}
+
+.symptoms-list ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.symptoms-list li {
+  padding: 8px;
+  margin-bottom: 5px;
+  border-radius: 5px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.symptoms-list p {
+  color: #666;
+  font-style: italic;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .symptom-tracker-container {
+    padding: 10px;
   }
-  to {
-    transform: rotate(360deg);
+
+  .input-container {
+    flex-direction: column;
+  }
+
+  .symptom-input {
+    width: 100%;
   }
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
-}

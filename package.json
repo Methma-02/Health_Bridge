@@ -1,0 +1,23 @@
+{
+  "dependencies": {
+
+    "dotenv": "^16.4.7",
+    "react-onesignal": "^3.1.1",
+    "socket.io-client": "^4.8.1",
+
+    "@react-oauth/google": "^0.12.1",
+    "@tailwindcss/vite": "^4.0.6",
+    "@tsparticles/react": "^3.0.0",
+    "axios": "^1.7.9",
+    "gsap": "^3.12.7",
+    "jwt-decode": "^4.0.0",
+    "react-icons": "^5.4.0",
+    "react-router-dom": "^7.1.5"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.3",
+    "tailwindcss": "^4.0.15"
+
+  }
+}

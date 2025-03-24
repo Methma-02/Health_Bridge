@@ -1,0 +1,256 @@
+import { useState, useEffect } from "react"; //Import react hooks for managing state and lifecycle effects
+import Header from "../HeaderFooter/Header";
+import Footer from "../HeaderFooter/Footer";
+
+const ChildHealthRecords = () => {
+    const ageStages = [
+        "1 month", "2 months", "4 months", "6 months", "9 months", 
+        "18 months", "3 years", "4 years", "5 years"
+    ];
+
+    //State to manage form data
+    const [formData, setFormData] = useState({
+        regNo: '', //stores the register number
+        childHealthRecords: ageStages.map(age => ({
+            age: age, // Assign predefined ages for the columns
+            clinicDate: '',
+            head: '',
+            disabilities: '',
+            eyes: '',
+            sight: '',
+            nightBlindness: '',
+            dental: '',
+            issues: '',
+            growth: '',
+            heartDiseases: '',
+            sandiya: '',
+            other: '',
+            signature: '',
+            designation: ''
+        }))
+    });
+
+    // Load data when component mounts
+    useEffect(() => {
+        // Check if there's a registration number in localStorage to persist data across sessions
+        const savedRegNo = localStorage.getItem('childHealthRegNo');
+        
+        if (savedRegNo) {
+            // Set the regNo from localStorage and update the form data
+            setFormData(prev => ({
+                ...prev,
+                regNo: savedRegNo
+            }));
+            
+            // Fetch the data using the saved registration number
+            fetchDataByRegistrationNumber(savedRegNo);
+        }
+    }, []);  // Empty dependency array means this runs only once on component mount
+
+    const handleSubmit = async (e) => {
+        e.preventDefault(); //prevents default refresh behavior of submit
+        
+        if (!formData.regNo) { //alert to get registration number
+            alert('Please enter a registration number.');
+            return;
+        }
+        
+        try {
+            //check if records exist for the registration number
+            const fetchResponse = await fetch(
+                `http://localhost:3000/api/baby/${formData.regNo}`,
+                {
+                    headers: {
+                        'x-user-role': 'physician',
+                    }
+                }
+            );
+            
+            let existingData = {}; //placeholder for existing data
+            if (fetchResponse.ok) {
+                existingData = await fetchResponse.json(); //parse existing data if found
+            }
+            
+            // Merge new data with existing data before sending to the server
+            const response = await fetch('http://localhost:3000/api/baby', {
+                method: 'POST', //send data using HTTP POST 
+                headers: {
+                    'Content-Type': 'application/json', //specify the data type being sent
+                    'x-user-role': 'physician', 
+                },
+                body: JSON.stringify({
+                    ...existingData, //retain existing data
+                    regNo: formData.regNo, //update the reg number
+                    childHealthRecords: formData.childHealthRecords //sends the updated data
+                }),
+            });
+            
+            if (!response.ok) { //if the response is not ok, extract the error message
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Failed to submit form');
+            }
+            
+            // Save registration number to localStorage after successful submission for future retrieval
+            localStorage.setItem('childHealthRegNo', formData.regNo);
+            
+            const result = await response.json(); //parse the response from the server
+            console.log('Form submitted successfully:', result);
+            alert('Form submitted successfully!');
+        } catch (error) {
+            console.error('Error submitting form:', error); 
+            alert(`Failed to submit form: ${error.message}`);
+        }
+    };
+
+    // New handler for regNo to update the reg number state when input changes
+    const handleRegNoChange = (value) => {
+        setFormData(prev => ({
+            ...prev, // reference the previous state
+            regNo: value
+        }));
+    };
+
+    //handles to update record table
+    const handleTableChange = (index, field, value) => {
+        setFormData(prev => ({
+            ...prev,
+            childHealthRecords: prev.childHealthRecords.map((row, i) =>
+                i === index ? { ...row, [field]: value } : row //update inly the modified row
+            )
+        }));
+    };
+
+    // Generates table rows dynamically based on field names
+    const createTableRow = (fieldName) => {
+        return formData.childHealthRecords.map((row, idx) => (
+            <td key={idx} className="p-2">
+                <input
+                    type={fieldName === "clinicDate" ? "date" : "text"} //use data input for clinicDate
+                    value={row[fieldName] || ''}
+                    onChange={(e) => handleTableChange(idx, fieldName, e.target.value)}
+                    className={`w-25 h-6 p-1 text-sm border border-blue-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-blue-50 ${
+                        fieldName === "age" ? "bg-gray-100 cursor-not-allowed" : ""
+                    }`}
+                    readOnly={fieldName === "age"} // Make Age field read-only
+                />
+            </td>
+        ));
+    };
+
+    //fetches child health records based on the entered reg no
+    const fetchDataByRegistrationNumber = async (regNoParam) => {
+        const regNo = regNoParam || formData.regNo; //if regNo is provided use it otherwise, fallback to formdata
+    
+        if (!regNo) {
+            alert('Please enter a registration number.');
+            return;
+        }
+    
+        try { //sending a request to fetch baby data based on the regno
+            const response = await fetch(
+                `http://localhost:3000/api/baby/${regNo}`, //API endpoint with dynamic reg no
+                {
+                    headers: {
+                        'x-user-role': 'physician', //user role as customer header
+                    }
+                }
+            );
+    
+            if (!response.ok) {
+                throw new Error('No data found for this registration number.');
+            }
+    
+            const data = await response.json(); //convert the reponse into json
+            console.log('Data fetched:', data);
+            
+            // Save registration number to localStorage
+            localStorage.setItem('childHealthRegNo', regNo);
+            
+            // Initialize health records if they don't exist in fetched data
+            const healthRecords = data.childHealthRecords && Array.isArray(data.childHealthRecords) 
+                ? data.childHealthRecords 
+                : ageStages.map(age => ({ age, clinicDate: '', head: '', disabilities: '', eyes: '', sight: '', nightBlindness: '', dental: '', issues: '', growth: '', heartDiseases: '', sandiya: '', other: '', signature: '', designation: '' }));
+            
+            setFormData({ //updates the form state with fetched data
+                regNo: data.regNo || regNo, //use fetched regno if available, or fallback to regno input
+                childHealthRecords: healthRecords //store the data
+            });
+            
+            
+            if (regNoParam === undefined) {
+                alert('Data loaded successfully!');
+            }
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            if (regNoParam === undefined) {
+                alert('No data found for this registration number.');
+            }
+        }
+    };
+
+    return (
+        <>
+        <Header/>
+        <form onSubmit={handleSubmit}> {/*Form element that triggers handlesubmit */}
+        <div className="w-full max-w-5xl mx-auto p-4 bg-gradient-to-br from-white to-blue-50 shadow-lg rounded-lg">
+            <h1 className="text-2xl md:text-3xl font-bold text-blue-600 mb-6 text-center">Child Health Records</h1>
+
+            <div className="mb-6 bg-white border-l-4 border-blue-500 p-4 rounded-lg shadow">
+                <h2 className="text-xl font-semibold text-blue-700 mb-4 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0" />
+                    </svg>
+                    Registration Information
+                </h2>
+                <div className="flex items-center space-x-4">
+                    <label className="text-sm font-medium text-blue-700">Registration Number</label>
+                    <input
+                        type="text"
+                        value={formData.regNo || ''}
+                        onChange={(e) => handleRegNoChange(e.target.value)}
+                        className="flex-grow p-2 text-sm border border-blue-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-blue-50"
+                    />
+                    <button
+                        type="button"
+                        onClick={() => fetchDataByRegistrationNumber()}
+                        className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition duration-200"
+                    >
+                        Get Info
+                    </button>
+                </div>
+            </div>
+
+            <div className="overflow-x-auto bg-white rounded-lg shadow-md">
+                <table className="w-full border-collapse">
+                    <tbody> 
+                        {/* Dynamically created table rows based on Object keys */}
+                        {Object.keys(formData.childHealthRecords[0]).map((field) => (
+                            <tr key={field} className="border-b border-blue-100 hover:bg-blue-50">
+                                <td className="p-1 text-sm font-medium text-blue-700 whitespace-nowrap">
+                                    {/* Converts camelcase fields to readable format */}
+                                    {field.charAt(0).toUpperCase() + field.slice(1).replace(/([A-Z])/g, " $1").trim()}
+                                </td>
+                                {createTableRow(field)} 
+                                {/* function to render data for each field */}
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+            <div className="flex justify-center mt-6">
+              <button 
+                type="submit" 
+                className="px-6 py-3 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition duration-200 font-semibold text-lg"
+              >
+                Submit Health Records
+              </button>
+            </div>
+        </div>
+        </form>
+        <br></br>
+        <Footer/>
+        </>
+    );
+};
+
+export default ChildHealthRecords;
