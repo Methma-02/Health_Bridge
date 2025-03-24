@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useEmergency } from '../context/EmergencyContext';
 import FloatingWidget from '../EmergencyAlert/FloatingWidget';
 import HospitalDashboard from './HospitalDashbaord';
+import Header from "../../HeaderFooter/Header";
+import Footer from "../../HeaderFooter/Footer";
 
 const EmergencyDemoController = () => {
   const [viewMode, setViewMode] = useState('patient'); // 'patient' or 'hospital'
@@ -9,6 +11,7 @@ const EmergencyDemoController = () => {
 
   return (
     <div className="demo-controller" style={styles.demoController}>
+      <Header/>
       <div className="demo-tabs" style={styles.demoTabs}>
         <button 
           className={`demo-tab ${viewMode === 'patient' ? 'active' : ''}`}
@@ -71,21 +74,29 @@ const EmergencyDemoController = () => {
         ) : (
           <HospitalDashboard />
         )}
+        
       </div>
+      <Footer/>
     </div>
+    
+    
   );
 };
 
 export default EmergencyDemoController;
 
-// Inline styles for the component
+
 const styles = {
   demoController: {
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center',
     minHeight: '100vh',
     backgroundColor: '#f9fafb',
+  },
+  demoContent: {
+    flex: '1 0 auto', // This ensures content takes available space but allows growing
+    display: 'flex',
+    flexDirection: 'column',
     padding: '2rem',
   },
   demoTabs: {
@@ -113,7 +124,10 @@ const styles = {
   demoViewContainer: {
     width: '100%',
     maxWidth: '1200px',
-    flex: 1,
+    margin: '0 auto',
+    display: 'flex',
+    flexDirection: 'column',
+    flex: '1 0 auto',
   },
   dashboard: {
     textAlign: 'center',
