@@ -1,43 +1,54 @@
 import React, { useContext, useState } from "react";
-import { RecoveryContext } from "./RecoveryContext";
-import { useNavigate } from "react-router-dom";
-import { resetPassword } from "./api";
+import { RecoveryContext } from "./RecoveryContext";  // Context to store recovery-related data
+import { useNavigate } from "react-router-dom"; // Hook for navigation
+import { resetPassword } from "./api"; // API function to reset password
 
 export default function ResetPasswordPage() {
-  const { email, setPage } = useContext(RecoveryContext);
+  const { email, setPage } = useContext(RecoveryContext);  // Get email and setPage function from context
+
+   // State to manage password inputs
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+
+  // State to handle loading and success status
   const [isResetting, setIsResetting] = useState(false);
   const [success, setSuccess] = useState(false);
+
+  // Navigation hook to redirect user
   const navigate = useNavigate();
 
+// Function to handle password reset
   function changePassword(e) {
-    e.preventDefault();
+    e.preventDefault();  // Prevent default form submission behavior
     
-    console.log("Email from context:", email); // Debug log to check if email exists
+    console.log("Email from context:", email); // Debugging log to ensure email exists
     
+    // If email is missing, alert the user and redirect to forgot password page
     if (!email) {
       alert("Email information is missing. Please try again from the beginning.");
       setPage("forgotPassword");
       return;
     }
     
+    // Check if passwords match
     if (newPassword !== confirmPassword) {
       alert("Passwords do not match.");
       return;
     }
     
+    // Ensure password meets minimum length requirement
     if (newPassword.length < 6) {
       alert("Password must be at least 6 characters long.");
       return;
     }
     
-    setIsResetting(true);
+    setIsResetting(true); // Set loading state
     
+    // Call API function to reset password
     resetPassword(email, newPassword)
       .then((result) => {
         console.log("Password reset success:", result);
-        setSuccess(true);
+        setSuccess(true); // Mark reset as successful
         setIsResetting(false);
       })
       .catch((error) => {
@@ -47,11 +58,12 @@ export default function ResetPasswordPage() {
       });
   }
 
+  // Redirect user to login page after successful reset
   function goToLogin() {
     navigate("/login");
   }
 
-  // Success message and login button
+  // Show success message and login button if reset was successful
   if (success) {
     return (
       <div className="flex justify-center items-center w-screen h-screen bg-gray-50">
@@ -84,6 +96,8 @@ export default function ResetPasswordPage() {
     <div className="flex justify-center items-center w-screen h-screen bg-gray-50">
       <div className="bg-white px-6 pt-10 pb-9 shadow-xl mx-auto w-full max-w-lg rounded-2xl">
         <div className="mx-auto flex w-full max-w-md flex-col space-y-16">
+
+          {/* Header Section */}
           <div className="flex flex-col items-center justify-center text-center space-y-2">
             <div className="font-semibold text-3xl">
               <p>Reset Password</p>
@@ -93,9 +107,12 @@ export default function ResetPasswordPage() {
             </div>
           </div>
 
+{/* Password Reset Form */}
           <div>
             <form onSubmit={changePassword}>
               <div className="flex flex-col space-y-5">
+
+                {/* New Password Input */}
                 <div>
                   <input
                     type="password"
@@ -107,6 +124,7 @@ export default function ResetPasswordPage() {
                   />
                 </div>
 
+{/* Confirm Password Input */}
                 <div>
                   <input
                     type="password"
@@ -118,6 +136,7 @@ export default function ResetPasswordPage() {
                   />
                 </div>
 
+{/* Submit Button */}
                 <div>
                   <button
                     type="submit"
