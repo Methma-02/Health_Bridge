@@ -128,6 +128,14 @@
   transform: scaleX(1);
 }
 
+.nav-item.active {
+  color: #4a90e2;
+}
+
+.nav-item.active::after {
+  transform: scaleX(1);
+}
+
 /* Specific Nav Items */
 .emergency-link {
   color: #e53e3e;
@@ -144,6 +152,14 @@
 
 .emergency-link:hover {
   color: #c53030;
+}
+
+.emergency-link.active {
+  color: #c53030;
+}
+
+.emergency-link.active::after {
+  transform: scaleX(1);
 }
 
 .profile-link {
@@ -178,6 +194,24 @@
 .nav-item.emergency-link:hover,
 .nav-links a:hover {
   text-decoration: none !important;
+}
+
+/* Add this to your existing CSS */
+.nav-item,
+.logo-link {
+  outline: none;
+}
+
+.nav-item:focus,
+.logo-link:focus {
+  outline: none;
+}
+
+/* Ensure keyboard accessibility with a subtle focus effect */
+.nav-item:focus-visible,
+.logo-link:focus-visible {
+  box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.3);
+  border-radius: 4px;
 }
 
 /* Menu Toggle Button */
