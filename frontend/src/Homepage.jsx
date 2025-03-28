@@ -60,8 +60,8 @@ const Homepage = () => {
       name: 'Symptom Recorder', 
       icon: <Heart size={40} color="#60a5fa" />,
       description: 'Monitor and log health symptoms easily',
-      path: 'https://healthbridgemarketing.netlify.app/',
-      isExternal: true
+      path: '/symptom-tracker',
+      isExternal: false
     },
     { 
       name: 'Donation Center', 
