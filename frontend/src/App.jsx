@@ -475,6 +475,8 @@ function App() {
               <Route path="/hospital-chat" element={<HospitalChat />} />
               <Route path="/emergency-demo" element={<EmergencyDemoController />} />
 
+              <Route path="/symptom-tracker" element={<SymptomTracker />} />
+
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             </Routes>
             <FloatingWidget/>
