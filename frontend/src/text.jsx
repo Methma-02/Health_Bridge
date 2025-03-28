@@ -3,6 +3,8 @@ import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import dayjs from "dayjs";
 import "./App.css";
+import Header from "./HeaderFooter/Header";
+import Footer from "./HeaderFooter/Footer";
 
 const SymptomTracker = () => {
   const [newSymptom, setNewSymptom] = useState("");
@@ -92,6 +94,8 @@ const SymptomTracker = () => {
   const symptomsForSelectedDate = symptoms[formattedSelectedDate] || [];
 
   return (
+    <>
+    <Header />
     <div className="symptom-tracker-container">
       <h2 className="symptom-tracker-title">Symptom Tracker</h2>
 
@@ -153,6 +157,8 @@ const SymptomTracker = () => {
         )}
       </div>
     </div>
+    <Footer />
+    </>
   );
 };
 
