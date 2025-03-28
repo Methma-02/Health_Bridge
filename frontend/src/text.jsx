@@ -46,7 +46,7 @@ const SymptomTracker = () => {
     setIntensity(3);
 
     try {
-      const response = await fetch("http://localhost:5000/symptoms", {
+      const response = await fetch("http://localhost:3000/symptoms", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
