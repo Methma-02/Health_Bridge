@@ -96,6 +96,41 @@ app.use((req, res, next) => {
   next();
 });
 
+
+const symptomSchema = new mongoose.Schema({
+    date: String,
+    symptoms: [
+      {
+        symptom: String,
+        time: String,
+        intensity: Number,
+      },
+    ],
+  });
+  
+  const Symptom = mongoose.model("Symptom", symptomSchema);
+
+  app.post("/symptoms", async (req, res) => {
+    try {
+      const { date, symptoms } = req.body;
+  
+      if (!date || !symptoms) {
+        return res.status(400).json({ msg: "Invalid input" });
+      }
+  
+      // Save symptoms to MongoDB
+      const newSymptomEntry = new Symptom({ date, symptoms });
+      await newSymptomEntry.save();
+  
+      res.status(201).json({ msg: "✅ Symptom added successfully!" });
+    } catch (error) {
+      console.error("❌ Error saving symptom:", error);
+      res.status(500).json({ msg: "Server error" });
+    }
+  });
+  
+
+
 // Access control middleware
 const canRead = (req, res, next) => {
   const userRole = req.user.role;
