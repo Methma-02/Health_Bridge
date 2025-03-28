@@ -80,7 +80,7 @@ const Header = () => {
             <div className="nav-links">
               <Link to="/p-dashboard" className="nav-item">Mother's Dashboard</Link>
               <Link to="/Mdashboard" className="nav-item">Child's Dashboard</Link>
-              <Link to="/symptom-recorder" className="nav-item">Symptom Recorder</Link>
+              <Link to="/symptom-tracker" className="nav-item">Symptom Recorder</Link>
               <Link to="/donation-center" className="nav-item">Donation Center</Link>
               <Link to="/emergency-demo" className="nav-item emergency-link">
                 <AlertCircle size={16} />
