@@ -69,18 +69,6 @@ app.use(express.urlencoded({ extended: true, limit: '250kb' }));
 app.use(bodyParser.json());
 app.use(compression());
 
-// Rate limiting
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // limit each IP to 100 requests per windowMs
-  message: 'Too many requests from this IP, please try again after 15 minutes',
-  standardHeaders: true,
-  legacyHeaders: false
-});
-
-// Apply rate limiting to all routes
-app.use(limiter);
-
 // Logging
 if (process.env.NODE_ENV !== 'test') {
   app.use(morgan('combined', { stream: { write: message => logger.info(message.trim()) } }));
