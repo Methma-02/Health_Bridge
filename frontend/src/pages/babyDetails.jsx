@@ -200,7 +200,7 @@ const BabyDetails = () => {// Define the main functional component for Baby Deta
                             index,
                             fieldName,
                             subField,
-                            e.target.value
+                            e.target.value //event handler to access the current value of an input field
                         )
                     }
                     className="w-full p-2 text-sm border border-blue-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-blue-50"
@@ -226,13 +226,13 @@ const BabyDetails = () => {// Define the main functional component for Baby Deta
     };
 // Function to ensure health details array has at least 4 items
     const ensureHealthDetails = () => {
-        if (formData.healthDetails.length < 4) {
-            const template = formData.healthDetails[0];
+        if (formData.healthDetails.length < 4) { //check if we have fewer than 4 entries
+            const template = formData.healthDetails[0]; //get first object as template
             setFormData(prev => ({
                 ...prev,
                 healthDetails: [
-                    ...prev.healthDetails,
-                    ...Array(4 - prev.healthDetails.length).fill().map(() => ({ ...template }))
+                    ...prev.healthDetails, //keep existing items
+                    ...Array(4 - prev.healthDetails.length).fill().map(() => ({ ...template })) //create missing entries, create empty array slots and copy template into new slots
                 ]
             }));
         }
