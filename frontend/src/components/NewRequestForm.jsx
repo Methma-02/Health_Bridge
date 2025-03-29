@@ -1,4 +1,3 @@
-// src/components/NewRequestForm.jsx 
 import React, { useState } from 'react';
 
 function NewRequestForm({ request = null, isEditing = false, onSubmit, onCancel }) {

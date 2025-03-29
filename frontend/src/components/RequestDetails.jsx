@@ -1,4 +1,3 @@
-// src/components/RequestDetails.jsx
 import React from 'react';
 
 function RequestDetails({ request, onDonate, onClose }) {

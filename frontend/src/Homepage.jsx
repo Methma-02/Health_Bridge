@@ -6,41 +6,46 @@ import { Heart, Calendar, FileText, Gift, AlertCircle, ArrowLeft, ArrowRight, Ch
 import VideoBackground from './VideoBackground'; // Import the VideoBackground component
 import './HomePageStyles.css';
 
+// Main Homepage component that contains all sections of the Health Bridge website
 const Homepage = () => {
+  // References to different sections for smooth scrolling
   const servicesRef = useRef(null);
   const missionRef = useRef(null);
   const aboutRef = useRef(null);
   const howItWorksRef = useRef(null);
   const servicesContainerRef = useRef(null);
-  const navigate = useNavigate();
-  const [scrollPosition, setScrollPosition] = useState(0);
+  const navigate = useNavigate(); // For navigation between pages
+  const [scrollPosition, setScrollPosition] = useState(0); // Tracks horizontal scroll position for services carousel
 
-  // Function to scroll to top and bottom of page
+  // Function to scroll to the top of the page smoothly
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  // Function to scroll to the bottom of the page smoothly
   const scrollToBottom = () => {
     window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
   };
 
+  // Function to scroll to a specific section smoothly
   const scrollToSection = (ref) => {
     ref.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  // Pass scroll functions to Footer
+  // Make scroll functions available globally for the Footer component
   useEffect(() => {
-    // Make the scroll functions globally accessible for the Footer component
+    // Add scroll functions to window object so Footer can access them
     window.scrollToTop = scrollToTop;
     window.scrollToBottom = scrollToBottom;
     
-    // Cleanup on unmount
+    // Clean up by removing these functions when component unmounts
     return () => {
       delete window.scrollToTop;
       delete window.scrollToBottom;
     };
   }, []);
 
+  // List of services offered by Health Bridge, each with icon, name, description and navigation path
   const services = [
     { 
       name: 'Pregnancy Form', 
@@ -79,6 +84,7 @@ const Homepage = () => {
     }
   ];
 
+  // Steps that explain how to use the Health Bridge platform
   const steps = [
     {
       title: "Register & Create Your Profile",
@@ -107,6 +113,7 @@ const Homepage = () => {
     }
   ];
 
+  // Function to scroll services carousel to the left
   const scrollLeft = () => {
     if (servicesContainerRef.current) {
       const container = servicesContainerRef.current;
@@ -117,6 +124,7 @@ const Homepage = () => {
     }
   };
 
+  // Function to scroll services carousel to the right
   const scrollRight = () => {
     if (servicesContainerRef.current) {
       const container = servicesContainerRef.current;
@@ -128,28 +136,31 @@ const Homepage = () => {
     }
   };
 
+  // Update scroll position state when user scrolls the services container
   const handleScroll = () => {
     if (servicesContainerRef.current) {
       setScrollPosition(servicesContainerRef.current.scrollLeft);
     }
   };
 
-  // Handle service card clicks - either navigate internally or to external link
+  // Handle clicks on service cards - navigate to internal page or external link
   const handleServiceClick = (service) => {
     if (service.isExternal) {
-      // Navigate to external link in the same tab
+      // For external links, use window.location to navigate in same tab
       window.location.href = service.path;
     } else {
-      // Use react-router for internal navigation
+      // For internal links, use React Router's navigate function
       navigate(service.path);
     }
   };
 
+  // Main render of the Homepage component
   return (
     <div className="health-bridge-homepage">
+      {/* Site header with navigation */}
       <Header />
       
-      {/* Hero Section with Video Background */}
+      {/* Hero section with video background and call-to-action buttons */}
       <section className="hero-section">
         <VideoBackground />
         <div className="hero-content">
@@ -174,7 +185,7 @@ const Homepage = () => {
         </div>
       </section>
 
-      {/* Mission and Vision Section */}
+      {/* Mission and Vision section - describes purpose and goals */}
       <section ref={missionRef} className="mission-vision-section">
         <div className="container">
           <div className="mission-box">
@@ -192,10 +203,11 @@ const Homepage = () => {
         </div>
       </section>
 
-      {/* Services Section with Carousel Navigation */}
+      {/* Services section with horizontal scrollable carousel */}
       <section ref={servicesRef} className="services-section">
         <h2>Our Services</h2>
         <div className="services-carousel-container">
+          {/* Left arrow for carousel */}
           <button 
             className="carousel-nav-button carousel-prev"
             onClick={scrollLeft}
@@ -204,6 +216,7 @@ const Homepage = () => {
             <ArrowLeft className="h-6 w-6" />
           </button>
           
+          {/* Services cards in a scrollable container */}
           <div 
             ref={servicesContainerRef}
             className="services-grid"
@@ -221,6 +234,7 @@ const Homepage = () => {
             ))}
           </div>
           
+          {/* Right arrow for carousel */}
           <button 
             className="carousel-nav-button carousel-next"
             onClick={scrollRight}
@@ -231,7 +245,7 @@ const Homepage = () => {
         </div>
       </section>
 
-      {/* About Us Section */}
+      {/* About Us section - describes the platform's purpose and benefits */}
       <section ref={aboutRef} className="about-section">
         <div className="container">
           <h2>About Us</h2>
@@ -247,6 +261,7 @@ const Homepage = () => {
                 Traditionally, pregnancy and child health records have been maintained on paper, making them difficult to store, update, and access. <strong>Health Bridge eliminates these challenges</strong> by providing a secure, digital platform where:
               </p>
               
+              {/* List of benefits with checkmark icons */}
               <div className="benefits-list">
                 <div className="benefit-item">
                   <div className="benefit-icon">
@@ -272,7 +287,7 @@ const Homepage = () => {
         </div>
       </section>
 
-      {/* How It Works Section */}
+      {/* How It Works section - explains the user journey in steps */}
       <section ref={howItWorksRef} className="how-it-works-section">
         <div className="container">
           <h2>How It Works</h2>
@@ -290,7 +305,7 @@ const Homepage = () => {
         </div>
       </section>
 
-      {/* Sri Lanka Section */}
+      {/* Sri Lanka section - highlights local relevance */}
       <section className="sri-lanka-section">
         <h2>Proudly Serving Sri Lanka</h2>
         <p>
@@ -300,6 +315,7 @@ const Homepage = () => {
         </p>
       </section>
 
+      {/* Site footer with additional navigation */}
       <Footer />
     </div>
   );

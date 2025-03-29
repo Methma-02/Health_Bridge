@@ -1,4 +1,3 @@
-// src/components/Modal.jsx
 import React, { useEffect } from 'react';
 
 function Modal({ children, onClose }) {
@@ -14,7 +13,6 @@ function Modal({ children, onClose }) {
     };
   }, [onClose]);
 
-  // Prevent click propagation from modal content
   const handleContentClick = (e) => {
     e.stopPropagation();
   };

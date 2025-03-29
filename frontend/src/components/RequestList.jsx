@@ -1,9 +1,8 @@
-// src/components/RequestList.jsx
 import React from 'react';
 import RequestCard from './RequestCard';
 
 function RequestList({ requests, onViewDetails, onDonate }) {
-  // Filter out fulfilled requests and sort by status (Urgent first)
+  // Filter out fulfilled requests and sort by status
   const activeRequests = requests
     .filter(req => req.status !== 'Fulfilled')
     .sort((a, b) => {

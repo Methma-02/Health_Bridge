@@ -1,4 +1,3 @@
-// src/components/RegistrationModal.jsx
 import React, { useState } from 'react';
 
 function RegistrationModal({ onRegister }) {
@@ -7,15 +6,11 @@ function RegistrationModal({ onRegister }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
-    // Simple validation
+
     if (!registrationNumber.trim()) {
       setError('Please enter your registration number');
       return;
     }
-    
-    // Registration numbers could have specific format requirements
-    // Add validation here if needed
     
     onRegister(registrationNumber);
   };

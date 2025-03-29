@@ -1,4 +1,3 @@
-// src/components/RequestCard.jsx
 import React from 'react';
 
 function RequestCard({ request, onViewDetails, onDonate }) {

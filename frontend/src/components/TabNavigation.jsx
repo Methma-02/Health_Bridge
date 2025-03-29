@@ -1,4 +1,3 @@
-// src/components/TabNavigation.jsx
 import React from 'react';
 
 function TabNavigation({ activeTab, setActiveTab }) {

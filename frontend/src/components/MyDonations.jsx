@@ -1,4 +1,3 @@
-// src/components/MyDonations.jsx
 import React from 'react';
 
 function MyDonations({ donations }) {

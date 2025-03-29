@@ -1,4 +1,3 @@
-// src/components/Tile.jsx
 import React from 'react';
 import { getUserRegistration } from '../utils/userStorage';
 

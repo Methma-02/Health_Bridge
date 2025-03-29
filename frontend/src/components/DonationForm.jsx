@@ -1,4 +1,3 @@
-// src/components/DonationForm.jsx
 import React, { useState } from 'react';
 
 function DonationForm({ request, onSubmit, onCancel }) {
