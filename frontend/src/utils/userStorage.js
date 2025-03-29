@@ -1,4 +1,3 @@
-// src/utils/userStorage.js
 /**
  * Utility functions to handle user identification and data persistence
  * using registration numbers and local storage
