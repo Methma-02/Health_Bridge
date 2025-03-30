@@ -3,9 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from './authContext';
 import * as api from './api';
 
-
+//Functional component declared for the registration page
 const RegistrationPage = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate();            //redirecting users after registration 
   const { login } = useAuth();
 
   // State for handling form data
@@ -22,13 +22,13 @@ const RegistrationPage = () => {
   });
 
   // State for handling form validation errors
-  const [errors, setErrors] = useState({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [passwordStrength, setPasswordStrength] = useState(0);
+  const [errors, setErrors] = useState({});                      // Stores validation error messages
+  const [isSubmitting, setIsSubmitting] = useState(false);       //Tracks whether the form is being submitted.
+  const [passwordStrength, setPasswordStrength] = useState(0);     //Stores password strength level
 
   // Function to validate password strength and format
   const validatePassword = (password) => {
-    const errors = [];
+    const errors = [];             //Initializes an array for errors and a counter for strength.
     let strength = 0;
   
     if (!password) {
@@ -64,6 +64,7 @@ const RegistrationPage = () => {
       }
     ];
   
+    //Runs all tests and updates the error list or strength accordingly
     requirements.forEach(({ test, message, strengthValue }) => {
       if (test) {
         errors.push(message);
@@ -79,7 +80,7 @@ const RegistrationPage = () => {
     };
   };
 
-  // Function to validate the entire form
+  // Function to validate the entire form.Checks for missing fields and invalid inputs
   const validateForm = (data) => {
     const errors = {};
 
@@ -142,8 +143,8 @@ const RegistrationPage = () => {
     const { name, value } = e.target;
     
     setFormData(prev => ({
-      ...prev,
-      [name]: value
+      ...prev,      //It uses the previous state,and spreads it , to keep existing values unchanged
+      [name]: value    
     }));
 
     // Clear error message for current input field
@@ -180,9 +181,9 @@ const RegistrationPage = () => {
 
   // Handle form submission
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    setErrors({});  // Clear previous errors
+    e.preventDefault();   //Prevents the default form submission behavior
+    setIsSubmitting(true);  // Sets a loading state to disable the form while submitting
+    setErrors({});  // Clear previous errors to avoid shhhowing old messages
 
     try {
       // Validate form data
@@ -196,6 +197,7 @@ const RegistrationPage = () => {
       // Remove confirmPassword before sending to API
       const { confirmPassword, ...registrationData } = formData;
 
+      //Calls api.register(registrationData) to send the user data to the backend
       const response = await api.register(registrationData);
 
       if (response.token) {

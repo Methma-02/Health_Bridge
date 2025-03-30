@@ -14,6 +14,7 @@ import landingPage from "./images/landingPage3.png";
 import homePage from "./images/homePage.png";
 import video from "./videos/Demo.mp4";
 
+//LandingPage component is the main export that renders the entire landing page
 const LandingPage = () => {
   const navigate = useNavigate();
   const headerRef = useRef(null);
@@ -227,7 +228,7 @@ const LandingPage = () => {
     <div className="flex justify-between items-center h-16">
       {/* Logo and Name */}
       <div className="flex items-center">
-        <div className="flex-shrink-0 flex items-center">  
+        <div className="flex-shrink-0 flex items-center">
           <img src={logo} alt="Health Bridge Logo" className="h-8 w-auto mr-2" />
           <span className="text-2xl font-bold text-[#4f46e5]">Health Bridge</span>
         </div>
@@ -300,8 +301,8 @@ const LandingPage = () => {
             <div className="lg:flex lg:items-center lg:justify-between">
               {/* Text content */}
               <div className="lg:w-1/2 lg:pr-12">
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
+                <motion.div               //use framer motion to animate the text on load.
+                  initial={{ opacity: 0, y: 20 }}     
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.8 }}
                 >
@@ -361,9 +362,9 @@ const LandingPage = () => {
                   ].map((social, index) => (
                     <motion.a
                       key={index}
-                      href={social.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                      href={social.url}       //links to the respective social media page
+                      target="_blank"         //the link opens in a new tab
+                      rel="noopener noreferrer"    //ensures security when opening a new tab
                       className="text-3xl transition-all duration-300 p-3 rounded-full"
                       style={{ color: social.color }}
                       whileHover={{ 
@@ -486,7 +487,7 @@ const LandingPage = () => {
               <div className="lg:w-1/2 pr-0 lg:pr-12">
                 <h2 className="text-3xl font-bold">See How Health Bridge Works</h2>
                 <p className="mt-4 text-lg text-indigo-100">
-                  A futuristic health management system designed with maternal care in mind. Watch our 30-second demo to see all features in action.
+                  A futuristic health management system designed with maternal care in mind. Watch our 2-minutes demo to see all features in action.
                 </p>
                 <ul className="mt-8 space-y-4">
                   <li className="flex items-start">
@@ -516,7 +517,7 @@ const LandingPage = () => {
         >
           {/* Embedded YouTube Video */}
           <div className="aspect-w-16 aspect-h-10 bg-[#eef2ff] rounded-xl flex items-center justify-center overflow-hidden">
-            <iframe 
+            <iframe                  //"window" within a page that can display another page or content, such as a video, another webpage
               className="w-full h-full rounded-xl"
               src="https://www.youtube.com/embed/8CClXi8zzGc" 
               title="Health Bridge Demo Video"
