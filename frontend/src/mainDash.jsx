@@ -38,7 +38,6 @@ const MDashboard = () => {
 
         {/* Cards Grid */}
         <div className="flex flex-wrap justify-center gap-8 p-2">
-          <SquareCard icon="🤱" title="Baby Details" route="/babyDetails" />
           <SquareCard icon="📊" title="Weight Charts" route="/weightChart" />
           <SquareCard icon="📏" title="Height Charts" route="/heightChart" />
           <SquareCard icon="💉" title="Vaccinations" route="/immunization" />

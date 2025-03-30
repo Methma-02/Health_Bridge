@@ -802,54 +802,7 @@ app.post('/api/pregnancy-form1', async (req, res) => {
 
 // Baby Schema
 const BabySchema = new mongoose.Schema({
-  regNo: { type: String, unique: true }, // Ensure regNo is unique
-  birthData: [{
-      healthDivision: String,
-      postPregnancyDivision: String,
-      id: String,
-      dob: Date,
-      registeredDate: Date,
-      mother: String,
-      age: String,
-      address: String,
-  }],
-  babyCare: [{
-      apga: {
-          "1M": String,
-          "2M": String,
-          "3M": String,
-      },
-      birthWeight: String,
-      headCircumference: String,
-      birthHeight: String,
-      infantHealth: String,
-      vitaminK: String,
-  }],
-  specialNeeds: [{
-      premature: { checked: Boolean, date: Date },
-      underWeight: { checked: Boolean, date: Date },
-      neonatalComplications: { checked: Boolean, date: Date },
-      congenitalDiseases: { checked: Boolean, date: Date },
-      afterBirthDiseases: { checked: Boolean, date: Date },
-      powderMilk: { checked: Boolean, date: Date },
-      growthStunting: { checked: Boolean, date: Date },
-      feedingComplications: { checked: Boolean, date: Date },
-      parentalDeath: { checked: Boolean, date: Date },
-      parentalImmigration: { checked: Boolean, date: Date },
-      other: { checked: Boolean, date: Date },
-  }],
-  healthDetails: [{
-      skinColor: String,
-      eyes: String,
-      navel: String,
-      breastFeeding: String,
-      nursing: {
-          position: String,
-          connection: String,
-      },
-      Other: String,
-  }],
-  clinicDays: [],
+   regNo: { type: String, unique: true }, // Ensure regNo is unique
   WeightGainData: [{
       gender: String,
       measurements: [

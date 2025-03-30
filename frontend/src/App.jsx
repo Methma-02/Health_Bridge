@@ -34,7 +34,6 @@ import { isUserRegistered, saveUserRegistration, getUserRegistration } from './u
 
 // Import pages from test/dev
 import MDashboard from './mainDash';
-import BabyDetails from './pages/babyDetails';
 import WeightChart from './pages/WeightChart';
 import HeightChart from './pages/HeightChart';
 import Immunization from './pages/Immunization';
@@ -448,7 +447,6 @@ function App() {
               <Route path="/MDashboard" element={<MDashboard />} />
 
               {/* Pages for Baby and Child */}
-              <Route path="/babyDetails" element={<BabyDetails />} />
               <Route path="/weightChart" element={<WeightChart />} />
               <Route path="/heightChart" element={<HeightChart />} />
               <Route path="/immunization" element={<Immunization />} />
