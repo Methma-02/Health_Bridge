@@ -20,8 +20,8 @@ const LandingPage = () => {
   const contentRef = useRef(null);
   const [hoverButton, setHoverButton] = useState(null);
 
-  const particlesInit = async (main) => {
-    await loadFull(main);
+  const particlesInit = async (main) => {   // defines an async function particlesInit that initializes tsparticles (particle animation library)
+    await loadFull(main);                   //ensures that all features of tsparticles are loaded before rendering
   };
 
   // Animation for page transition when navigating
@@ -30,11 +30,11 @@ const LandingPage = () => {
       opacity: 0,
       y: -30,
       duration: 0.5,
-      onComplete: () => navigate(route)
+      onComplete: () => navigate(route)  //navigate(route) changes the page only after the animation completes.
     });
   };
 
-  useEffect(() => {
+  useEffect(() => {           // useEffect hook is used to animate elements when the component first loads
     // Header animation
     gsap.fromTo(
       headerRef.current,
@@ -57,12 +57,12 @@ const LandingPage = () => {
     );
 
     return () => {
-      gsap.killTweensOf(headerRef.current);
+      gsap.killTweensOf(headerRef.current);           //prevents animation bugs & memory leaks.prevents animation bugs & memory leaks.
       gsap.killTweensOf(elements);
     };
-  }, []);
+  }, []);                         //Animations run only once ([] dependency array in useEffect)
 
-  const features = [
+  const features = [    //array of feature objects 
     {
       title: "Digital Health Records",
       description: "No more lost files or outdated data. Access your records securely anytime, anywhere.",
@@ -70,7 +70,7 @@ const LandingPage = () => {
         <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
         </svg>
-      )
+      )  //An SVG icon (this is an inline React component)
     },
     {
       title: "Symptom Tracker",
@@ -101,7 +101,7 @@ const LandingPage = () => {
     }
   ];
 
-  const testimonials = [
+  const testimonials = [  //Store user testemonial in an array 
     {
       quote: "Health Bridge changed how I track my pregnancy. I never worry about lost records anymore!",
       author: "Sarah J.",
@@ -122,14 +122,14 @@ const LandingPage = () => {
   return (
     <div className="relative min-h-screen overflow-hidden bg-gradient-to-b from-[#4338ca] via-[#4f46e5] to-[#eef2ff] text-white">
       {/* Particles background */}
-      <Particles
+      <Particles           // renders animated particles in the background
         id="tsparticles"
         init={particlesInit}
         options={{
-          fpsLimit: 60,
+          fpsLimit: 60,        //Limits animation to 60 frames per second.
           particles: {
             number: {
-              value: 40,
+              value: 40,         //Sets the number of floating particles
               density: {
                 enable: true,
                 value_area: 1000
@@ -147,16 +147,16 @@ const LandingPage = () => {
             },
             size: {
               value: 2,
-              random: true
+              random: true   //Varies particle sizes for a dynamic look.
             },
             move: {
-              enable: true,
+              enable: true,         
               speed: 0.6,
               direction: "none",
               random: true,
               outMode: "out"
             },
-            line_linked: {
+            line_linked: {    //Connects nearby particles with lines.
               enable: true,
               distance: 150,
               color: "#ffffff",
@@ -164,7 +164,7 @@ const LandingPage = () => {
               width: 1
             }
           },
-          interactivity: {
+          interactivity: {            //Expands lines when hovered
             detect_on: "canvas",
             events: {
               onhover: {
@@ -226,7 +226,7 @@ const LandingPage = () => {
   <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div className="flex justify-between items-center h-16">
       {/* Logo and Name */}
-      <div className="flex items-center">
+      <div className="flex items-center">  
         <div className="flex-shrink-0 flex items-center">
           <img src={logo} alt="Health Bridge Logo" className="h-8 w-auto mr-2" />
           <span className="text-2xl font-bold text-[#4f46e5]">Health Bridge</span>
@@ -458,7 +458,7 @@ const LandingPage = () => {
                 {[
                   { stat: '94%', description: 'Of users report better health tracking' },
                   { stat: '45%', description: 'Reduction in emergency response time' },
-                  { stat: '3.5x', description: 'More donations successfully delivered' },
+                  { stat: '3.5x', description: 'More donations successfully donated' },
                 ].map((item, index) => (
                   <motion.div
                     key={index}
@@ -499,11 +499,11 @@ const LandingPage = () => {
                   </li>
                   <li className="flex items-start">
                     <span className="flex-shrink-0 h-6 w-6 text-indigo-100 mr-2">✓</span>
-                    <span>Connect with healthcare providers instantly</span>
+                    <span>Healthcare providers get instant access to health records</span>
                   </li>
                   <li className="flex items-start">
                     <span className="flex-shrink-0 h-6 w-6 text-indigo-100 mr-2">✓</span>
-                    <span>Manage donations through secure transactions</span>
+                    <span>Manage donations with a user-friendly interface</span>
                   </li>
                 </ul>
               </div>
