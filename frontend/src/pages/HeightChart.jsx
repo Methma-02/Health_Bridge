@@ -236,7 +236,7 @@ const HeightGainChart = () => { //define the heighgainchart component
       return;
     }
     try {
-      const response = await fetch(`http://localhost:3000/api/baby/${regNo}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/baby/${regNo}`, {
         headers: { 'x-user-role': 'physician' }
       });
       
@@ -319,7 +319,7 @@ const HeightGainChart = () => { //define the heighgainchart component
     try {
       // First, fetch the existing record
       const fetchResponse = await fetch(
-        `http://localhost:3000/api/baby/${formData.regNo}`,
+        `${import.meta.env.VITE_API_URL}/baby/${formData.regNo}`,
         {
           headers: {
             'x-user-role': 'physician',
@@ -339,7 +339,7 @@ const HeightGainChart = () => { //define the heighgainchart component
       }];
       existingData.heightOtherData = formData.heightOtherData
       // Submit the updated data
-      const submitResponse = await fetch('http://localhost:3000/api/baby', {
+      const submitResponse = await fetch(`${import.meta.env.VITE_API_URL}/baby`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

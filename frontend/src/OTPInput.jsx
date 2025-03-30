@@ -19,7 +19,7 @@ export default function OTPInput() {
   function resendOTP() {  // Function to resend OTP
     if (disable) return;    // Prevent sending OTP if the button is disabled
     axios
-      .post("http://localhost:3000/api/auth/send-otp", {
+      .post(`${import.meta.env.VITE_API_URL}/auth/send-otp`, {
         OTP: otp,
         recipient_email: email,
       })

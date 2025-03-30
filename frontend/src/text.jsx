@@ -46,7 +46,7 @@ const SymptomTracker = () => {
     setIntensity(3);
 
     try {
-      const response = await fetch("http://localhost:3000/symptoms", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/symptoms`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

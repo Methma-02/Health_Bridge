@@ -90,7 +90,7 @@ const StudentHealthRecords = () => {    // State to manage form data, including 
         }
 
         try {// Fetch data from the API using the registration number
-            const response = await fetch(`http://localhost:3000/api/baby/${regNo}`, {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/baby/${regNo}`, {
                 headers: { 'x-user-role': 'physician' }// Set the user role in the request headers
             });
 // If the response is not OK, throw an error
@@ -143,7 +143,7 @@ const StudentHealthRecords = () => {    // State to manage form data, including 
                     return record;
                 });
 // Fetch existing data for the registration number
-            const getResponse = await fetch(`http://localhost:3000/api/baby/${formData.regNo}`, {
+            const getResponse = await fetch(`${import.meta.env.VITE_API_URL}/baby/${formData.regNo}`, {
                 headers: { 'x-user-role': 'physician' }
             });
 
@@ -156,7 +156,7 @@ const StudentHealthRecords = () => {    // State to manage form data, including 
                 studentHealthRecords
             };
 // Send a POST request to the API with the form data
-            const response = await fetch('http://localhost:3000/api/baby', {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/baby`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

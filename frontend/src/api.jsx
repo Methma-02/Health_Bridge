@@ -94,7 +94,7 @@ export const sendOTP = async (email, OTP) => {
 export const resetPassword = async (email, newPassword) => {
   try {
     console.log("Resetting password for email:", email);
-    const response = await axios.post('http://localhost:3000/api/auth/reset-password', { 
+    const response = await axios.post(`${import.meta.env.VITE_API_URL}/auth/reset-password`, { 
       email, 
       newPassword 
     });

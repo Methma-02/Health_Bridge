@@ -75,7 +75,7 @@ const BabyDetails = () => {// Define the main functional component for Baby Deta
     const handleSubmit = async (e) => {  // Function to handle form submission
         e.preventDefault();// Prevent the default form submission behavior
         try {
-            const response = await fetch('http://localhost:3000/api/baby', {// Send a POST request to the API with the form data
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/baby`, {// Send a POST request to the API with the form data
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',// Send the form data as JSON
@@ -289,7 +289,7 @@ const BabyDetails = () => {// Define the main functional component for Baby Deta
     
         try {
             const response = await fetch(// Fetch data from the API using the registration number
-                `http://localhost:3000/api/baby/${regNo}`,
+                `${import.meta.env.VITE_API_URL}/baby/${regNo}`,
                 {
                     headers: {
                         'x-user-role': 'physician',

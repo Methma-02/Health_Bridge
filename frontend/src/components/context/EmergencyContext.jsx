@@ -24,7 +24,7 @@ export const EmergencyProvider = ({ children }) => {
     //   transports: ['websocket'],
     //   withCredentials: true,
     // });
-    const socketInstance = io('http://localhost:3000', {
+    const socketInstance = io(`${import.meta.env.VITE_API_URL}`, {
       transports: ['websocket'], // Force WebSocket transport
       withCredentials: true, // Include credentials if needed
     });

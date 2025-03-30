@@ -58,7 +58,7 @@ const ChildHealthRecords = () => {
         try {
             //check if records exist for the registration number
             const fetchResponse = await fetch(
-                `http://localhost:3000/api/baby/${formData.regNo}`,
+                `${import.meta.env.VITE_API_URL}/baby/${formData.regNo}`,
                 {
                     headers: {
                         'x-user-role': 'physician',
@@ -72,7 +72,7 @@ const ChildHealthRecords = () => {
             }
             
             // Merge new data with existing data before sending to the server
-            const response = await fetch('http://localhost:3000/api/baby', {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/baby`, {
                 method: 'POST', //send data using HTTP POST 
                 headers: {
                     'Content-Type': 'application/json', //specify the data type being sent
@@ -148,7 +148,7 @@ const ChildHealthRecords = () => {
     
         try { //sending a request to fetch baby data based on the regno
             const response = await fetch(
-                `http://localhost:3000/api/baby/${regNo}`, //API endpoint with dynamic reg no
+                `${import.meta.env.VITE_API_URL}/baby/${regNo}`, //API endpoint with dynamic reg no
                 {
                     headers: {
                         'x-user-role': 'physician', //user role as customer header

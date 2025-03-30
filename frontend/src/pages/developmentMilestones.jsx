@@ -124,7 +124,7 @@ const DevelopmentMilestones = () => {
         
         try {
             const response = await fetch(
-                `http://localhost:3000/api/baby/${regNo}`, //API endpoint with dynamic reg no
+                `${import.meta.env.VITE_API_URL}/baby/${regNo}`, //API endpoint with dynamic reg no
                 {
                     headers: {
                         'x-user-role': 'physician',
@@ -169,7 +169,7 @@ const DevelopmentMilestones = () => {
         e.preventDefault();
         
         try { //send a post request to the backend API to save milestone data
-            const response = await fetch('http://localhost:3000/api/baby', {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/baby`, {
                 method: 'POST', //HTTP POST method to submit new data
                 headers: {
                     'Content-Type': 'application/json', //initialize the data type for the server

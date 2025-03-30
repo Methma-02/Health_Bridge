@@ -101,7 +101,7 @@ export default function SensoryScreening() {
     try {
       // Fetch data from the API using the registration number
       const response = await fetch(
-        `http://localhost:3000/api/baby/${registrationNumber}`,
+        `${import.meta.env.VITE_API_URL}/baby/${registrationNumber}`,
         {
           headers: {
             'x-user-role': 'mother', // Set the user role in the request headers
@@ -203,7 +203,7 @@ export default function SensoryScreening() {
     
     try {
       // Submit the formatted data to the API
-      const response = await fetch(`http://localhost:3000/api/baby/${regNo}/sensoryScreening`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/baby/${regNo}/sensoryScreening`, {
         method: 'PUT', // Use PUT method for updating data
         headers: {
           'Content-Type': 'application/json', // Set content type to JSON

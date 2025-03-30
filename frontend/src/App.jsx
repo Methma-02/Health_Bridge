@@ -58,7 +58,7 @@ import Header from './HeaderFooter/Header';
 import Footer from './HeaderFooter/Footer';
 
 // API base URL
-const API_URL = 'http://localhost:3000/api';
+const API_URL = import.meta.env.VITE_API_URL;;
 
 // Password Recovery Flow component
 function PasswordRecoveryFlow() {

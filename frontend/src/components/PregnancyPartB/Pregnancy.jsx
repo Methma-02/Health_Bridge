@@ -95,7 +95,7 @@ function Pregnancy() {
 
     const handleGetInfo = async () => {
         try {
-            const response = await fetch(`http://localhost:3000/api/pregnancy/${formData.regNo}`);
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/pregnancy/${formData.regNo}`);
             if (response.ok) {
                 const data = await response.json();
                 setFormData(data); // Populate form with fetched data
@@ -113,7 +113,7 @@ function Pregnancy() {
         e.preventDefault();
 
         try {
-            const response = await fetch('http://localhost:3000/api/pregnancy', {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/pregnancy`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -64,7 +64,7 @@ const ImmunizationForm = () => {// Define the main functional component for Immu
     e.preventDefault();// Prevent the default form submission behavior
     
     try {// Send a POST request to the API with the form data
-      const response = await fetch('http://localhost:3000/api/baby', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/baby`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -108,7 +108,7 @@ const ImmunizationForm = () => {// Define the main functional component for Immu
     
     try {
       const response = await fetch(
-        `http://localhost:3000/api/baby/${regNo}`,
+        `${import.meta.env.VITE_API_URL}/baby/${regNo}`,
         {
           headers: {
             'x-user-role': 'physician',

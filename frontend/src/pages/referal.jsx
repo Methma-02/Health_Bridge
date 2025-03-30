@@ -52,7 +52,7 @@ const Referral = () => {
     
     try {// Fetch data from the API using the registration number
       const response = await fetch(
-        `http://localhost:3000/api/baby/${registrationNumber}`,
+        `${import.meta.env.VITE_API_URL}/baby/${registrationNumber}`,
         {
           headers: {
             'x-user-role': 'physician',
@@ -117,7 +117,7 @@ const Referral = () => {
         referrals: referrals.map(({ id, ...rest }) => rest)
       };
       
-      const response = await fetch('http://localhost:3000/api/baby', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/baby`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
