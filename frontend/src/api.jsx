@@ -3,7 +3,7 @@ import axios from 'axios';
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL || 'http://localhost:3000/api',
   headers: {
-    'Content-Type': 'application/json',
+    'Content-Type': 'application/json',  //Global Headers: Sets the Content-Type to "application/json" for all requests
   },
 });
 
@@ -11,7 +11,7 @@ const api = axios.create({
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('authToken');
   if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
+    config.headers.Authorization = `Bearer ${token}`; //automatically attach the Authorization header with a JWT token if it exists in localStorage
   }
   return config;
 });
@@ -20,9 +20,9 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
-      localStorage.removeItem('authToken');
-      window.location.href = '/login';
+    if (error.response?.status === 401) {   //Unauthorized
+      localStorage.removeItem('authToken');  //Removes the expired token from localStorage
+      window.location.href = '/login';       //Redirects the user to the login page (/login)
     }
     return Promise.reject({
       message: error.response?.data?.message || error.message || 'Request failed',
@@ -34,7 +34,7 @@ api.interceptors.response.use(
 
 export const register = async (userData) => {
   try {
-    const response = await api.post('/auth/register', userData);
+    const response = await api.post('/auth/register', userData); //Sends a POST request to /auth/register to create a new user account
     return response.data;
   } catch (error) {
     throw {
@@ -50,7 +50,7 @@ export const login = async (credentials) => {
     console.log("Sending login request to:", `${api.defaults.baseURL}/auth/login`);
     console.log("With credentials:", { email: credentials.email, password: "****" });
     
-    const response = await api.post('/auth/login', credentials);
+    const response = await api.post('/auth/login', credentials);  //Sends a POST request to /auth/login with the user’s email and password
     console.log("Login response:", response.data);
     return response.data;
   } catch (error) {
@@ -65,7 +65,7 @@ export const login = async (credentials) => {
 
 export const googleLogin = async (credential) => {
   try {
-    const response = await api.post('/auth/google', { credential });
+    const response = await api.post('/auth/google', { credential }); //Sends a Google authentication token (credential) to the backend for verification
     return response.data;
   } catch (error) {
     throw {

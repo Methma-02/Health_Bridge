@@ -126,8 +126,8 @@ const LoginPage = () => {
   };
 
   // Handle Google login success
-  const handleGoogleSuccess = async (credentialResponse) => {
-    try {
+  const handleGoogleSuccess = async (credentialResponse) => {  //credentialResponse is the response object from Google after a successful login
+    try {                          //credentialResponse object contains the Google ID token (credential) used for authentication.
       setIsLoading(true);
       console.log("Google login success:", credentialResponse);
       const { token } = await api.googleLogin(credentialResponse.credential);

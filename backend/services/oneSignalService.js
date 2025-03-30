@@ -39,7 +39,7 @@ const sendEmergencyAlertToHospitals = async (emergency, hospitals) => {
     console.log("- Emergency ID:", emergency._id.toString());
     console.log("- Additional Info:", emergency.additionalInfo);
     
-    // For real implementation, uncomment this code:
+    
     /*
     const response = await axios.post(
       'https://onesignal.com/api/v1/notifications',

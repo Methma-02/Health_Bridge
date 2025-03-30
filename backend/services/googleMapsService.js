@@ -39,10 +39,9 @@ const findNearbyHospitals = async (latitude, longitude, radius = 10000) => {
   try {
     console.log(`[SIMULATION] Finding hospitals near ${latitude}, ${longitude}`);
     
-    // In a real scenario, we would make the API call
-    // For simulation, we'll return our mock data
+    // In a real scenario, make the API call
+    // For simulation, return mock data
     
-    // Uncomment this for real implementation:
     /*
     const response = await axios.get(
       `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${latitude},${longitude}&radius=${radius}&type=hospital&key=${GOOGLE_MAPS_API_KEY}`

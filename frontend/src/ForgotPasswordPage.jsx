@@ -4,14 +4,15 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { sendOTP } from "./api"; 
 
+// ForgotPasswordPage functional component and exports it
 export default function ForgotPasswordPage() {
   const { setEmail, setPage, email, setOTP } = useContext(RecoveryContext);
   const navigate = useNavigate();
 
-  function navigateToOtp() {
+  function navigateToOtp() {  //function triggered when the user clicks the "Send OTP" button.
     console.log("navigateToOtp called");
     if (email) {
-      const OTP = Math.floor(Math.random() * 9000 + 1000);
+      const OTP = Math.floor(Math.random() * 9000 + 1000);  //generates a random number between 1000 and 9999
       console.log("Generated OTP:", OTP);
       setOTP(OTP);
   
@@ -49,8 +50,8 @@ export default function ForgotPasswordPage() {
               <div className="flex flex-col space-y-5">
                 <div>
                   <input
-                    type="email"
-                    onChange={(e) => setEmail(e.target.value)}
+                    type="email"  //Ensures only valid email addresses are entered
+                    onChange={(e) => setEmail(e.target.value)}  //updates email in context when the user types
                     className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="Enter your email"
                   />

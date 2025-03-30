@@ -48,7 +48,7 @@ const HospitalDashboard = () => {
       // Initialize directions renderer
       const renderer = new window.google.maps.DirectionsRenderer({
         map: newMap,
-        suppressMarkers: true
+        suppressMarkers: true           //Initializes Google Maps Directions API for route visualization.
       });
 
       setMap(newMap);
@@ -65,7 +65,7 @@ const HospitalDashboard = () => {
       script.onload = loadMap;
       document.head.appendChild(script);
     } else {
-      loadMap();
+      loadMap();   //triggers the loadMap() when an emergency is detected
     }
   }, [activeEmergency]);
 
@@ -75,7 +75,7 @@ const HospitalDashboard = () => {
     if (!activeEmergency) return;
 
     // In a real implementation, this would call an API
-    // Instead we'll update the emergency data in our context
+    // Instead, update the emergency data in our context
     const updatedEmergency = {
       ...activeEmergency,
       status: 'accepted',

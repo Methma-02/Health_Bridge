@@ -23,7 +23,7 @@ export default function OTPInput() {
         OTP: otp,
         recipient_email: email,
       })
-      .then(() => setDisable(true))  // Disable the resend button after sending
+      .then(() => setDisable(true))  // Disable the resend button after sending,Submits the entered OTP to the backend
       .then(() => alert("A new OTP has been sent to your email."))
       .catch(console.log);
   }

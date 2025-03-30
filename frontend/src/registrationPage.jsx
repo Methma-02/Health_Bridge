@@ -187,6 +187,7 @@ const RegistrationPage = () => {
 
     try {
       // Validate form data
+      //If validation fails, sets errors (setErrors(validationErrors)) and stops submission
       const validationErrors = validateForm(formData);
       if (Object.keys(validationErrors).length > 0) {
         setErrors(validationErrors);
@@ -200,7 +201,7 @@ const RegistrationPage = () => {
       //Calls api.register(registrationData) to send the user data to the backend
       const response = await api.register(registrationData);
 
-      if (response.token) {
+      if (response.token) {          //If the API responds with a token, the user is logged in and redirected to the homepage
         login(response.token);
         navigate('/homepage');
       } else {
