@@ -98,7 +98,7 @@ const symptomSchema = new mongoose.Schema({
   
   const Symptom = mongoose.model("Symptom", symptomSchema);
 
-  app.post("/symptoms", async (req, res) => {
+  app.post("/api/symptoms", async (req, res) => {
     try {
       const { date, symptoms } = req.body;
   
